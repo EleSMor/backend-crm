@@ -7,7 +7,7 @@ const adSchema = new Schema(
         adStatus: { type: String, enum: ["En preparación", "Activo", "Inactivo"], default: "En preparación", required: true },
         title: { type: String, required: true },
         showOnWeb: { type: Boolean, required: true, default: 'yes' },
-        featuredOnMain: { type: Boolean, required: true, default: 'no' },
+        featuredOnMain: { type: Boolean, required: true },
         direction: {
             street: { type: String, required: true },
             postalCode: { type: Number, required: true },

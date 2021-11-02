@@ -10,6 +10,6 @@ const sendsSchema = new Schema({
     contactReference: { type: mongoose.Types.ObjectId, ref: 'contacts'},
 });
 
-const Sends = mongoose.model('sends', sendsSchema);
+const Send = mongoose.model('sends', sendsSchema);
 
-module.exports = Sends;
+module.exports = Send;

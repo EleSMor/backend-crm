@@ -4,12 +4,13 @@ const Schema = mongoose.Schema;
 
 const consultantSchema = new Schema({
     consultantReference: { type: String },
-    role: { type: String, enum: ["Admin", "Consultor"], default: "Consultor"},
-    consultorCreationDate: { type: Date },
+    role: { type: String, enum: ["Admin", "Consultor"], default: "Consultor" },
+    consultantEmail: { type: String, required: true },
+    consultantPassword: { type: String, required: true },
+    consultantCreationDate: { type: Date },
     avatar: { type: String },
     businessUnitLogo: { type: String },
     fullName: { type: String },
-    consultantEmail: { type: String },
     consultantMobileNumber: { type: String },
     consultantPhoneNumber: { type: String },
     position: { type: String },

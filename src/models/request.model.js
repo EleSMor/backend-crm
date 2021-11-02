@@ -123,6 +123,6 @@ const requestsSchema = new Schema({
         timestamp: true
     })
 
-const Requests = mongoose.model('requests', requestsSchema);
+const Request = mongoose.model('requests', requestsSchema);
 
-module.exports = Requests;
+module.exports = Request;
