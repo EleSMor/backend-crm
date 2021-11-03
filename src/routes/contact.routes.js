@@ -1,13 +1,14 @@
 const express = require('express');
 const { isAdmin } = require('../middlewares/auth.middleware');
 const {
-    contactsGetAll,
-    contactsCreate,
+    contactGetAll,
+    contactCreate,
 } = require('../controllers/contact.controller');
 
 const router = express.Router();
 
-router.get('/', contactsGetAll);
-router.post('/create', contactsCreate);
+router.get('/', contactGetAll);
+
+router.post('/create', contactCreate);
 
 module.exports = router;

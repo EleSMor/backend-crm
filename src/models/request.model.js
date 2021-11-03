@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const requestsSchema = new Schema({
     lastModifiedDate: { type: String },
-    requestId: { type: String },
+    requestReference: { type: Number, required: true },
     requestContact: { type: mongoose.Types.ObjectId, ref: 'contacts' },
     requestConsultant: { type: mongoose.Types.ObjectId, ref: 'consultants' },
     requestComment: { type: String },

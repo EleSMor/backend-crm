@@ -1,6 +1,6 @@
 const Consultant = require('./../models/consultant.model');
 
-const consultantsGetAll = async (req, res, next) => {
+const consultantGetAll = async (req, res, next) => {
     try {
         const consultants = await Consultant.find();
         return res.status(200).json(consultants);
@@ -19,6 +19,6 @@ const consultantsGetAll = async (req, res, next) => {
 // }
 
 module.exports = {
-    consultantsGetAll,
+    consultantGetAll,
 
 }

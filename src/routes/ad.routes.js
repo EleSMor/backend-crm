@@ -1,11 +1,11 @@
 const express = require('express');
 const { isAdmin } = require('../middlewares/auth.middleware');
 const {
-    adsGetAll,
+    adGetAll,
 } = require('../controllers/ad.controller');
 
 const router = express.Router();
 
-router.get('/', [isAdmin], adsGetAll);
+router.get('/', [isAdmin], adGetAll);
 
 module.exports = router;

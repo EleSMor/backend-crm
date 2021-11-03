@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const contactSchema = new Schema({
-    contactReference: { type: Number },
+    contactReference: { type: Number, required: true },
     contactCreationDate: { type: String },
     fullName: { type: String },
     tag: [{ type: String, enum: ["Cliente", "Propietario"], required: true }],

@@ -8,17 +8,17 @@ const adSchema = new Schema(
         title: { type: String, required: true },
         showOnWeb: { type: Boolean, required: true, default: 'yes' },
         featuredOnMain: { type: Boolean, required: true },
-        direction: {
+        adDirection: {
             street: { type: String, required: true },
             postalCode: { type: Number, required: true },
             city: { type: String, required: true },
             country: { type: String, required: true }
         },
         adType: { type: Array, enum: ['Alquiler, Venta'], required: true },
-        gvOperationClose: { type: String, enum: ['Vendido', 'Alquilado'] },
+        gvOperationClose: { type: String, enum: ['Vendido', 'Alquilado'], default:'' },
         owner: { type: mongoose.Types.ObjectId, ref: 'contacts' },
         consultant: { type: mongoose.Types.ObjectId, ref: 'consultants' },
-        adReference: { type: String, required: true },
+        adReference: { type: Number, required: true },
         adBuildingType: { type: Array, enum: ["Casa", "Piso", "Parcela", "Ático", "Oficina", "Edificio", "Local", "Campo Rústico", "Activos Singulares", "Costa"], required: true },
         zone: {
             residential: {
@@ -48,9 +48,8 @@ const adSchema = new Schema(
                         castellana: { type: Boolean },
                     },
                     laMoraleja: {
-                        subLaMoraleja: { type: Boolean },
-                        elEncinar: { type: Boolean },
-                        elSoto: { type: Boolean },
+                        recoletos: { type: Boolean },
+                        castellana: { type: Boolean },
                     },
                     somosaguas: {
                         somosaguasA: { type: Boolean },
@@ -105,32 +104,32 @@ const adSchema = new Schema(
         floor: { type: String },
         disponibility: { type: String },
         surfacesBox: {
-            floor: { type: String },
-            use: { type: String },
+            surfaceFloor: { type: String },
+            surfaceUse: { type: String },
             metersAvailables: { type: String },
-            price: { type: Number },
+            meterPrice: { type: Number },
             disponibility: { type: String },
         },
         price: {
             sale: {
-                value: { type: Number },
-                showOnWeb: { type: Boolean },
+                saleValue: { type: Number },
+                saleShowOnWeb: { type: Boolean },
             },
             rent: {
-                value: { type: Number },
-                showOnWeb: { type: Boolean },
+                rentValue: { type: Number },
+                rentShowOnWeb: { type: Boolean },
             },
         },
         monthlyRent: { type: Number },
         expenses: { type: Number },
         expensesIncluded: { type: Number },
         communityExpenses: {
-            value: { type: Number },
-            showOnWeb: { type: Boolean },
+            expensesValue: { type: Number },
+            expensesShowOnWeb: { type: Boolean },
         },
         ibi: {
-            value: { type: Number },
-            showOnWeb: { type: Boolean },
+            ibiValue: { type: Number },
+            ibiShowOnWeb: { type: Boolean },
         },
         buildingYear: { type: String },
         quality: {

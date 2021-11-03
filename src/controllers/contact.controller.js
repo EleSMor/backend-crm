@@ -1,7 +1,7 @@
 const Contact = require('./../models/contact.model');
 const { getDate } = require('./utils');
 
-const contactsGetAll = async (req, res, next) => {
+const contactGetAll = async (req, res, next) => {
     try {
         const contacts = await Contact.find();
         console.log(contacts);
@@ -11,7 +11,7 @@ const contactsGetAll = async (req, res, next) => {
     }
 }
 
-const contactsCreate = async (req, res, next) => {
+const contactCreate = async (req, res, next) => {
     console.log(req.body);
     try {
         const {
@@ -57,6 +57,6 @@ const contactsCreate = async (req, res, next) => {
 }
 
 module.exports = {
-    contactsGetAll,
-    contactsCreate,
+    contactGetAll,
+    contactCreate,
 }

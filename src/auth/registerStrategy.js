@@ -1,5 +1,5 @@
 const LocalStrategy = require('passport-local').Strategy;
-const Consultant = require('../models/Consultant.model');
+const Consultant = require('../models/consultant.model');
 const bcrypt = require('bcrypt');
 const { isValidPassword, isValidEmail } = require('./utils');
 

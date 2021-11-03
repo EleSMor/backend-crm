@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const consultantSchema = new Schema({
-    consultantReference: { type: String },
+    consultantReference: { type: Number, required: true },
     role: { type: String, enum: ["Admin", "Consultor"], default: "Consultor" },
     consultantEmail: { type: String, required: true },
     consultantPassword: { type: String, required: true },
