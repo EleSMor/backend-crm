@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const contactSchema = new Schema({
-    contactReference: { type: Number, required: true },
     contactCreationDate: { type: String },
     fullName: { type: String },
     tag: [{ type: String, enum: ["Cliente", "Propietario"], required: true }],
@@ -12,7 +11,11 @@ const contactSchema = new Schema({
     contactPhoneNumber: { type: String },
     company: { type: String },
     contactDirection: {
-        street: { type: String, required: true },
+        address: {
+            street: { type: String, required: true },
+            directionNumber: { type: Number },
+            directionFloor: { type: String }
+        },
         postalCode: { type: String, required: true },
         city: { type: String, required: true },
         country: { type: String, required: true }

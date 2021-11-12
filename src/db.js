@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const DB_URL = 'mongodb+srv://db_user_admin:oud73k5MxqnJhF0v@cluster0.c4emj.mongodb.net/gvre-crm?retryWrites=true&w=majority';
+const DB_URL = process.env.MONGO_URI || 'mongodb+srv://db_user_admin:oud73k5MxqnJhF0v@cluster0.c4emj.mongodb.net/gvre-crm?retryWrites=true&w=majority';
 
 const connect = async () => {
     try {

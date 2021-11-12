@@ -1,6 +1,6 @@
 const Ad = require('./../models/ad.model');
 
-const adGetAll = (req, res, next) => {
+const adGetAll = async (req, res, next) => {
     try {
         const ads = await Ad.find();
         return res.status(200).json(ads);
@@ -9,15 +9,27 @@ const adGetAll = (req, res, next) => {
     }
 }
 
+const adGetOne = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const ad = await Ad.findById(id);
+        return res.status(200).json(ad);
+    } catch (err) {
+        return next(err);
+    }
+};
+
 const adCreate = async (req, res, next) => {
     console.log(req.body);
     try {
         const {
-            adStatus,
             title,
+            adReference,
             showOnWeb,
             featuredOnMain,
             street,
+            directionNumber,
+            directionFloor,
             postalCode,
             city,
             country,
@@ -26,61 +38,8 @@ const adCreate = async (req, res, next) => {
             owner,
             consultant,
             adBuildingType,
-            laFlorida,
-            aravaca,
-            valdemarín,
-            montealina,
-            pradoLargo,
-            lasEncinas,
-            alamoDeBulanas,
-            mirasierra,
-            elViso,
-            nuevaEspana,
-            jeronimos,
-            almagro,
-            condeDeOrgaz,
-            laFinca,
-            rosales,
-            justicia,
-            cortes,
-            palacio,
-            recoletos,
-            castellana,
-            recoletos,
-            castellana,
-            somosaguasA,
-            somosaguasNorte,
-            ciudadJardin,
-            coloniaPuertaDeHierro,
-            zonaPuertaDeHierro,
-            subColoniaFuentelarreyna,
-            peniagrande,
-            mendezAlvaro,
-            jeronimos,
-            centro,
-            salamanca,
-            almagro,
-            chamberi,
-            elViso,
-            azca,
-            cuzco,
-            chamartin,
-            ctba,
-            lasTablas_sanchinarro,
-            camposDeLasNaciones,
-            arroyoDeLaVega,
-            avenidaAmerica,
-            josefaValcarcel,
-            arturoSoria,
-            julianCamarillo,
-            valdemarin,
-            elPlantio,
-            pozuelo,
-            peLaFinca,
-            ciudadDeLaImagen,
-            madridSecundario,
-            otros,
-            periferia,
+            residential,
+            patrimonial,
             department,
             webSubtitle,
             buildSurface,
@@ -91,7 +50,7 @@ const adCreate = async (req, res, next) => {
             surfaceUse,
             metersAvailables,
             meterPrice,
-            disponibility,
+            surfaceDisponibility,
             saleValue,
             saleShowOnWeb,
             rentValue,
@@ -133,7 +92,7 @@ const adCreate = async (req, res, next) => {
             swimmingPool,
             garage,
             falseCeiling,
-            bathrooms,
+            qualityBathrooms,
             freeHeight,
             smokeOutlet,
             accesControl,
@@ -145,94 +104,25 @@ const adCreate = async (req, res, next) => {
             others
         } = req.body;
 
-        let lastReference = await Ad.find().sort({ adReference: -1 }).limit(1);
-        console.log(lastReference);
+        const adDirection = {
+            adress: { street, directionNumber, directionFloor },
+            postalCode,
+            city,
+            country
+        };
 
-        const adDirection = { street, postalCode, city, country };
-        const zone = {
-            residential: {
-                residential: {
-                    laFlorida,
-                    aravaca,
-                    valdemarín,
-                    montealina,
-                    pradoLargo,
-                    lasEncinas,
-                    alamoDeBulanas,
-                    mirasierra,
-                    elViso,
-                    nuevaEspana,
-                    jeronimos,
-                    almagro,
-                    condeDeOrgaz,
-                    laFinca,
-                    rosales,
-                    justicia,
-                    cortes,
-                    palacio,
-                },
-                complexResidential: {
-                    barrioSalamanca: {
-                        recoletos,
-                        castellana,
-                    },
-                    laMoraleja: {
-                        recoletos,
-                        castellana,
-                    },
-                    somosaguas: {
-                        somosaguasA,
-                        somosaguasNorte,
-                    },
-                    hispanoamerica: {
-                        ciudadJardin,
-                    },
-                    puertaDeHierro: {
-                        coloniaPuertaDeHierro,
-                        zonaPuertaDeHierro,
-                    },
-                    coloniaFuentelarreyna: {
-                        subColoniaFuentelarreyna,
-                        peniagrande,
-                    }
-                },
-                patrimonial: {
-                    mendezAlvaro,
-                    jeronimos,
-                    centro,
-                    salamanca,
-                    almagro,
-                    chamberi,
-                    elViso,
-                    azca,
-                    cuzco,
-                    chamartin,
-                    ctba,
-                    lasTablas_sanchinarro,
-                    camposDeLasNaciones,
-                    arroyoDeLaVega,
-                    avenidaAmerica,
-                    josefaValcarcel,
-                    arturoSoria,
-                    julianCamarillo,
-                    valdemarin,
-                    elPlantio,
-                    pozuelo,
-                    peLaFinca,
-                    ciudadDeLaImagen,
-                    madridSecundario,
-                    otros,
-                    periferia,
-                }
-            }
-        }
+        let zone = [];
+        if (residential) { zone = residential };
+        if (patrimonial) zone = patrimonial;
+
+        if (gvOperationClose.length === 0) gvOperationClose.push = ''; 
 
         const surfacesBox = {
             surfaceFloor,
             surfaceUse,
             metersAvailables,
             meterPrice,
-            disponibility,
+            surfaceDisponibility,
         }
 
         const price = {
@@ -274,7 +164,7 @@ const adCreate = async (req, res, next) => {
                 swimmingPool,
                 garage,
                 falseCeiling,
-                bathrooms,
+                qualityBathrooms,
                 freeHeight,
                 smokeOutlet,
                 accesControl,
@@ -294,8 +184,8 @@ const adCreate = async (req, res, next) => {
         }
 
         const newAd = new Ad({
-            adStatus,
             title,
+            adReference,
             showOnWeb,
             featuredOnMain,
             adDirection: adDirection,
@@ -333,7 +223,24 @@ const adCreate = async (req, res, next) => {
     }
 }
 
+const adDelete = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        let response = "";
+
+        const deleted = await Ad.findByIdAndDelete(id);
+        if (deleted) response = "Anuncio borrado de la base de datos";
+        else response = "No se ha podido encontrar este anuncio. ¿Estás seguro de que existe?";
+
+        return res.status(200).json(response);
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     adGetAll,
-    adCreate
+    adGetOne,
+    adCreate,
+    adDelete
 }
