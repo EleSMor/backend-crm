@@ -8,25 +8,26 @@ const bcrypt = require('bcrypt');
 
 const loginStrategy = new LocalStrategy(
     {
-        emailField: 'email',
+        usernameField: 'identity',
         passwordField: 'password',
         passReqToCallback: true,
     },
-    async (req, alias, password, done) => {
+    async (req, identity, password, done) => {
         try {
 
-            let existingConsultant = await Consultant.findOne({ alias });
+            // User can login with consultantEmail or consultantMobileNumber
+            let existingConsultant = await Consultant.findOne({ identity });
 
             if (!existingConsultant) {
-                const error = new Error("Email doesn't exist");
+                const error = new Error("Este usuario no existe");
                 error.status = 401;
                 return done(error, null);
             }
 
-            const isValidPassword = await bcrypt.compare(password, existingConsultant.password);
+            const isValidPassword = await bcrypt.compare(password, existingConsultant.consultantPassword);
 
             if (!isValidPassword) {
-                const error = new Error("Incorrect password. Try again");
+                const error = new Error("Contraseña incorrecta. Prueba de nuevo");
                 return done(error, null);
             }
 

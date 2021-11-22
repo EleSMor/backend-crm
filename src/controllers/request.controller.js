@@ -19,6 +19,17 @@ const requestGetOne = async (req, res, next) => {
     }
 }
 
+const requestLastReference = async (req, res, next) => {
+    try {
+        const lastReference = await Request.find().sort({ requestReference: - 1 });
+        let reference = 0
+        if (lastReference.length !== 0) reference = lastReference[0].requestReference
+        return res.status(200).json(reference);
+    } catch (err) {
+        return next(err);
+    }
+}
+
 const requestGetByConsultant = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -39,7 +50,9 @@ const requestCreate = async (req, res, next) => {
             requestComment,
             requestAdType,
             requestBuildingType,
-            requestZone,
+            requestReference,
+            residential,
+            patrimonial,
             salePriceMax,
             salePriceMin,
             rentPriceMax,
@@ -54,25 +67,42 @@ const requestCreate = async (req, res, next) => {
             bathroomsMin
         } = req.body;
 
+        let zone = [];
+        if (residential.length !== 0) zone = residential;
+        if (patrimonial.length !== 0) zone = patrimonial;
+
         const newRequest = new Request({
             requestContact,
             requestConsultant,
             requestComment,
             requestAdType,
             requestBuildingType,
-            requestZone,
-            salePriceMax,
-            salePriceMin,
-            rentPriceMax,
-            rentPriceMin,
-            buildSurfaceMax,
-            buildSurfaceMin,
-            plotSurfaceMax,
-            plotSurfaceMin,
-            bedroomsMax,
-            bedroomsMin,
-            bathroomsMax,
-            bathroomsMin
+            requestReference,
+            requestZone: zone,
+            requestSalePrice: {
+                salePriceMax,
+                salePriceMin
+            },
+            requestRentPrice: {
+                rentPriceMax,
+                rentPriceMin
+            },
+            requestBuildSurface: {
+                buildSurfaceMax,
+                buildSurfaceMin
+            },
+            requestPlotSurface: {
+                plotSurfaceMax,
+                plotSurfaceMin
+            },
+            requestBedrooms: {
+                bedroomsMax,
+                bedroomsMin
+            },
+            requestBathrooms: {
+                bathroomsMax,
+                bathroomsMin
+            }
         })
 
         const requestCreated = await newRequest.save();
@@ -101,6 +131,7 @@ const requestDelete = async (req, res, next) => {
 module.exports = {
     requestsGetAll,
     requestGetOne,
+    requestLastReference,
     requestGetByConsultant,
     requestCreate,
     requestDelete,

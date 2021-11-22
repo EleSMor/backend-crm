@@ -22,37 +22,34 @@ const consultantGetOne = async (req, res, next) => {
 
 const consultantCreate = async (req, res, next) => {
 
-    console.log(req.body)
-    console.log(req.files);
-
-    try {   
+    try {
         const {
-            email,
-            password,
+            consultantEmail,
+            consultantPassword,
             fullName,
-            mobileNumber,
-            phoneNumber,
+            consultantMobileNumber,
+            consultantPhoneNumber,
             position,
-            occupation,
+            profession,
             office1,
             office2,
             comments
         } = req.body;
 
-        // let avatarURL = avatar[0];
-        // const companyLogoImage = req.file ? req.file.location : '';
+        const avatar = req.files.avatar[0] ? req.files.avatar[0].location : "";
+        const companyUnitLogo = req.files.companyUnitLogo[0] ? req.files.companyUnitLogo[0].location : '';
 
         const newConsultant = new Consultant({
-            consultantEmail: email,
-            consultantPassword: password,
+            consultantEmail,
+            consultantPassword,
             consultantCreationDate: getDate(),
             fullName,
-            // avatar: avatarURL,
-            // companyUnitLogo: companyLogoImage,
-            consultantMobileNumber: mobileNumber,
-            consultantPhoneNumber: phoneNumber,
+            avatar,
+            companyUnitLogo,
+            consultantMobileNumber,
+            consultantPhoneNumber,
             position,
-            occupation,
+            profession,
             office1,
             office2,
             consultantComments: comments

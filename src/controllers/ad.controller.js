@@ -112,7 +112,7 @@ const adCreate = async (req, res, next) => {
         };
 
         let zone = [];
-        if (residential) { zone = residential };
+        if (residential) zone = residential;
         if (patrimonial) zone = patrimonial;
 
         if (gvOperationClose.length === 0) gvOperationClose.push = ''; 

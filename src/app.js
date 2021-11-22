@@ -2,7 +2,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 const path = require('path');
 const express = require('express');
-const fileUpload = require('express-fileupload');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const passport = require('passport');
@@ -14,9 +13,10 @@ const app = express();
 // Routes
 const indexRoutes = require('./routes/index.routes');
 const authRoutes = require('./routes/auth.routes');
+const adRoutes = require('./routes/ad.routes');
+const requestRoutes = require('./routes/request.routes');
 const contactRoutes = require('./routes/contact.routes');
 const consultantRoutes = require('./routes/consultant.routes');
-const adRoutes = require('./routes/ad.routes');
 const zoneRoutes = require('./routes/zone.routes');
 const imagesRoutes = require('./routes/images.routes');
 
@@ -53,32 +53,33 @@ app.use(passport.session());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// // User authentication validator
-// app.use((req, res, next) => {
-//     req.isAdmin = false;
+// Consultant authentication validator
+app.use((req, res, next) => {
+    req.isAdmin = false;
 
-//     if(!req.isAuthenticated()) {
-//         return next();
-//     } else {
-//         req.isUser = true;
-//     }
+    if(!req.isAuthenticated()) {
+        return next();
+    } else {
+        req.isUser = true;
+    }
 
-//     if (req.user && req.user.role === 'admin') {
-//         req.isAdmin = true;
-//     }
+    if (req.user && req.user.role === 'Admin') {
+        req.isAdmin = true;
+    }
 
-//     return next();
-// });
+    return next();
+});
 
-app.use(fileUpload({
-    tempFileDir: '/temp'
-}))
+// app.use(fileUpload({
+//     tempFileDir: '/temp'
+// }))
 
 app.use('/', indexRoutes);
 app.use('/auth', authRoutes);
 app.use('/contacts', contactRoutes);
 app.use('/consultants', consultantRoutes);
 app.use('/ads', adRoutes);
+app.use('/requests', requestRoutes);
 app.use('/zones', zoneRoutes);
 app.use('/images', imagesRoutes);
 

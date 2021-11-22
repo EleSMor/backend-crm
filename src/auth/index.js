@@ -1,15 +1,16 @@
 const passport = require('passport');
-// const User = require('../models/User.model');
+const Consultant = require('../models/consultant.model');
 const registerStrategy = require('./registerStrategy');
 const loginStrategy = require('./loginStrategy');
 
 passport.serializeUser((user, done) => {
+    console.log('user en serialize -> ', user)
     return done(null, user._id);
 });
 
 passport.deserializeUser(async (userId, done) => {
     try {
-        const existingUser = await User.findById(userId);
+        const existingUser = await Consultant.findById(userId);
 
         return done(null, existingUser);
     } catch (error) {

@@ -4,7 +4,6 @@ const { getDate } = require('./utils');
 const contactGetAll = async (req, res, next) => {
     try {
         const contacts = await Contact.find();
-        console.log(contacts);
         return res.status(200).json(contacts);
     } catch (err) {
         return next(err);
@@ -42,7 +41,6 @@ const contactGetOwners = async (req, res, next) => {
 }
 
 const contactCreate = async (req, res, next) => {
-    console.log(req.body);
     try {
         const {
             fullName,
@@ -61,9 +59,6 @@ const contactCreate = async (req, res, next) => {
             communications,
         } = req.body;
 
-        let lastReference = await Contact.find().sort({ createdAt: -1 }).limit(1);
-        console.log(lastReference);
-
         const contactDirection = {
             address: {
                 street: street,
@@ -77,13 +72,13 @@ const contactCreate = async (req, res, next) => {
 
         const newContact = new Contact({
             contactCreationDate: getDate(),
-            fullName: fullName,
-            tag: tag,
-            email: email,
+            fullName,
+            tag,
+            email,
             contactMobileNumber: mobileNumber,
             contactPhoneNumber: phoneNumber,
-            company: company,
-            contactDirection: contactDirection,
+            company,
+            contactDirection,
             contactComments: comments,
             notReceiveCommunications: communications,
         })

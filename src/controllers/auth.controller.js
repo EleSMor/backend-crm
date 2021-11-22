@@ -6,15 +6,21 @@ const registerGet = (req, res, next) => {
 
 const registerPost = (req, res, next) => {
 
-    const { password, email, fullName } = req.body;
-    console.log('Register ->', req.body)
+    const {
+        consultantEmail,
+        consultantPassword,
+        fullName,
+        consultantMobileNumber,
+        position,
+    } = req.body;
 
-    if ( !password || !email || !fullName ) {
-        const error = new Error('Complete fields');
+    if (!consultantEmail || !consultantPassword || !fullName || !consultantMobileNumber || !position) {
+        const error = new Error('Completa los campos obligatorios');
         return res.json(error);
     }
 
     const done = (error, user) => {
+        console.log('user en done ->', user)
 
         if (error) {
             return next(error);
@@ -56,21 +62,21 @@ const logoutPost = (req, res, next) => {
 
         req.session.destroy(() => {
             res.clearCookie('connect.sid');
-            return res.json('Logged out');
+            return res.json('Desconectado');
         });
     } else {
-        return res.status(200).json("No user logged in")
+        return res.status(200).json("No hay usuario conectado")
     };
 };
 
 const checkSession = async (req, res, next) => {
     if (req.user) {
-        let userRegister = req.user;
-        userRegister.password = null;
+        let user = req.user;
+        user.password = null;
 
-        return res.status(200).json(userRegister);
+        return res.status(200).json(user);
     } else {
-        return res.status(401).json({message: 'No user found'});
+        return res.status(401).json({ message: 'No user found' });
     };
 }
 module.exports = {

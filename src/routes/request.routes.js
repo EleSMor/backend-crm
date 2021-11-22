@@ -3,6 +3,7 @@ const { isAdmin } = require('../middlewares/auth.middleware');
 const {
     requestsGetAll,
     requestGetOne,
+    requestLastReference,
     requestGetByConsultant,
     requestCreate,
     requestDelete
@@ -11,8 +12,9 @@ const {
 const router = express.Router();
 
 router.get('/', requestsGetAll);
-router.get('/:id', requestGetOne);
+router.get('/lastReference', requestLastReference);
 router.get('/consultant/:id', requestGetByConsultant);
+router.get('/:id', requestGetOne);
 
 router.post('/create', requestCreate);
 

@@ -8,7 +8,7 @@ const isAuth = (req, res, next) => {
 
 const isAdmin = (req, res, next) => {
     if (req.isAuthenticated()) {
-        if (req.user.role === "admin") {
+        if (req.user.role === "Admin") {
             return next();
         } else {
             return res.redirect('/');
