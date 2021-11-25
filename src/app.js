@@ -42,7 +42,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 1 * 24 * 3600 * 1000,
+        maxAge: 14 * 3600 * 1000,
     },
     store: MongoStore.create({ mongoUrl: db.DB_URL }),
 }));
@@ -69,10 +69,6 @@ app.use((req, res, next) => {
 
     return next();
 });
-
-// app.use(fileUpload({
-//     tempFileDir: '/temp'
-// }))
 
 app.use('/', indexRoutes);
 app.use('/auth', authRoutes);

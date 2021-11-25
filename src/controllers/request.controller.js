@@ -1,8 +1,13 @@
 const Request = require('./../models/request.model');
+const { getDate } = require('./utils');
 
 const requestsGetAll = async (req, res, next) => {
     try {
-        const requests = await Request.find();
+        const requests = await Request
+            .find()
+            .populate({ path:'requestContact', select:'fullName company'})
+            .populate({ path:'requestConsultant', select:'fullName'})
+        console.log(requests)
         return res.status(200).json(requests);
     } catch (err) {
         return next(err);
@@ -72,6 +77,7 @@ const requestCreate = async (req, res, next) => {
         if (patrimonial.length !== 0) zone = patrimonial;
 
         const newRequest = new Request({
+            creationDate: getDate(),
             requestContact,
             requestConsultant,
             requestComment,

@@ -3,14 +3,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const adSchema = new Schema(
-    {
+    {   
         adReference: { type: String, required: true },
         adStatus: { type: String, enum: ['En preparación', 'Activo', 'Inactivo'], default: 'En preparación', required: true },
         title: { type: String, required: true },
         showOnWeb: { type: Boolean, required: true, default: true },
         featuredOnMain: { type: Boolean, required: true },
         adDirection: {
-            adress: {
+            address: {
                 street: { type: String, required: true },
                 directionNumber: { type: Number, required: true },
                 directionFloor: { type: String, required: true }
@@ -21,8 +21,8 @@ const adSchema = new Schema(
         },
         adType: { type: [String], enum: ['Alquiler', 'Venta'], required: true },
         gvOperationClose: { type: [String], enum: ['Vendido', 'Alquilado', ''], default: '' },
-        owner: [{ type: mongoose.Types.ObjectId, ref: 'contacts' }],
-        consultant: [{ type: mongoose.Types.ObjectId, ref: 'consultants' }],
+        owner: { type: mongoose.Types.ObjectId, ref: 'contacts' },
+        consultant: { type: mongoose.Types.ObjectId, ref: 'consultants' },
         adBuildingType: { type: [String], enum: ['Casa', 'Piso', 'Parcela', 'Ático', 'Oficina', 'Edificio', 'Local', 'Campo Rústico', 'Activos Singulares', 'Costa'], required: true },
         zone: [{ type: mongoose.Types.ObjectId, ref: 'zones' }],
         department: { type: String, enum: ['Patrimonio', 'Residencial'], required: true },

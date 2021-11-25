@@ -2,7 +2,11 @@ const Ad = require('./../models/ad.model');
 
 const adGetAll = async (req, res, next) => {
     try {
-        const ads = await Ad.find();
+        const ads = await Ad
+            .find()
+            .populate({ path: 'owner', select: 'fullName' })
+            .populate({ path: 'consultant', select: 'fullName' })
+            console.log(ads);
         return res.status(200).json(ads);
     } catch (err) {
         return next(err);
@@ -105,7 +109,7 @@ const adCreate = async (req, res, next) => {
         } = req.body;
 
         const adDirection = {
-            adress: { street, directionNumber, directionFloor },
+            address: { street, directionNumber, directionFloor },
             postalCode,
             city,
             country
@@ -115,7 +119,7 @@ const adCreate = async (req, res, next) => {
         if (residential) zone = residential;
         if (patrimonial) zone = patrimonial;
 
-        if (gvOperationClose.length === 0) gvOperationClose.push = ''; 
+        if (gvOperationClose.length === 0) gvOperationClose.push = '';
 
         const surfacesBox = {
             surfaceFloor,

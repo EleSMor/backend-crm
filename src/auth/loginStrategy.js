@@ -15,8 +15,10 @@ const loginStrategy = new LocalStrategy(
     async (req, identity, password, done) => {
         try {
 
+            console.log(identity);
+            console.log(password);
             // User can login with consultantEmail or consultantMobileNumber
-            let existingConsultant = await Consultant.findOne({ identity });
+            let existingConsultant = await Consultant.findOne({ $or: [{ consultantEmail: identity }, { consultantMobileNumber: identity }] });
 
             if (!existingConsultant) {
                 const error = new Error("Este usuario no existe");
@@ -24,6 +26,7 @@ const loginStrategy = new LocalStrategy(
                 return done(error, null);
             }
 
+            console.log(existingConsultant.consultantPassword);
             const isValidPassword = await bcrypt.compare(password, existingConsultant.consultantPassword);
 
             if (!isValidPassword) {

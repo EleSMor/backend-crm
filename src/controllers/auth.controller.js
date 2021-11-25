@@ -42,7 +42,7 @@ const loginGet = (req, res, next) => {
 };
 
 const loginPost = (req, res, next) => {
-    // console.log('Login ->', req.body)
+    console.log('Login ->', req.body)
 
     const done = (error, user) => {
         if (error) return next(error);

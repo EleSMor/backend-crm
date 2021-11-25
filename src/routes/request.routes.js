@@ -13,8 +13,8 @@ const router = express.Router();
 
 router.get('/', requestsGetAll);
 router.get('/lastReference', requestLastReference);
-router.get('/consultant/:id', requestGetByConsultant);
 router.get('/:id', requestGetOne);
+router.get('/consultant/:id', requestGetByConsultant);
 
 router.post('/create', requestCreate);
 
