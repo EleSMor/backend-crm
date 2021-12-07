@@ -1,6 +1,6 @@
 const express = require('express');
 const { isAdmin } = require('../middlewares/auth.middleware');
-const { upload } = require('../libs/multer');
+const { upload } = require('../middlewares/file.middleware');
 const { consultantGetAll, consultantGetOne, consultantCreate, consultantDelete } = require('../controllers/consultant.controller');
 const { registerPost } = require('../controllers/auth.controller');
 

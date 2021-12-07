@@ -23,7 +23,7 @@ const contactSchema = new Schema(
         },
         contactComments: { type: String },
         notReceiveCommunications: { type: Boolean },
-        requests: { type: mongoose.Types.ObjectId },
+        requests: { type: mongoose.Types.ObjectId, ref: 'requests', default: [] },
     },
     {
         timestamp: true

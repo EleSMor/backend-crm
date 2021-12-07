@@ -4,7 +4,8 @@ const {
     requestsGetAll,
     requestGetOne,
     requestLastReference,
-    requestGetByConsultant,
+    requestGetAdsMatched,
+    requestGetByContact,
     requestCreate,
     requestDelete
 } = require('../controllers/request.controller');
@@ -14,7 +15,8 @@ const router = express.Router();
 router.get('/', requestsGetAll);
 router.get('/lastReference', requestLastReference);
 router.get('/:id', requestGetOne);
-router.get('/consultant/:id', requestGetByConsultant);
+router.get('/matching/:id', requestGetAdsMatched)
+router.get('/contact/:id', requestGetByContact);
 
 router.post('/create', requestCreate);
 

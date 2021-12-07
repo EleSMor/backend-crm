@@ -4,7 +4,8 @@ const { getDate } = require('./utils');
 const contactGetAll = async (req, res, next) => {
     try {
         const contacts = await Contact.find();
-        return res.status(200).json(contacts);
+
+        return res.status(200).json(contacts)
     } catch (err) {
         return next(err);
     }

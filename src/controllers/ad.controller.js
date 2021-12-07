@@ -1,4 +1,5 @@
 const Ad = require('./../models/ad.model');
+const Request = require('./../models/request.model');
 
 const adGetAll = async (req, res, next) => {
     try {
@@ -6,12 +7,68 @@ const adGetAll = async (req, res, next) => {
             .find()
             .populate({ path: 'owner', select: 'fullName' })
             .populate({ path: 'consultant', select: 'fullName' })
-            console.log(ads);
         return res.status(200).json(ads);
     } catch (err) {
         return next(err);
     }
 }
+
+const adGetMatchedRequests = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const ad = await Ad.findById({ _id: id })
+        const requests = await Request.find({
+            requestAdType: { $all: ad.adType },
+        })
+            .and({
+                requestBuildingType: { $all: ad.adBuildingType },
+            })
+            .and({
+                requestZone: { $all: ad.zone },
+            })
+            .and({
+                requestSalePrice: {
+                    $gte: { salePriceMax: ad.price.sale.saleValue },
+                    $lte: { salePriceMin: ad.price.sale.saleValue }
+                },
+            })
+            .and({
+                requestRentPrice: {
+                    $gte: { rentPriceMax: ad.price.rent.rentValue },
+                    $lte: { rentPriceMin: ad.price.rent.rentValue }
+                },
+            })
+            .and({
+                requestBuildSurface: {
+                    $gte: { buildSurfaceMax: ad.buildSurface },
+                    $lte: { buildSurfaceMin: ad.buildSurface }
+                },
+            })
+            .and({
+                requestPlotSurface: {
+                    $gte: { plotSurfaceMax: ad.plotSurface },
+                    $lte: { plotSurfaceMin: ad.plotSurface }
+                },
+            })
+            .and({
+                requestBedrooms: {
+                    $gte: { bedroomsMax: ad.quality.bedrooms },
+                    $lte: { bedroomsMin: ad.quality.bedrooms }
+                },
+            })
+            .and({
+                requestBathrooms: {
+                    $gte: { bathroomsMax: ad.quality.bathrooms },
+                    $lte: { bathroomsMin: ad.quality.bathrooms }
+                },
+            })
+
+        return res.status(200).json(requests);
+    } catch (err) {
+        return next(err);
+    }
+}
+
 
 const adGetOne = async (req, res, next) => {
     try {
@@ -246,5 +303,6 @@ module.exports = {
     adGetAll,
     adGetOne,
     adCreate,
-    adDelete
+    adDelete,
+    adGetMatchedRequests
 }

@@ -1,12 +1,14 @@
 const Request = require('./../models/request.model');
+const Ad = require('./../models/ad.model');
+
 const { getDate } = require('./utils');
 
 const requestsGetAll = async (req, res, next) => {
     try {
         const requests = await Request
             .find()
-            .populate({ path:'requestContact', select:'fullName company'})
-            .populate({ path:'requestConsultant', select:'fullName'})
+            .populate({ path: 'requestContact', select: 'fullName company' })
+            .populate({ path: 'requestConsultant', select: 'fullName' })
         console.log(requests)
         return res.status(200).json(requests);
     } catch (err) {
@@ -17,6 +19,7 @@ const requestsGetAll = async (req, res, next) => {
 const requestGetOne = async (req, res, next) => {
     try {
         const { id } = req.params;
+
         const request = await Request.findById(id);
         return res.status(200).json(request);
     } catch (err) {
@@ -35,11 +38,61 @@ const requestLastReference = async (req, res, next) => {
     }
 }
 
-const requestGetByConsultant = async (req, res, next) => {
+const requestGetByContact = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const request = await Request.find({ consultant: { id } });
+        const request = await Request.find({ requestContact: id });
+
         return res.status(200).json(request);
+    } catch (err) {
+        return next(err);
+    }
+}
+
+const requestGetAdsMatched = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const request = await Request.findById({ _id: id })
+        const ad = await Ad.find({
+            adType: { $all: request.requestAdType },
+        })
+            .and({
+                adBuildingType: { $all: request.requestBuildingType },
+            })
+            .and({
+                zone: { $all: request.requestZone },
+            })
+            .and({
+                sale: {
+                    $lte: { saleValue: request.requestSalePrice.salePriceMax },
+                    $gte: { saleValue: request.requestSalePrice.salePriceMin },
+                },
+            })
+            .and({
+                rent: {
+                    $lte: { rentValue: request.requestRentPrice.rentPriceMax },
+                    $gte: { rentValue: request.requestRentPrice.rentPriceMin },
+                },
+            })
+            .and({
+                $lte: { buildSurface: request.requestBuildSurface.buildSurfaceMax },
+                $gte: { buildSurface: request.requestBuildSurface.buildSurfaceMin },
+            })
+            .and({
+                $lte: { plotSurface: request.requestPlotSurface.plotSurfaceMax },
+                $gte: { plotSurface: request.requestPlotSurface.plotSurfaceMin },
+            })
+            .and({
+                $lte: { bedrooms: request.requestBedrooms.bedroomsMax },
+                $gte: { bedrooms: request.requestBedrooms.bedroomsMin },
+            })
+            .and({
+                $lte: { bathrooms: request.requestBathrooms.bathroomsMax },
+                $gte: { bathrooms: request.requestBathrooms.bathroomsMin },
+
+            })
+
+        return res.status(200).json(ad);
     } catch (err) {
         return next(err);
     }
@@ -138,7 +191,8 @@ module.exports = {
     requestsGetAll,
     requestGetOne,
     requestLastReference,
-    requestGetByConsultant,
+    requestGetByContact,
+    requestGetAdsMatched,
     requestCreate,
     requestDelete,
 }
