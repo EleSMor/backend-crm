@@ -18,7 +18,6 @@ const requestRoutes = require('./routes/request.routes');
 const contactRoutes = require('./routes/contact.routes');
 const consultantRoutes = require('./routes/consultant.routes');
 const zoneRoutes = require('./routes/zone.routes');
-const imagesRoutes = require('./routes/images.routes');
 
 db.connect();
 
@@ -50,8 +49,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Consultant authentication validator
 app.use((req, res, next) => {
@@ -72,12 +71,11 @@ app.use((req, res, next) => {
 
 app.use('/', indexRoutes);
 app.use('/auth', authRoutes);
-app.use('/contacts', contactRoutes);
-app.use('/consultants', consultantRoutes);
 app.use('/ads', adRoutes);
 app.use('/requests', requestRoutes);
+app.use('/contacts', contactRoutes);
+app.use('/consultants', consultantRoutes);
 app.use('/zones', zoneRoutes);
-app.use('/images', imagesRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server listening on http://localhost:${PORT}`)

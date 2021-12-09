@@ -28,6 +28,7 @@ const upload = multer({
         bucket: BUCKET_NAME,
         ACL: 'public-read',
         metadata: (req, file, cb) => {
+            console.log("archivo:", file);
             cb(null, {
                 fieldname: file.fieldname
             })

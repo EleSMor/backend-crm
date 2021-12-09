@@ -98,6 +98,63 @@ const requestGetAdsMatched = async (req, res, next) => {
     }
 }
 
+const requestGetNewMatched = async (req, res, next) => {
+    try {
+        const {
+            requestBuildingType,
+            requestZone,
+            salePriceMin,
+            salePriceMax,
+            rentPriceMin,
+            rentPriceMax,
+            buildSurfaceMin,
+            buildSurfaceMax,
+            plotSurfaceMin,
+            plotSurfaceMax
+        } = req.body;
+
+        const ads = await Ad.find({
+            adBuildingType: { $all: requestBuildingType },
+        })
+            .and({
+                zone: { $all: requestZone },
+            })
+            .and({
+                sale: {
+                    $lte: { saleValue: salePriceMax },
+                    $gte: { saleValue: salePriceMin },
+                },
+            })
+            .and({
+                rent: {
+                    $lte: { rentValue: rentPriceMax },
+                    $gte: { rentValue: rentPriceMin },
+                },
+            })
+            .and({
+                $lte: { buildSurface: buildSurfaceMax },
+                $gte: { buildSurface: buildSurfaceMin },
+            })
+            .and({
+                $lte: { plotSurface: plotSurfaceMax },
+                $gte: { plotSurface: plotSurfaceMin },
+            })
+        // .and({
+        //     $lte: { bedrooms: request.requestBedrooms.bedroomsMax },
+        //     $gte: { bedrooms: request.requestBedrooms.bedroomsMin },
+        // })
+        // .and({
+        //     $lte: { bathrooms: request.requestBathrooms.bathroomsMax },
+        //     $gte: { bathrooms: request.requestBathrooms.bathroomsMin },
+
+        // })
+
+        return res.status(200).json(ads);
+    } catch (err) {
+        return next(err);
+    }
+}
+
 const requestCreate = async (req, res, next) => {
     console.log(req.body);
 
@@ -193,6 +250,7 @@ module.exports = {
     requestLastReference,
     requestGetByContact,
     requestGetAdsMatched,
+    requestGetNewMatched,
     requestCreate,
     requestDelete,
 }

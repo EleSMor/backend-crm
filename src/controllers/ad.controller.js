@@ -61,8 +61,8 @@ const adGetMatchedRequests = async (req, res, next) => {
                     $gte: { bathroomsMax: ad.quality.bathrooms },
                     $lte: { bathroomsMin: ad.quality.bathrooms }
                 },
-            })
-
+            }).populate({ path: 'requestContact', select: 'fullName company email consultantComments' })
+        console.log(requests);
         return res.status(200).json(requests);
     } catch (err) {
         return next(err);
@@ -81,7 +81,6 @@ const adGetOne = async (req, res, next) => {
 };
 
 const adCreate = async (req, res, next) => {
-    console.log(req.body);
     try {
         const {
             title,
@@ -159,11 +158,14 @@ const adCreate = async (req, res, next) => {
             accesControl,
             web,
             emailPDF,
-            distribution,
-            main,
-            blueprint,
-            others
+            distribution
         } = req.body;
+
+        console.log(req.body);
+
+        // const main = req.files.main ? req.files.main[0].location : "";
+        // const blueprint = req.files.blueprint ? req.files.blueprint[0].location : '';
+        // const others = req.files.others ? req.files.others.map(file => file.location) : '';
 
         const adDirection = {
             address: { street, directionNumber, directionFloor },
@@ -175,8 +177,6 @@ const adCreate = async (req, res, next) => {
         let zone = [];
         if (residential) zone = residential;
         if (patrimonial) zone = patrimonial;
-
-        if (gvOperationClose.length === 0) gvOperationClose.push = '';
 
         const surfacesBox = {
             surfaceFloor,
@@ -239,9 +239,9 @@ const adCreate = async (req, res, next) => {
         }
 
         const images = {
-            main,
-            blueprint,
-            others,
+            main: "",
+            blueprint: "",
+            others: "",
         }
 
         const newAd = new Ad({

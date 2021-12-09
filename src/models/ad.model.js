@@ -5,15 +5,15 @@ const Schema = mongoose.Schema;
 const adSchema = new Schema(
     {   
         adReference: { type: String, required: true },
-        adStatus: { type: String, enum: ['En preparación', 'Activo', 'Inactivo'], default: 'En preparación', required: true },
+        adStatus: { type: String, enum: ['En preparación', 'Activo', 'Inactivo'], default: 'En preparación' },
         title: { type: String, required: true },
-        showOnWeb: { type: Boolean, required: true, default: true },
-        featuredOnMain: { type: Boolean, required: true },
+        showOnWeb: { type: Boolean, default: true },
+        featuredOnMain: { type: Boolean, },
         adDirection: {
             address: {
                 street: { type: String, required: true },
                 directionNumber: { type: Number, required: true },
-                directionFloor: { type: String, required: true }
+                directionFloor: { type: String }
             },
             postalCode: { type: Number, required: true },
             city: { type: String, required: true },
@@ -26,7 +26,7 @@ const adSchema = new Schema(
         adBuildingType: { type: [String], enum: ['Casa', 'Piso', 'Parcela', 'Ático', 'Oficina', 'Edificio', 'Local', 'Campo Rústico', 'Activos Singulares', 'Costa'], required: true },
         zone: [{ type: mongoose.Types.ObjectId, ref: 'zones' }],
         department: { type: String, enum: ['Patrimonio', 'Residencial'], required: true },
-        webSubtitle: { type: String, required: true },
+        webSubtitle: { type: String },
         buildSurface: { type: Number },
         plotSurface: { type: Number },
         floor: { type: String },
@@ -105,7 +105,7 @@ const adSchema = new Schema(
         },
         images: {
             main: { type: String },
-            blueprint: { type: Array },
+            blueprint: { type: String },
             others: { type: Array },
             media: { type: String },
         },

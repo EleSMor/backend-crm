@@ -31,10 +31,29 @@ const contactFindByEmail = async (req, res, next) => {
     }
 }
 
+const contactFindByContactMobileNumber = async (req, res, next) => {
+    try {
+        const { contactMobileNumber } = req.params;
+        const contact = await Contact.find({ contactMobileNumber: contactMobileNumber });
+        return res.status(200).json(contact);
+    } catch (err) {
+        return next(err);
+    }
+}
+
+const contactFindByFullName = async (req, res, next) => {
+    try {
+        const { fullName } = req.params;
+        const contact = await Contact.find({ fullName: fullName });
+        return res.status(200).json(contact);
+    } catch (err) {
+        return next(err);
+    }
+}
+
 const contactGetOwners = async (req, res, next) => {
     try {
         const owners = await Contact.find({ tag: "Propietario" });
-        console.log(owners);
         return res.status(200).json(owners);
     } catch (err) {
         return next(err);
@@ -111,6 +130,8 @@ const contactDelete = async (req, res, next) => {
 module.exports = {
     contactGetAll,
     contactGetOne,
+    contactFindByFullName,
+    contactFindByContactMobileNumber,
     contactFindByEmail,
     contactGetOwners,
     contactCreate,

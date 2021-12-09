@@ -5,6 +5,7 @@ const {
     requestGetOne,
     requestLastReference,
     requestGetAdsMatched,
+    requestGetNewMatched,
     requestGetByContact,
     requestCreate,
     requestDelete
@@ -14,9 +15,10 @@ const router = express.Router();
 
 router.get('/', requestsGetAll);
 router.get('/lastReference', requestLastReference);
-router.get('/:id', requestGetOne);
-router.get('/matching/:id', requestGetAdsMatched)
+router.get('/matching/new', requestGetNewMatched);
+router.get('/matching/:id', requestGetAdsMatched);
 router.get('/contact/:id', requestGetByContact);
+router.get('/:id', requestGetOne);
 
 router.post('/create', requestCreate);
 
