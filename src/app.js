@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-    origin: ['http://localhost:3000'],
+    origin: ['http://157.230.97.167', 'http://localhost:3000'],
     credentials: true,
     optionsSuccessStatus: 200,
 }));
@@ -56,7 +56,7 @@ app.use(express.json());
 app.use((req, res, next) => {
     req.isAdmin = false;
 
-    if(!req.isAuthenticated()) {
+    if (!req.isAuthenticated()) {
         return next();
     } else {
         req.isUser = true;

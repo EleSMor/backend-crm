@@ -6,6 +6,7 @@ const {
     adGetOne,
     adGetMatchedRequests,
     adCreate,
+    adUpdate,
     adDelete,
 } = require('../controllers/ad.controller');
 
@@ -16,6 +17,7 @@ router.get('/matching/:id', adGetMatchedRequests);
 router.get('/:id', adGetOne);
 
 router.post('/create', adCreate);
+router.put('/edit', adUpdate);
 router.delete('/delete/:id', adDelete);
 
 module.exports = router;

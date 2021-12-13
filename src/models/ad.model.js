@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const adSchema = new Schema(
-    {   
+    {
         adReference: { type: String, required: true },
         adStatus: { type: String, enum: ['En preparación', 'Activo', 'Inactivo'], default: 'En preparación' },
         title: { type: String, required: true },
@@ -15,7 +15,7 @@ const adSchema = new Schema(
                 directionNumber: { type: Number, required: true },
                 directionFloor: { type: String }
             },
-            postalCode: { type: Number, required: true },
+            postalCode: { type: String, required: true },
             city: { type: String, required: true },
             country: { type: String, required: true }
         },
@@ -95,7 +95,7 @@ const adSchema = new Schema(
                 qualityBathrooms: { type: Boolean },
                 freeHeight: { type: Boolean },
                 smokeOutlet: { type: Boolean },
-                accesControl: { type: Boolean },
+                accessControl: { type: Boolean },
             },
         },
         description: {
@@ -109,7 +109,6 @@ const adSchema = new Schema(
             others: { type: Array },
             media: { type: String },
         },
-        requests: { type: mongoose.Types.ObjectId, ref: 'requests' }
     },
     {
         timestamps: true

@@ -62,7 +62,6 @@ const adGetMatchedRequests = async (req, res, next) => {
                     $lte: { bathroomsMin: ad.quality.bathrooms }
                 },
             }).populate({ path: 'requestContact', select: 'fullName company email consultantComments' })
-        console.log(requests);
         return res.status(200).json(requests);
     } catch (err) {
         return next(err);
@@ -74,6 +73,7 @@ const adGetOne = async (req, res, next) => {
     try {
         const { id } = req.params;
         const ad = await Ad.findById(id);
+        console.log(ad);
         return res.status(200).json(ad);
     } catch (err) {
         return next(err);
@@ -98,8 +98,7 @@ const adCreate = async (req, res, next) => {
             owner,
             consultant,
             adBuildingType,
-            residential,
-            patrimonial,
+            zone,
             department,
             webSubtitle,
             buildSurface,
@@ -161,8 +160,6 @@ const adCreate = async (req, res, next) => {
             distribution
         } = req.body;
 
-        console.log(req.body);
-
         // const main = req.files.main ? req.files.main[0].location : "";
         // const blueprint = req.files.blueprint ? req.files.blueprint[0].location : '';
         // const others = req.files.others ? req.files.others.map(file => file.location) : '';
@@ -173,10 +170,6 @@ const adCreate = async (req, res, next) => {
             city,
             country
         };
-
-        let zone = [];
-        if (residential) zone = residential;
-        if (patrimonial) zone = patrimonial;
 
         const surfacesBox = {
             surfaceFloor,
@@ -284,6 +277,197 @@ const adCreate = async (req, res, next) => {
     }
 }
 
+const adUpdate = async (req, res, next) => {
+    try {
+        const {
+            id,
+            title,
+            adReference,
+            showOnWeb,
+            featuredOnMain,
+            street,
+            directionNumber,
+            directionFloor,
+            postalCode,
+            city,
+            country,
+            adType,
+            gvOperationClose,
+            owner,
+            consultant,
+            adBuildingType,
+            zone,
+            department,
+            webSubtitle,
+            buildSurface,
+            plotSurface,
+            floor,
+            disponibility,
+            surfaceFloor,
+            surfaceUse,
+            metersAvailables,
+            meterPrice,
+            surfaceDisponibility,
+            saleValue,
+            saleShowOnWeb,
+            rentValue,
+            rentShowOnWeb,
+            monthlyRent,
+            expenses,
+            expensesIncluded,
+            expensesValue,
+            expensesShowOnWeb,
+            ibiValue,
+            ibiShowOnWeb,
+            buildingYear,
+            bedrooms,
+            bathrooms,
+            parking,
+            indoorPool,
+            outdoorPool,
+            jobPositions,
+            subway,
+            bus,
+            lift,
+            dumbwaiter,
+            liftTruck,
+            airConditioning,
+            centralHeating,
+            subfloorHeating,
+            indoorAlarm,
+            outdoorAlarm,
+            fullHoursSecurity,
+            gunRack,
+            strongBox,
+            well,
+            homeAutomation,
+            centralVacuum,
+            padelCourt,
+            tennisCourt,
+            terrace,
+            storage,
+            swimmingPool,
+            garage,
+            falseCeiling,
+            qualityBathrooms,
+            freeHeight,
+            smokeOutlet,
+            accesControl,
+            web,
+            emailPDF,
+            distribution
+        } = req.body;
+
+        const fieldsToUpdate = {}
+
+        // const main = req.files.main ? req.files.main[0].location : "";
+        // const blueprint = req.files.blueprint ? req.files.blueprint[0].location : '';
+        // const others = req.files.others ? req.files.others.map(file => file.location) : '';
+
+        fieldsToUpdate.title = title
+        fieldsToUpdate.adReference = adReference
+        fieldsToUpdate.showOnWeb = showOnWeb
+        fieldsToUpdate.featuredOnMain = featuredOnMain
+        fieldsToUpdate.adType = adType
+        fieldsToUpdate.gvOperationClose = gvOperationClose
+        fieldsToUpdate.owner = owner
+        fieldsToUpdate.consultant = consultant
+        fieldsToUpdate.adBuildingType = adBuildingType
+        fieldsToUpdate.zone = zone
+        fieldsToUpdate.department = department
+        fieldsToUpdate.webSubtitle = webSubtitle
+        fieldsToUpdate.buildSurface = buildSurface
+        fieldsToUpdate.plotSurface = plotSurface
+        fieldsToUpdate.floor = floor
+        fieldsToUpdate.disponibility = disponibility
+        fieldsToUpdate.monthlyRent = monthlyRent
+        fieldsToUpdate.expenses = expenses
+        fieldsToUpdate.expensesIncluded = expensesIncluded
+        fieldsToUpdate.buildingYear = buildingYear
+
+        fieldsToUpdate.adDirection = {
+            address: { street, directionNumber, directionFloor },
+            postalCode,
+            city,
+            country
+        };
+
+        fieldsToUpdate.surfacesBox = {
+            surfaceFloor,
+            surfaceUse,
+            metersAvailables,
+            meterPrice,
+            surfaceDisponibility,
+        }
+
+        fieldsToUpdate.price = {
+            sale: { saleValue, saleShowOnWeb },
+            rent: { rentValue, rentShowOnWeb }
+        }
+
+        fieldsToUpdate.communityExpenses = { expensesValue, expensesShowOnWeb }
+        fieldsToUpdate.ibi = { ibiValue, ibiShowOnWeb }
+
+        fieldsToUpdate.quality = {
+            bedrooms,
+            bathrooms,
+            parking,
+            indoorPool,
+            outdoorPool,
+            jobPositions,
+            subway,
+            bus,
+            others: {
+                lift,
+                dumbwaiter,
+                liftTruck,
+                airConditioning,
+                centralHeating,
+                subfloorHeating,
+                indoorAlarm,
+                outdoorAlarm,
+                fullHoursSecurity,
+                gunRack,
+                strongBox,
+                well,
+                homeAutomation,
+                centralVacuum,
+                padelCourt,
+                tennisCourt,
+                terrace,
+                storage,
+                swimmingPool,
+                garage,
+                falseCeiling,
+                qualityBathrooms,
+                freeHeight,
+                smokeOutlet,
+                accesControl,
+            },
+        }
+
+        fieldsToUpdate.description = {
+            web,
+            emailPDF,
+            distribution,
+        }
+
+        fieldsToUpdate.images = {
+            main: "",
+            blueprint: "",
+            others: "",
+        }
+
+        const updatedAd = await Ad.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
+        console.log("anuncio actualizado:", updatedAd);
+
+        return res.status(200).json(updatedAd);
+
+    } catch (err) {
+        return next(err);
+    }
+}
+
 const adDelete = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -303,6 +487,7 @@ module.exports = {
     adGetAll,
     adGetOne,
     adCreate,
+    adUpdate,
     adDelete,
     adGetMatchedRequests
 }

@@ -1,4 +1,5 @@
 const Consultant = require('./../models/consultant.model');
+const bcrypt = require('bcrypt');
 const { getDate } = require('./utils');
 
 const consultantGetAll = async (req, res, next) => {
@@ -63,6 +64,63 @@ const consultantCreate = async (req, res, next) => {
     }
 }
 
+const consultantUpdate = async (req, res, next) => {
+
+    try {
+        const {
+            id,
+            consultantEmail,
+            consultantPassword,
+            fullName,
+            consultantMobileNumber,
+            consultantPhoneNumber,
+            position,
+            profession,
+            office1,
+            office2,
+            comments
+        } = req.body;
+
+        console.log(req.body)
+        const fieldsToUpdate = {};
+
+        const consultant = await Consultant.findById(id)
+        console.log(consultant);
+        const isValidPassword = await bcrypt.compare(consultantPassword, consultant.consultantPassword);
+
+        if (!isValidPassword) {
+            fieldsToUpdate.consultantPassword = await bcrypt.hash(consultantPassword, 10);
+        } else { fieldsToUpdate.consultantPassword = consultantPassword }
+
+        fieldsToUpdate.consultantEmail = consultantEmail
+        fieldsToUpdate.fullName = fullName
+        fieldsToUpdate.consultantMobileNumber = consultantMobileNumber
+        fieldsToUpdate.consultantPhoneNumber = consultantPhoneNumber
+        fieldsToUpdate.position = position
+        fieldsToUpdate.profession = profession
+        fieldsToUpdate.office1 = office1
+        fieldsToUpdate.office2 = office2
+        fieldsToUpdate.consultantComments = comments
+        fieldsToUpdate.consultantCreationDate = getDate();
+
+        console.log(req.files)
+        if (!req.files) {
+            fieldsToUpdate.avatar = consultant.avatar;
+            fieldsToUpdate.companyUnitLogo = consultant.companyUnitLogo;
+        } else {
+            fieldsToUpdate.avatar = req.files.avatar[0] ? req.files.avatar[0].location : "";
+            fieldsToUpdate.companyUnitLogo = req.files.companyUnitLogo[0] ? req.files.companyUnitLogo[0].location : '';
+        }
+
+        const updatedConsultant = await Consultant.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
+        updatedConsultant.password = null;
+
+        return res.status(200).json(updatedConsultant);
+    } catch (err) {
+        return next(err);
+    }
+}
+
 const consultantDelete = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -81,6 +139,7 @@ const consultantDelete = async (req, res, next) => {
 module.exports = {
     consultantGetAll,
     consultantGetOne,
+    consultantUpdate,
     consultantCreate,
     consultantDelete
 }

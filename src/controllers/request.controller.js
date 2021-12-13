@@ -139,15 +139,6 @@ const requestGetNewMatched = async (req, res, next) => {
                 $lte: { plotSurface: plotSurfaceMax },
                 $gte: { plotSurface: plotSurfaceMin },
             })
-        // .and({
-        //     $lte: { bedrooms: request.requestBedrooms.bedroomsMax },
-        //     $gte: { bedrooms: request.requestBedrooms.bedroomsMin },
-        // })
-        // .and({
-        //     $lte: { bathrooms: request.requestBathrooms.bathroomsMax },
-        //     $gte: { bathrooms: request.requestBathrooms.bathroomsMin },
-
-        // })
 
         return res.status(200).json(ads);
     } catch (err) {
