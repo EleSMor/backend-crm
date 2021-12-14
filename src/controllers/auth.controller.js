@@ -20,7 +20,6 @@ const registerPost = (req, res, next) => {
     }
 
     const done = (error, user) => {
-        console.log('user en done ->', user)
 
         if (error) {
             return next(error);
@@ -42,7 +41,6 @@ const loginGet = (req, res, next) => {
 };
 
 const loginPost = (req, res, next) => {
-    console.log('Login ->', req.body)
 
     const done = (error, user) => {
         if (error) return next(error);

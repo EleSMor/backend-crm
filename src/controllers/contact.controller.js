@@ -66,8 +66,8 @@ const contactCreate = async (req, res, next) => {
             fullName,
             tag,
             email,
-            mobileNumber,
-            phoneNumber,
+            contactMobileNumber,
+            contactPhoneNumber,
             company,
             street,
             directionNumber,
@@ -75,8 +75,8 @@ const contactCreate = async (req, res, next) => {
             postalCode,
             city,
             country,
-            comments,
-            communications,
+            contactComments,
+            notReceiveCommunications,
         } = req.body;
 
         const contactDirection = {
@@ -91,16 +91,15 @@ const contactCreate = async (req, res, next) => {
         };
 
         const newContact = new Contact({
-            contactCreationDate: getDate(),
             fullName,
             tag,
             email,
-            contactMobileNumber: mobileNumber,
-            contactPhoneNumber: phoneNumber,
+            contactMobileNumber,
+            contactPhoneNumber,
             company,
             contactDirection,
-            contactComments: comments,
-            notReceiveCommunications: communications,
+            contactComments,
+            notReceiveCommunications,
         })
 
         const contactCreated = await newContact.save();

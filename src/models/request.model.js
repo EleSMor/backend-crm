@@ -4,8 +4,6 @@ const Schema = mongoose.Schema;
 
 const requestsSchema = new Schema(
     {
-        lastModifiedDate: { type: String },
-        creationDate: { type: String },
         requestReference: { type: Number },
         requestContact: { type: mongoose.Types.ObjectId, ref: 'contacts' },
         requestConsultant: { type: mongoose.Types.ObjectId, ref: 'consultants' },
@@ -37,15 +35,9 @@ const requestsSchema = new Schema(
             bathroomsMax: { type: Number, default: 0 },
             bathroomsMin: { type: Number, default: 0 },
         },
-        consultantComments: {
-            consultant: { type: mongoose.Types.ObjectId, ref: 'consultants' },
-            creationDate: { type: String },
-            consultantImage: { type: String },
-            description: { type: String },
-        },
     },
     {
-        timestamp: true
+        timestamps: true
     }
 )
 

@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 
 const contactSchema = new Schema(
     {
-        contactCreationDate: { type: String },
         fullName: { type: String },
         tag: [{ type: String, enum: ["Cliente", "Propietario"], required: true }],
         email: { type: String },
@@ -13,20 +12,19 @@ const contactSchema = new Schema(
         company: { type: String },
         contactDirection: {
             address: {
-                street: { type: String, required: true },
+                street: { type: String },
                 directionNumber: { type: Number },
                 directionFloor: { type: String }
             },
-            postalCode: { type: String, required: true },
-            city: { type: String, required: true },
-            country: { type: String, required: true }
+            postalCode: { type: String },
+            city: { type: String },
+            country: { type: String }
         },
         contactComments: { type: String },
         notReceiveCommunications: { type: Boolean },
-        requests: { type: mongoose.Types.ObjectId, ref: 'requests', default: [] },
     },
     {
-        timestamp: true
+        timestamps: true
     }
 )
 

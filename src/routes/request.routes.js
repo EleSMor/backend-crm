@@ -8,6 +8,7 @@ const {
     requestGetNewMatched,
     requestGetByContact,
     requestCreate,
+    requestUpdate,
     requestDelete
 } = require('../controllers/request.controller');
 
@@ -21,6 +22,7 @@ router.get('/contact/:id', requestGetByContact);
 router.get('/:id', requestGetOne);
 
 router.post('/create', requestCreate);
+router.put('/edit', requestUpdate);
 
 router.delete('/delete/:id', requestDelete);
 

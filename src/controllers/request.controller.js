@@ -1,15 +1,12 @@
 const Request = require('./../models/request.model');
 const Ad = require('./../models/ad.model');
 
-const { getDate } = require('./utils');
-
 const requestsGetAll = async (req, res, next) => {
     try {
         const requests = await Request
             .find()
             .populate({ path: 'requestContact', select: 'fullName company' })
             .populate({ path: 'requestConsultant', select: 'fullName' })
-        console.log(requests)
         return res.status(200).json(requests);
     } catch (err) {
         return next(err);
@@ -53,44 +50,61 @@ const requestGetAdsMatched = async (req, res, next) => {
     try {
         const { id } = req.params;
         const request = await Request.findById({ _id: id })
-        const ad = await Ad.find({
-            adType: { $all: request.requestAdType },
-        })
-            .and({
-                adBuildingType: { $all: request.requestBuildingType },
-            })
-            .and({
-                zone: { $all: request.requestZone },
-            })
-            .and({
-                sale: {
-                    $lte: { saleValue: request.requestSalePrice.salePriceMax },
-                    $gte: { saleValue: request.requestSalePrice.salePriceMin },
-                },
-            })
-            .and({
-                rent: {
-                    $lte: { rentValue: request.requestRentPrice.rentPriceMax },
-                    $gte: { rentValue: request.requestRentPrice.rentPriceMin },
-                },
-            })
-            .and({
-                $lte: { buildSurface: request.requestBuildSurface.buildSurfaceMax },
-                $gte: { buildSurface: request.requestBuildSurface.buildSurfaceMin },
-            })
-            .and({
-                $lte: { plotSurface: request.requestPlotSurface.plotSurfaceMax },
-                $gte: { plotSurface: request.requestPlotSurface.plotSurfaceMin },
-            })
-            .and({
-                $lte: { bedrooms: request.requestBedrooms.bedroomsMax },
-                $gte: { bedrooms: request.requestBedrooms.bedroomsMin },
-            })
-            .and({
-                $lte: { bathrooms: request.requestBathrooms.bathroomsMax },
-                $gte: { bathrooms: request.requestBathrooms.bathroomsMin },
 
-            })
+        // Query constructor
+        let query = Ad.find();
+
+        if (request.requestAdType.length !== 0) query.where({ adType: { $all: request.requestAdType } })
+        if (request.requestBuildingType.length !== 0) query.where({ adBuildingType: { $in: request.requestBuildingType } })
+        if (request.requestZone.length !== 0) query.where({ zone: { $in: request.requestZone } })
+
+        if (!request.requestSalePrice.salePriceMax) request.requestSalePrice.salePriceMax = 99999999
+        if (!request.requestSalePrice.salePriceMin) request.requestSalePrice.salePriceMin = 0
+        query.where({
+            sale: {
+                $lte: { saleValue: request.requestSalePrice.salePriceMax },
+                $gte: { saleValue: request.requestSalePrice.salePriceMin },
+            },
+        })
+
+        if (!request.requestRentPrice.rentPriceMax) request.requestRentPrice.rentPriceMax = 99999
+        if (!request.requestRentPrice.rentPriceMin) request.requestRentPrice.rentPriceMin = 0
+        query.where({
+            rent: {
+                $lte: { rentValue: request.requestRentPrice.rentPriceMax },
+                $gte: { rentValue: request.requestRentPrice.rentPriceMin },
+            },
+        })
+
+        if (!request.requestBuildSurface.buildSurfaceMax) request.requestBuildSurface.buildSurfaceMax = 9999
+        if (!request.requestBuildSurface.buildSurfaceMin) request.requestBuildSurface.buildSurfaceMin = 0
+        query.where({
+            $lte: { buildSurface: request.requestBuildSurface.buildSurfaceMax },
+            $gte: { buildSurface: request.requestBuildSurface.buildSurfaceMin },
+        })
+
+        if (!request.requestPlotSurface.plotSurfaceMax) request.requestPlotSurface.plotSurfaceMax = 99999
+        if (!request.requestPlotSurface.plotSurfaceMin) request.requestPlotSurface.plotSurfaceMin = 0
+        query.where({
+            $lte: { plotSurface: request.requestPlotSurface.plotSurfaceMax },
+            $gte: { plotSurface: request.requestPlotSurface.plotSurfaceMin },
+        })
+
+        if (!request.requestBedrooms.bedroomsMax) request.requestBedrooms.bedroomsMax = 99
+        if (!request.requestBedrooms.bedroomsMin) request.requestBedrooms.bedroomsMin = 0
+        query.where({
+            $lte: { bedrooms: request.requestBedrooms.bedroomsMax },
+            $gte: { bedrooms: request.requestBedrooms.bedroomsMin },
+        })
+
+        if (!request.requestBathrooms.bathroomsMax) request.requestBathrooms.bathroomsMax = 99
+        if (!request.requestBathrooms.bathroomsMin) request.requestBathrooms.bathroomsMin = 0
+        query.where({
+            $lte: { bathrooms: request.requestBathrooms.bathroomsMax },
+            $gte: { bathrooms: request.requestBathrooms.bathroomsMin },
+        })
+
+        const ad = await query.exec()
 
         return res.status(200).json(ad);
     } catch (err) {
@@ -147,7 +161,6 @@ const requestGetNewMatched = async (req, res, next) => {
 }
 
 const requestCreate = async (req, res, next) => {
-    console.log(req.body);
 
     try {
         const {
@@ -157,8 +170,7 @@ const requestCreate = async (req, res, next) => {
             requestAdType,
             requestBuildingType,
             requestReference,
-            residential,
-            patrimonial,
+            requestZone,
             salePriceMax,
             salePriceMin,
             rentPriceMax,
@@ -173,48 +185,130 @@ const requestCreate = async (req, res, next) => {
             bathroomsMin
         } = req.body;
 
-        let zone = [];
-        if (residential.length !== 0) zone = residential;
-        if (patrimonial.length !== 0) zone = patrimonial;
+        const requestSalePrice = {
+            salePriceMax: salePriceMax,
+            salePriceMin: salePriceMin
+        }
+
+        const requestRentPrice = {
+            rentPriceMax: rentPriceMax,
+            rentPriceMin: rentPriceMin
+        }
+
+        const requestBuildSurface = {
+            buildSurfaceMax: buildSurfaceMax,
+            buildSurfaceMin: buildSurfaceMin
+        }
+
+        const requestPlotSurface = {
+            plotSurfaceMax: plotSurfaceMax,
+            plotSurfaceMin: plotSurfaceMin
+        }
+
+        const requestBedrooms = {
+            bedroomsMax: bedroomsMax,
+            bedroomsMin: bedroomsMin
+        }
+
+        const requestBathrooms = {
+            bathroomsMax: bathroomsMax,
+            bathroomsMin: bathroomsMin
+        }
 
         const newRequest = new Request({
-            creationDate: getDate(),
+            requestContact,
+            requestConsultant,
+            requestComment,
+            requestAdType,
+            requestBuildingType,
+            requestPlotSurface,
+            requestBedrooms,
+            requestBathrooms,
+            requestReference,
+            requestZone,
+            requestSalePrice,
+            requestRentPrice,
+            requestBuildSurface,
+        })
+
+        const requestCreated = await newRequest.save();
+
+        return res.status(200).json(requestCreated);
+    } catch (err) {
+        return next(err);
+    }
+}
+
+const requestUpdate = async (req, res, next) => {
+
+    try {
+        const {
+            id,
             requestContact,
             requestConsultant,
             requestComment,
             requestAdType,
             requestBuildingType,
             requestReference,
-            requestZone: zone,
-            requestSalePrice: {
-                salePriceMax,
-                salePriceMin
-            },
-            requestRentPrice: {
-                rentPriceMax,
-                rentPriceMin
-            },
-            requestBuildSurface: {
-                buildSurfaceMax,
-                buildSurfaceMin
-            },
-            requestPlotSurface: {
-                plotSurfaceMax,
-                plotSurfaceMin
-            },
-            requestBedrooms: {
-                bedroomsMax,
-                bedroomsMin
-            },
-            requestBathrooms: {
-                bathroomsMax,
-                bathroomsMin
-            }
-        })
+            requestZone,
+            salePriceMax,
+            salePriceMin,
+            rentPriceMax,
+            rentPriceMin,
+            buildSurfaceMax,
+            buildSurfaceMin,
+            plotSurfaceMax,
+            plotSurfaceMin,
+            bedroomsMax,
+            bedroomsMin,
+            bathroomsMax,
+            bathroomsMin
+        } = req.body;
 
-        const requestCreated = await newRequest.save();
+        let fieldsToUpdate = {};
 
-        return res.status(200).json(requestCreated);
+        fieldsToUpdate.requestContact = requestContact
+        fieldsToUpdate.requestConsultant = requestConsultant
+        fieldsToUpdate.requestComment = requestComment
+        fieldsToUpdate.requestAdType = requestAdType
+        fieldsToUpdate.requestBuildingType = requestBuildingType
+        fieldsToUpdate.requestReference = requestReference
+        fieldsToUpdate.requestZone = requestZone;
+
+        fieldsToUpdate.requestSalePrice = {
+            salePriceMax: salePriceMax,
+            salePriceMin: salePriceMin
+        }
+
+        fieldsToUpdate.requestRentPrice = {
+            rentPriceMax: rentPriceMax,
+            rentPriceMin: rentPriceMin
+        }
+
+        fieldsToUpdate.requestBuildSurface = {
+            buildSurfaceMax: buildSurfaceMax,
+            buildSurfaceMin: buildSurfaceMin
+        }
+
+        fieldsToUpdate.requestPlotSurface = {
+            plotSurfaceMax: plotSurfaceMax,
+            plotSurfaceMin: plotSurfaceMin
+        }
+
+        fieldsToUpdate.requestBedrooms = {
+            bedroomsMax: bedroomsMax,
+            bedroomsMin: bedroomsMin
+        }
+
+        fieldsToUpdate.requestBathrooms = {
+            bathroomsMax: bathroomsMax,
+            bathroomsMin: bathroomsMin
+        }
+
+        const updatedRequest = await Request.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
+
+        return res.status(200).json(updatedRequest);
+
     } catch (err) {
         return next(err);
     }
@@ -243,5 +337,6 @@ module.exports = {
     requestGetAdsMatched,
     requestGetNewMatched,
     requestCreate,
+    requestUpdate,
     requestDelete,
 }

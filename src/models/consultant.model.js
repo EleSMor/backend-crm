@@ -20,7 +20,7 @@ const consultantSchema = new Schema({
     ads: { type: mongoose.Types.ObjectId, ref: 'ads' },
 },
     {
-        timestamp: true
+        timestamps: true
     }
 )
 

@@ -17,51 +17,66 @@ const adGetMatchedRequests = async (req, res, next) => {
     try {
         const { id } = req.params;
         const ad = await Ad.findById({ _id: id })
-        const requests = await Request.find({
-            requestAdType: { $all: ad.adType },
+
+        // Query constructor
+        let query = Request.find();
+
+        if (ad.adType.length !== 0) query.where({ requestAdType: { $all: ad.adType } })
+        if (ad.adBuildingType.length !== 0) query.where({ requestBuildingType: { $in: ad.adBuildingType } })
+        if (ad.zone.length !== 0) query.where({ requestZone: { $in: ad.zone } })
+
+        if (!ad.price.sale.saleValue) ad.price.sale.saleValue = 0
+        query.where({
+            requestSalePrice: {
+                $gte: { salePriceMax: ad.price.sale.saleValue },
+                $lte: { salePriceMin: ad.price.sale.saleValue }
+            },
         })
-            .and({
-                requestBuildingType: { $all: ad.adBuildingType },
-            })
-            .and({
-                requestZone: { $all: ad.zone },
-            })
-            .and({
-                requestSalePrice: {
-                    $gte: { salePriceMax: ad.price.sale.saleValue },
-                    $lte: { salePriceMin: ad.price.sale.saleValue }
-                },
-            })
-            .and({
-                requestRentPrice: {
-                    $gte: { rentPriceMax: ad.price.rent.rentValue },
-                    $lte: { rentPriceMin: ad.price.rent.rentValue }
-                },
-            })
-            .and({
-                requestBuildSurface: {
-                    $gte: { buildSurfaceMax: ad.buildSurface },
-                    $lte: { buildSurfaceMin: ad.buildSurface }
-                },
-            })
-            .and({
-                requestPlotSurface: {
-                    $gte: { plotSurfaceMax: ad.plotSurface },
-                    $lte: { plotSurfaceMin: ad.plotSurface }
-                },
-            })
-            .and({
-                requestBedrooms: {
-                    $gte: { bedroomsMax: ad.quality.bedrooms },
-                    $lte: { bedroomsMin: ad.quality.bedrooms }
-                },
-            })
-            .and({
-                requestBathrooms: {
-                    $gte: { bathroomsMax: ad.quality.bathrooms },
-                    $lte: { bathroomsMin: ad.quality.bathrooms }
-                },
-            }).populate({ path: 'requestContact', select: 'fullName company email consultantComments' })
+
+        if (!ad.price.rent.rentValue) ad.price.rent.rentValue = 0
+        query.where({
+            requestRentPrice: {
+                $gte: { rentPriceMax: ad.price.rent.rentValue },
+                $lte: { rentPriceMin: ad.price.rent.rentValue }
+            },
+        })
+
+        if (!ad.buildSurface) ad.buildSurface = 0
+        query.where({
+            requestBuildSurface: {
+                $gte: { buildSurfaceMax: ad.buildSurface },
+                $lte: { buildSurfaceMin: ad.buildSurface }
+            }
+        })
+
+        if (!ad.plotSurface) ad.plotSurface = 0
+        query.where({
+            requestPlotSurface: {
+                $gte: { plotSurfaceMax: ad.plotSurface },
+                $lte: { plotSurfaceMin: ad.plotSurface }
+            },
+        })
+
+        if (!ad.quality.bedrooms) ad.quality.bedrooms = 0
+        query.where({
+            requestBedrooms: {
+                $gte: { bedroomsMax: ad.quality.bedrooms },
+                $lte: { bedroomsMin: ad.quality.bedrooms }
+            },
+        })
+
+        if (!ad.quality.bathrooms) ad.quality.bathrooms = 0
+        query.where({
+            requestBathrooms: {
+                $gte: { bathroomsMax: ad.quality.bathrooms },
+                $lte: { bathroomsMin: ad.quality.bathrooms }
+            },
+        })
+
+        query.populate({ path: 'requestContact', select: 'fullName company email consultantComments' })
+
+        const requests = await query.exec()
+
         return res.status(200).json(requests);
     } catch (err) {
         return next(err);
@@ -73,7 +88,6 @@ const adGetOne = async (req, res, next) => {
     try {
         const { id } = req.params;
         const ad = await Ad.findById(id);
-        console.log(ad);
         return res.status(200).json(ad);
     } catch (err) {
         return next(err);
@@ -459,7 +473,6 @@ const adUpdate = async (req, res, next) => {
         }
 
         const updatedAd = await Ad.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
-        console.log("anuncio actualizado:", updatedAd);
 
         return res.status(200).json(updatedAd);
 
