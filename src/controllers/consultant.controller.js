@@ -81,9 +81,11 @@ const consultantUpdate = async (req, res, next) => {
             comments
         } = req.body;
 
+        console.log(req.body)
         const fieldsToUpdate = {};
 
         const consultant = await Consultant.findById(id)
+        console.log("consultor", consultant);
         const isValidPassword = await bcrypt.compare(consultantPassword, consultant.consultantPassword);
 
         if (!isValidPassword) {
@@ -99,12 +101,8 @@ const consultantUpdate = async (req, res, next) => {
         fieldsToUpdate.office1 = office1
         fieldsToUpdate.office2 = office2
         fieldsToUpdate.consultantComments = comments
-        fieldsToUpdate.consultantCreationDate = getDate();
 
-        if (!req.files) {
-            fieldsToUpdate.avatar = consultant.avatar;
-            fieldsToUpdate.companyUnitLogo = consultant.companyUnitLogo;
-        } else {
+        if (req.files) {
             fieldsToUpdate.avatar = req.files.avatar[0] ? req.files.avatar[0].location : "";
             fieldsToUpdate.companyUnitLogo = req.files.companyUnitLogo[0] ? req.files.companyUnitLogo[0].location : '';
         }

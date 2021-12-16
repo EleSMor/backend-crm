@@ -111,6 +111,56 @@ const contactCreate = async (req, res, next) => {
     }
 }
 
+const contactUpdate = async (req, res, next) => {
+    try {
+        const {
+            id,
+            fullName,
+            tag,
+            email,
+            contactMobileNumber,
+            contactPhoneNumber,
+            company,
+            street,
+            directionNumber,
+            directionFloor,
+            postalCode,
+            city,
+            country,
+            contactComments,
+            notReceiveCommunications,
+        } = req.body;
+
+        const fieldsToUpdate = {}
+
+        fieldsToUpdate.fullName = fullName
+        fieldsToUpdate.tag = tag
+        fieldsToUpdate.email = email
+        fieldsToUpdate.contactMobileNumber = contactMobileNumber
+        fieldsToUpdate.contactPhoneNumber = contactPhoneNumber
+        fieldsToUpdate.contactComments = contactComments
+        fieldsToUpdate.company = company
+        fieldsToUpdate.contactDirection = {
+            address: {
+                street: street,
+                directionNumber: directionNumber,
+                directionFloor: directionFloor,
+            },
+            postalCode: postalCode,
+            city: city,
+            country: country
+        };
+        fieldsToUpdate.notReceiveCommunications = notReceiveCommunications
+
+        const contactUpdated = await Contact.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
+
+        return res.status(200).json(contactUpdated);
+
+    } catch (err) {
+        return next(err);
+    }
+}
+
 const contactDelete = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -134,5 +184,6 @@ module.exports = {
     contactFindByEmail,
     contactGetOwners,
     contactCreate,
+    contactUpdate,
     contactDelete,
 }

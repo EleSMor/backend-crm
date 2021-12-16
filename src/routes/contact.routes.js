@@ -8,6 +8,7 @@ const {
     contactFindByEmail,
     contactGetOwners,
     contactCreate,
+    contactUpdate,
     contactDelete,
 } = require('../controllers/contact.controller');
 
@@ -21,6 +22,7 @@ router.get('/email/:email', contactFindByEmail);
 router.get('/:id', contactGetOne);
 
 router.post('/create', contactCreate);
+router.put('/edit', contactUpdate);
 router.delete('/delete/:id', contactDelete);
 
 module.exports = router;
