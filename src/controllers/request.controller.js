@@ -1,5 +1,7 @@
 const Request = require('./../models/request.model');
 const Ad = require('./../models/ad.model');
+const mongoose = require('mongoose');
+
 
 const requestsGetAll = async (req, res, next) => {
     try {
@@ -163,7 +165,7 @@ const requestGetNewMatched = async (req, res, next) => {
 const requestCreate = async (req, res, next) => {
 
     try {
-        const {
+        let {
             requestContact,
             requestConsultant,
             requestComment,

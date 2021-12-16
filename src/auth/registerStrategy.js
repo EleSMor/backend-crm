@@ -68,7 +68,6 @@ const registerStrategy = new LocalStrategy(
                 consultantComments: comments,
             })
 
-            console.log(newConsultant);
             const savedConsultant = await newConsultant.save();
             savedConsultant.password = null;
 
