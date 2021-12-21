@@ -251,7 +251,7 @@ const adBlueprintImageUpload = async (req, res, next) => {
         const ad = await Ad.findById(id);
         const fieldsToUpdate = ad
 
-        fieldsToUpdate.blueprint = req.file ? req.file.location : '';
+        fieldsToUpdate.images.blueprint = req.file ? req.file.location : '';
 
         const updatedAd = await Ad.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
 
