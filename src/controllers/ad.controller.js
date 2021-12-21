@@ -1,5 +1,6 @@
 const Ad = require('./../models/ad.model');
 const Request = require('./../models/request.model');
+const { deleteImage } = require('../middlewares/file.middleware');
 
 const adGetAll = async (req, res, next) => {
     try {
@@ -293,8 +294,8 @@ const adOthersImagesUpload = async (req, res, next) => {
 const adMainImagesDelete = async (req, res, next) => {
     try {
         const { id } = req.params
-        const { toDelete } = req.body
 
+        deleteImage(req.body.toDelete)
         const ad = await Ad.findById(id);
         const fieldsToUpdate = ad
 
@@ -312,7 +313,8 @@ const adMainImagesDelete = async (req, res, next) => {
 const adBlueprintImagesDelete = async (req, res, next) => {
     try {
         const { id } = req.params
-        const { toDelete } = req.body
+
+        deleteImage(req.body.toDelete)
 
         const ad = await Ad.findById(id);
         const fieldsToUpdate = ad
@@ -331,13 +333,15 @@ const adBlueprintImagesDelete = async (req, res, next) => {
 const adOthersImagesDelete = async (req, res, next) => {
     try {
         const { id } = req.params
-        const { toDelete } = req.body
+
+        console.log(req.body.toDelete)
+        deleteImage(req.body.toDelete)
 
         const ad = await Ad.findById(id);
         const fieldsToUpdate = ad
 
         fieldsToUpdate.images.others = fieldsToUpdate.images.others.filter((location) => {
-            return toDelete !== location
+            return req.body.toDelete !== location
         })
 
         const updatedAd = await Ad.findByIdAndUpdate(id, fieldsToUpdate, { new: true })

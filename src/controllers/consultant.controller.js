@@ -1,6 +1,6 @@
 const Consultant = require('./../models/consultant.model');
 const bcrypt = require('bcrypt');
-const { getDate } = require('./utils');
+const { deleteImage } = require('../middlewares/file.middleware');
 
 const consultantGetAll = async (req, res, next) => {
     try {
@@ -73,8 +73,18 @@ const consultantUpdate = async (req, res, next) => {
         fieldsToUpdate.consultantComments = req.body.comments
 
         if (Object.entries(req.files).length !== 0) {
-            fieldsToUpdate.avatar = req.files.avatar ? req.files.avatar[0].location : "";
-            fieldsToUpdate.companyUnitLogo = req.files.companyUnitLogo ? req.files.companyUnitLogo[0].location : '';
+            if (req.files.avatar) {
+                deleteImage(consultant.avatar);
+                fieldsToUpdate.avatar = req.files.avatar[0].location
+            } else {
+                fieldsToUpdate.avatar = consultant.avatar;
+            };
+            if (req.files.companyUnitLogo) {
+                deleteImage(consultant.companyUnitLogo);
+                fieldsToUpdate.companyUnitLogo = req.files.companyUnitLogo[0].location;
+            } else {
+                fieldsToUpdate.companyUnitLogo = consultant.companyUnitLogo;
+            }
         }
 
         const updatedConsultant = await Consultant.findByIdAndUpdate(req.body.id, fieldsToUpdate, { new: true })

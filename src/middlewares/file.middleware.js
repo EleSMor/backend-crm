@@ -40,9 +40,22 @@ const upload = multer({
     fileFilter
 })
 
-// const deleteImage = s3.deleteObject({ Bucket: BUCKET_NAME, Objects: [{ req }] }, function (err, data) {
-//     if (err) console.log(err, err.stack);
-//     else console.log(data);
-// });
+const deleteImage = (req, res) => {
+    let key = req.substring(48)
+ 
+    const params = {
+        Bucket: BUCKET_NAME,
+        Key: decodeURI(key)
+    };
 
-module.exports = { upload, s3 }
+    console.log("borrado de: ", req);
+    s3.deleteObject(params, function (err, data) {
+        if (err) {
+            console.log(err);
+            return res.send({ error: err });
+        }
+        console.log(data);
+    });
+}
+
+module.exports = { upload, s3, deleteImage }
