@@ -62,44 +62,27 @@ const contactGetOwners = async (req, res, next) => {
 
 const contactCreate = async (req, res, next) => {
     try {
-        const {
-            fullName,
-            tag,
-            email,
-            contactMobileNumber,
-            contactPhoneNumber,
-            company,
-            street,
-            directionNumber,
-            directionFloor,
-            postalCode,
-            city,
-            country,
-            contactComments,
-            notReceiveCommunications,
-        } = req.body;
-
         const contactDirection = {
             address: {
-                street: street,
-                directionNumber: directionNumber,
-                directionFloor: directionFloor,
+                street: req.body.street,
+                directionNumber: req.body.directionNumber,
+                directionFloor: req.body.directionFloor,
             },
-            postalCode: postalCode,
-            city: city,
-            country: country
+            postalCode: req.body.postalCode,
+            city: req.body.city,
+            country: req.body.country
         };
 
         const newContact = new Contact({
-            fullName,
-            tag,
-            email,
-            contactMobileNumber,
-            contactPhoneNumber,
-            company,
+            fullName: req.body.fullName,
+            tag: req.body.tag,
+            email: req.body.email,
+            contactMobileNumber: req.body.contactMobileNumber,
+            contactPhoneNumber: req.body.contactPhoneNumber,
+            company: req.body.company,
             contactDirection,
-            contactComments,
-            notReceiveCommunications,
+            contactComments: req.body.contactComments,
+            notReceiveCommunications: req.body.notReceiveCommunications,
         })
 
         const contactCreated = await newContact.save();
@@ -113,46 +96,28 @@ const contactCreate = async (req, res, next) => {
 
 const contactUpdate = async (req, res, next) => {
     try {
-        const {
-            id,
-            fullName,
-            tag,
-            email,
-            contactMobileNumber,
-            contactPhoneNumber,
-            company,
-            street,
-            directionNumber,
-            directionFloor,
-            postalCode,
-            city,
-            country,
-            contactComments,
-            notReceiveCommunications,
-        } = req.body;
-
         const fieldsToUpdate = {}
 
-        fieldsToUpdate.fullName = fullName
-        fieldsToUpdate.tag = tag
-        fieldsToUpdate.email = email
-        fieldsToUpdate.contactMobileNumber = contactMobileNumber
-        fieldsToUpdate.contactPhoneNumber = contactPhoneNumber
-        fieldsToUpdate.contactComments = contactComments
-        fieldsToUpdate.company = company
+        fieldsToUpdate.fullName = req.body.fullName
+        fieldsToUpdate.tag = req.body.tag
+        fieldsToUpdate.email = req.body.email
+        fieldsToUpdate.contactMobileNumber = req.body.contactMobileNumber
+        fieldsToUpdate.contactPhoneNumber = req.body.contactPhoneNumber
+        fieldsToUpdate.contactComments = req.body.contactComments
+        fieldsToUpdate.company = req.body.company
+        fieldsToUpdate.notReceiveCommunications = req.body.notReceiveCommunications
         fieldsToUpdate.contactDirection = {
             address: {
-                street: street,
-                directionNumber: directionNumber,
-                directionFloor: directionFloor,
+                street: req.body.street,
+                directionNumber: req.body.directionNumber,
+                directionFloor: req.body.directionFloor,
             },
-            postalCode: postalCode,
-            city: city,
-            country: country
+            postalCode: req.body.postalCode,
+            city: req.body.city,
+            country: req.body.country
         };
-        fieldsToUpdate.notReceiveCommunications = notReceiveCommunications
 
-        const contactUpdated = await Contact.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
+        const contactUpdated = await Contact.findByIdAndUpdate(req.body.id, fieldsToUpdate, { new: true })
 
         return res.status(200).json(contactUpdated);
 

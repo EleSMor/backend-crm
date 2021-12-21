@@ -24,36 +24,22 @@ const consultantGetOne = async (req, res, next) => {
 const consultantCreate = async (req, res, next) => {
 
     try {
-        const {
-            consultantEmail,
-            consultantPassword,
-            fullName,
-            consultantMobileNumber,
-            consultantPhoneNumber,
-            position,
-            profession,
-            office1,
-            office2,
-            comments
-        } = req.body;
-
         const avatar = req.files.avatar[0] ? req.files.avatar[0].location : "";
         const companyUnitLogo = req.files.companyUnitLogo[0] ? req.files.companyUnitLogo[0].location : '';
 
         const newConsultant = new Consultant({
-            consultantEmail,
-            consultantPassword,
-            consultantCreationDate: getDate(),
-            fullName,
+            consultantEmail: req.body.consultantEmail,
+            consultantPassword: req.body.consultantPassword,
+            fullName: req.body.fullName,
             avatar,
             companyUnitLogo,
-            consultantMobileNumber,
-            consultantPhoneNumber,
-            position,
-            profession,
-            office1,
-            office2,
-            consultantComments: comments
+            consultantMobileNumber: req.body.consultantMobileNumber,
+            consultantPhoneNumber: req.body.consultantPhoneNumber,
+            position: req.body.position,
+            profession: req.body.profession,
+            office1: req.body.office1,
+            office2: req.body.office2,
+            consultantComments: req.body.comments
         })
 
         const consultantCreated = await newConsultant.save();
@@ -67,45 +53,31 @@ const consultantCreate = async (req, res, next) => {
 const consultantUpdate = async (req, res, next) => {
 
     try {
-        const {
-            id,
-            consultantEmail,
-            consultantPassword,
-            fullName,
-            consultantMobileNumber,
-            consultantPhoneNumber,
-            position,
-            profession,
-            office1,
-            office2,
-            comments
-        } = req.body;
-
         const fieldsToUpdate = {};
 
         const consultant = await Consultant.findById(id)
-        const isValidPassword = await bcrypt.compare(consultantPassword, consultant.consultantPassword);
+        const isValidPassword = await bcrypt.compare(req.body.consultantPassword, consultant.consultantPassword);
 
         if (!isValidPassword) {
-            fieldsToUpdate.consultantPassword = await bcrypt.hash(consultantPassword, 10);
-        } else { fieldsToUpdate.consultantPassword = consultantPassword }
+            fieldsToUpdate.consultantPassword = await bcrypt.hash(req.body.consultantPassword, 10);
+        } else { fieldsToUpdate.consultantPassword = req.body.consultantPassword }
 
-        fieldsToUpdate.consultantEmail = consultantEmail
-        fieldsToUpdate.fullName = fullName
-        fieldsToUpdate.consultantMobileNumber = consultantMobileNumber
-        fieldsToUpdate.consultantPhoneNumber = consultantPhoneNumber
-        fieldsToUpdate.position = position
-        fieldsToUpdate.profession = profession
-        fieldsToUpdate.office1 = office1
-        fieldsToUpdate.office2 = office2
-        fieldsToUpdate.consultantComments = comments
+        fieldsToUpdate.consultantEmail = req.body.consultantEmail
+        fieldsToUpdate.fullName = req.body.fullName
+        fieldsToUpdate.consultantMobileNumber = req.body.consultantMobileNumber
+        fieldsToUpdate.consultantPhoneNumber = req.body.consultantPhoneNumber
+        fieldsToUpdate.position = req.body.position
+        fieldsToUpdate.profession = req.body.profession
+        fieldsToUpdate.office1 = req.body.office1
+        fieldsToUpdate.office2 = req.body.office2
+        fieldsToUpdate.consultantComments = req.body.comments
 
         if (Object.entries(req.files).length !== 0) {
             fieldsToUpdate.avatar = req.files.avatar ? req.files.avatar[0].location : "";
             fieldsToUpdate.companyUnitLogo = req.files.companyUnitLogo ? req.files.companyUnitLogo[0].location : '';
         }
 
-        const updatedConsultant = await Consultant.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
+        const updatedConsultant = await Consultant.findByIdAndUpdate(req.body.id, fieldsToUpdate, { new: true })
         updatedConsultant.password = null;
 
         return res.status(200).json(updatedConsultant);

@@ -28,7 +28,6 @@ const zoneGetOne = async (req, res, next) => {
 }
 
 const zoneCreate = async (req, res, next) => {
-    console.log(req.body);
     try {
         const {
             zone,

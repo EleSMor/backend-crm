@@ -7,7 +7,6 @@ const consultantSchema = new Schema({
     fullName: { type: String },
     consultantEmail: { type: String, required: true },
     consultantPassword: { type: String, required: true },
-    consultantCreationDate: { type: String },
     avatar: { type: String },
     companyUnitLogo: { type: String },
     consultantMobileNumber: { type: String },

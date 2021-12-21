@@ -56,6 +56,8 @@ const requestGetAdsMatched = async (req, res, next) => {
         // Query constructor
         let query = Ad.find();
 
+        query.where({ adStatus: "Activo" })
+
         if (request.requestAdType.length !== 0) query.where({ adType: { $all: request.requestAdType } })
         if (request.requestBuildingType.length !== 0) query.where({ adBuildingType: { $in: request.requestBuildingType } })
         if (request.requestZone.length !== 0) query.where({ zone: { $in: request.requestZone } })
@@ -165,69 +167,47 @@ const requestGetNewMatched = async (req, res, next) => {
 const requestCreate = async (req, res, next) => {
 
     try {
-        let {
-            requestContact,
-            requestConsultant,
-            requestComment,
-            requestAdType,
-            requestBuildingType,
-            requestReference,
-            requestZone,
-            salePriceMax,
-            salePriceMin,
-            rentPriceMax,
-            rentPriceMin,
-            buildSurfaceMax,
-            buildSurfaceMin,
-            plotSurfaceMax,
-            plotSurfaceMin,
-            bedroomsMax,
-            bedroomsMin,
-            bathroomsMax,
-            bathroomsMin
-        } = req.body;
-
         const requestSalePrice = {
-            salePriceMax: salePriceMax,
-            salePriceMin: salePriceMin
+            salePriceMax: req.body.salePriceMax,
+            salePriceMin: req.body.salePriceMin
         }
 
         const requestRentPrice = {
-            rentPriceMax: rentPriceMax,
-            rentPriceMin: rentPriceMin
+            rentPriceMax: req.body.rentPriceMax,
+            rentPriceMin: req.body.rentPriceMin
         }
 
         const requestBuildSurface = {
-            buildSurfaceMax: buildSurfaceMax,
-            buildSurfaceMin: buildSurfaceMin
+            buildSurfaceMax: req.body.buildSurfaceMax,
+            buildSurfaceMin: req.body.buildSurfaceMin
         }
 
         const requestPlotSurface = {
-            plotSurfaceMax: plotSurfaceMax,
-            plotSurfaceMin: plotSurfaceMin
+            plotSurfaceMax: req.body.plotSurfaceMax,
+            plotSurfaceMin: req.body.plotSurfaceMin
         }
 
         const requestBedrooms = {
-            bedroomsMax: bedroomsMax,
-            bedroomsMin: bedroomsMin
+            bedroomsMax: req.body.bedroomsMax,
+            bedroomsMin: req.body.bedroomsMin
         }
 
         const requestBathrooms = {
-            bathroomsMax: bathroomsMax,
-            bathroomsMin: bathroomsMin
+            bathroomsMax: req.body.bathroomsMax,
+            bathroomsMin: req.body.bathroomsMin
         }
 
         const newRequest = new Request({
-            requestContact,
-            requestConsultant,
-            requestComment,
-            requestAdType,
-            requestBuildingType,
+            requestContact: req.body.requestContact,
+            requestConsultant: req.body.requestConsultant,
+            requestComment: req.body.requestComment,
+            requestAdType: req.body.requestAdType,
+            requestBuildingType: req.body.requestBuildingType,
             requestPlotSurface,
             requestBedrooms,
             requestBathrooms,
-            requestReference,
-            requestZone,
+            requestReference: req.body.requestReference,
+            requestZone: req.body.requestZone,
             requestSalePrice,
             requestRentPrice,
             requestBuildSurface,
@@ -243,71 +223,48 @@ const requestCreate = async (req, res, next) => {
 
 const requestUpdate = async (req, res, next) => {
 
-    try {
-        const {
-            id,
-            requestContact,
-            requestConsultant,
-            requestComment,
-            requestAdType,
-            requestBuildingType,
-            requestReference,
-            requestZone,
-            salePriceMax,
-            salePriceMin,
-            rentPriceMax,
-            rentPriceMin,
-            buildSurfaceMax,
-            buildSurfaceMin,
-            plotSurfaceMax,
-            plotSurfaceMin,
-            bedroomsMax,
-            bedroomsMin,
-            bathroomsMax,
-            bathroomsMin
-        } = req.body;
-
+    try {  
         let fieldsToUpdate = {};
 
-        fieldsToUpdate.requestContact = requestContact
-        fieldsToUpdate.requestConsultant = requestConsultant
-        fieldsToUpdate.requestComment = requestComment
-        fieldsToUpdate.requestAdType = requestAdType
-        fieldsToUpdate.requestBuildingType = requestBuildingType
-        fieldsToUpdate.requestReference = requestReference
-        fieldsToUpdate.requestZone = requestZone;
+        fieldsToUpdate.requestContact = req.body.requestContact
+        fieldsToUpdate.requestConsultant = req.body.requestConsultant
+        fieldsToUpdate.requestComment = req.body.requestComment
+        fieldsToUpdate.requestAdType = req.body.requestAdType
+        fieldsToUpdate.requestBuildingType = req.body.requestBuildingType
+        fieldsToUpdate.requestReference = req.body.requestReference
+        fieldsToUpdate.requestZone = req.body.requestZone;
 
         fieldsToUpdate.requestSalePrice = {
-            salePriceMax: salePriceMax,
-            salePriceMin: salePriceMin
+            salePriceMax: req.body.salePriceMax,
+            salePriceMin: req.body.salePriceMin
         }
 
         fieldsToUpdate.requestRentPrice = {
-            rentPriceMax: rentPriceMax,
-            rentPriceMin: rentPriceMin
+            rentPriceMax: req.body.rentPriceMax,
+            rentPriceMin: req.body.rentPriceMin
         }
 
         fieldsToUpdate.requestBuildSurface = {
-            buildSurfaceMax: buildSurfaceMax,
-            buildSurfaceMin: buildSurfaceMin
+            buildSurfaceMax: req.body.buildSurfaceMax,
+            buildSurfaceMin: req.body.buildSurfaceMin
         }
 
         fieldsToUpdate.requestPlotSurface = {
-            plotSurfaceMax: plotSurfaceMax,
-            plotSurfaceMin: plotSurfaceMin
+            plotSurfaceMax: req.body.plotSurfaceMax,
+            plotSurfaceMin: req.body.plotSurfaceMin
         }
 
         fieldsToUpdate.requestBedrooms = {
-            bedroomsMax: bedroomsMax,
-            bedroomsMin: bedroomsMin
+            bedroomsMax: req.body.bedroomsMax,
+            bedroomsMin: req.body.bedroomsMin
         }
 
         fieldsToUpdate.requestBathrooms = {
-            bathroomsMax: bathroomsMax,
-            bathroomsMin: bathroomsMin
+            bathroomsMax: req.body.bathroomsMax,
+            bathroomsMin: req.body.bathroomsMin
         }
 
-        const updatedRequest = await Request.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
+        const updatedRequest = await Request.findByIdAndUpdate(req.body.id, fieldsToUpdate, { new: true })
 
         return res.status(200).json(updatedRequest);
 

@@ -96,187 +96,122 @@ const adGetOne = async (req, res, next) => {
 
 const adCreate = async (req, res, next) => {
     try {
-        const {
-            title,
-            adReference,
-            showOnWeb,
-            featuredOnMain,
-            street,
-            directionNumber,
-            directionFloor,
-            postalCode,
-            city,
-            country,
-            adType,
-            gvOperationClose,
-            owner,
-            consultant,
-            adBuildingType,
-            zone,
-            department,
-            webSubtitle,
-            buildSurface,
-            plotSurface,
-            floor,
-            disponibility,
-            surfaceFloor,
-            surfaceUse,
-            metersAvailables,
-            meterPrice,
-            surfaceDisponibility,
-            saleValue,
-            saleShowOnWeb,
-            rentValue,
-            rentShowOnWeb,
-            monthlyRent,
-            expenses,
-            expensesIncluded,
-            expensesValue,
-            expensesShowOnWeb,
-            ibiValue,
-            ibiShowOnWeb,
-            buildingYear,
-            bedrooms,
-            bathrooms,
-            parking,
-            indoorPool,
-            outdoorPool,
-            jobPositions,
-            subway,
-            bus,
-            lift,
-            dumbwaiter,
-            liftTruck,
-            airConditioning,
-            centralHeating,
-            subfloorHeating,
-            indoorAlarm,
-            outdoorAlarm,
-            fullHoursSecurity,
-            gunRack,
-            strongBox,
-            well,
-            homeAutomation,
-            centralVacuum,
-            padelCourt,
-            tennisCourt,
-            terrace,
-            storage,
-            swimmingPool,
-            garage,
-            falseCeiling,
-            qualityBathrooms,
-            freeHeight,
-            smokeOutlet,
-            accesControl,
-            web,
-            emailPDF,
-            distribution
-        } = req.body;
-
-        // const main = req.files.main ? req.files.main[0].location : "";
-        // const blueprint = req.files.blueprint ? req.files.blueprint[0].location : '';
-        // const others = req.files.others ? req.files.others.map(file => file.location) : '';
 
         const adDirection = {
-            address: { street, directionNumber, directionFloor },
-            postalCode,
-            city,
-            country
+            address: {
+                street: req.body.street,
+                directionNumber: req.body.directionNumber,
+                directionFloor: req.body.directionFloor
+            },
+            postalCode: req.body.postalCode,
+            city: req.body.city,
+            country: req.body.country
         };
 
         const surfacesBox = {
-            surfaceFloor,
-            surfaceUse,
-            metersAvailables,
-            meterPrice,
-            surfaceDisponibility,
+            surfaceFloor: req.body.surfaceFloor,
+            surfaceUse: req.body.surfaceUse,
+            metersAvailables: req.body.metersAvailables,
+            meterPrice: req.body.meterPrice,
+            surfaceDisponibility: req.body.surfaceDisponibility,
         }
 
         const price = {
-            sale: { saleValue, saleShowOnWeb },
-            rent: { rentValue, rentShowOnWeb }
+            sale: {
+                saleValue: req.body.saleValue,
+                saleShowOnWeb: req.body.saleShowOnWeb
+            },
+            rent: {
+                rentValue: req.body.rentValue,
+                rentShowOnWeb: req.body.rentShowOnWeb
+            }
         }
 
-        const communityExpenses = { expensesValue, expensesShowOnWeb }
-        const ibi = { ibiValue, ibiShowOnWeb }
+        const communityExpenses = {
+            expensesValue: req.body.expensesValue,
+            expensesShowOnWeb: req.body.expensesShowOnWeb
+        }
+        const ibi = {
+            ibiValue: req.body.ibiValue,
+            ibiShowOnWeb: req.body.ibiShowOnWeb
+        }
 
         const quality = {
-            bedrooms,
-            bathrooms,
-            parking,
-            indoorPool,
-            outdoorPool,
-            jobPositions,
-            subway,
-            bus,
+            bedrooms: req.body.bedrooms,
+            bathrooms: req.body.bathrooms,
+            parking: req.body.parking,
+            indoorPool: req.body.indoorPool,
+            outdoorPool: req.body.outdoorPool,
+            jobPositions: req.body.jobPositions,
+            subway: req.body.subway,
+            bus: req.body.bus,
             others: {
-                lift,
-                dumbwaiter,
-                liftTruck,
-                airConditioning,
-                centralHeating,
-                subfloorHeating,
-                indoorAlarm,
-                outdoorAlarm,
-                fullHoursSecurity,
-                gunRack,
-                strongBox,
-                well,
-                homeAutomation,
-                centralVacuum,
-                padelCourt,
-                tennisCourt,
-                terrace,
-                storage,
-                swimmingPool,
-                garage,
-                falseCeiling,
-                qualityBathrooms,
-                freeHeight,
-                smokeOutlet,
-                accesControl,
+                lift: req.body.lift,
+                dumbwaiter: req.body.dumbwaiter,
+                liftTruck: req.body.liftTruck,
+                airConditioning: req.body.airConditioning,
+                centralHeating: req.body.centralHeating,
+                subfloorHeating: req.body.subfloorHeating,
+                indoorAlarm: req.body.indoorAlarm,
+                outdoorAlarm: req.body.outdoorAlarm,
+                fullHoursSecurity: req.body.fullHoursSecurity,
+                gunRack: req.body.gunRack,
+                strongBox: req.body.strongBox,
+                well: req.body.well,
+                homeAutomation: req.body.homeAutomation,
+                centralVacuum: req.body.centralVacuum,
+                padelCourt: req.body.padelCourt,
+                tennisCourt: req.body.tennisCourt,
+                terrace: req.body.terrace,
+                storage: req.body.storage,
+                swimmingPool: req.body.swimmingPool,
+                garage: req.body.garage,
+                falseCeiling: req.body.falseCeiling,
+                qualityBathrooms: req.body.qualityBathrooms,
+                freeHeight: req.body.freeHeight,
+                smokeOutlet: req.body.smokeOutlet,
+                accesControl: req.body.accesControl,
             },
         }
 
         const description = {
-            web,
-            emailPDF,
-            distribution,
+            web: req.body.web,
+            emailPDF: req.body.emailPDF,
+            distribution: req.body.distribution,
         }
 
         const images = {
             main: "",
             blueprint: "",
-            others: "",
+            others: [],
         }
 
         const newAd = new Ad({
-            title,
-            adReference,
-            showOnWeb,
-            featuredOnMain,
+            title: req.body.title,
+            adReference: req.body.adReference,
+            showOnWeb: req.body.showOnWeb,
+            featuredOnMain: req.body.featuredOnMain,
             adDirection: adDirection,
-            adType,
-            gvOperationClose,
-            owner,
-            consultant,
-            adBuildingType,
-            zone,
-            department,
-            webSubtitle,
-            buildSurface,
-            plotSurface,
-            floor,
-            disponibility,
+            adType: req.body.adType,
+            gvOperationClose: req.body.gvOperationClose,
+            owner: req.body.owner,
+            consultant: req.body.consultant,
+            adBuildingType: req.body.adBuildingType,
+            zone: req.body.zone,
+            department: req.body.department,
+            webSubtitle: req.body.webSubtitle,
+            buildSurface: req.body.buildSurface,
+            plotSurface: req.body.plotSurface,
+            floor: req.body.floor,
+            disponibility: req.body.disponibility,
             surfacesBox,
             price,
-            monthlyRent,
-            expenses,
-            expensesIncluded,
+            monthlyRent: req.body.monthlyRent,
+            expenses: req.body.expenses,
+            expensesIncluded: req.body.expensesIncluded,
             communityExpenses,
             ibi,
-            buildingYear,
+            buildingYear: req.body.buildingYear,
             quality,
             description,
             images
@@ -291,185 +226,238 @@ const adCreate = async (req, res, next) => {
     }
 }
 
+const adMainImageUpload = async (req, res, next) => {
+    try {
+        const { id } = req.params
+
+        const ad = await Ad.findById(id);
+        const fieldsToUpdate = ad
+
+        fieldsToUpdate.images.main = req.file ? req.file.location : '';
+
+        const updatedAd = await Ad.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
+
+        return res.status(200).json(updatedAd);
+
+    } catch (err) {
+        return next(err);
+    }
+}
+
+const adBlueprintImageUpload = async (req, res, next) => {
+    try {
+        const { id } = req.params
+
+        const ad = await Ad.findById(id);
+        const fieldsToUpdate = ad
+
+        fieldsToUpdate.blueprint = req.file ? req.file.location : '';
+
+        const updatedAd = await Ad.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
+
+        return res.status(200).json(updatedAd);
+
+    } catch (err) {
+        return next(err);
+    }
+}
+
+const adOthersImagesUpload = async (req, res, next) => {
+    try {
+        const { id } = req.params
+
+        const ad = await Ad.findById(id);
+        const fieldsToUpdate = ad
+
+        const others = req.files ? req.files.map(file => file.location) : [];
+
+        if (ad.images.others.length !== 0) {
+            req.files.forEach((file) => {
+                if (!fieldsToUpdate.images.others.includes(file.location)) {
+                    fieldsToUpdate.images.others.push(file.location);
+                }
+            })
+        } else {
+            fieldsToUpdate.images.others = others
+        }
+
+        const updatedAd = await Ad.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
+
+        return res.status(200).json(updatedAd);
+
+    } catch (err) {
+        return next(err);
+    }
+}
+
+const adMainImagesDelete = async (req, res, next) => {
+    try {
+        const { id } = req.params
+        const { toDelete } = req.body
+
+        const ad = await Ad.findById(id);
+        const fieldsToUpdate = ad
+
+        fieldsToUpdate.images.main = ""
+
+        const updatedAd = await Ad.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
+
+        return res.status(200).json(updatedAd);
+
+    } catch (err) {
+        return next(err);
+    }
+}
+
+const adBlueprintImagesDelete = async (req, res, next) => {
+    try {
+        const { id } = req.params
+        const { toDelete } = req.body
+
+        const ad = await Ad.findById(id);
+        const fieldsToUpdate = ad
+
+        fieldsToUpdate.images.blueprint = ""
+
+        const updatedAd = await Ad.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
+
+        return res.status(200).json(updatedAd);
+
+    } catch (err) {
+        return next(err);
+    }
+}
+
+const adOthersImagesDelete = async (req, res, next) => {
+    try {
+        const { id } = req.params
+        const { toDelete } = req.body
+
+        const ad = await Ad.findById(id);
+        const fieldsToUpdate = ad
+
+        fieldsToUpdate.images.others = fieldsToUpdate.images.others.filter((location) => {
+            return toDelete !== location
+        })
+
+        const updatedAd = await Ad.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
+
+        return res.status(200).json(updatedAd);
+
+    } catch (err) {
+        return next(err);
+    }
+}
+
 const adUpdate = async (req, res, next) => {
     try {
-        const {
-            id,
-            title,
-            adReference,
-            showOnWeb,
-            featuredOnMain,
-            street,
-            directionNumber,
-            directionFloor,
-            postalCode,
-            city,
-            country,
-            adType,
-            gvOperationClose,
-            owner,
-            consultant,
-            adBuildingType,
-            zone,
-            department,
-            webSubtitle,
-            buildSurface,
-            plotSurface,
-            floor,
-            disponibility,
-            surfaceFloor,
-            surfaceUse,
-            metersAvailables,
-            meterPrice,
-            surfaceDisponibility,
-            saleValue,
-            saleShowOnWeb,
-            rentValue,
-            rentShowOnWeb,
-            monthlyRent,
-            expenses,
-            expensesIncluded,
-            expensesValue,
-            expensesShowOnWeb,
-            ibiValue,
-            ibiShowOnWeb,
-            buildingYear,
-            bedrooms,
-            bathrooms,
-            parking,
-            indoorPool,
-            outdoorPool,
-            jobPositions,
-            subway,
-            bus,
-            lift,
-            dumbwaiter,
-            liftTruck,
-            airConditioning,
-            centralHeating,
-            subfloorHeating,
-            indoorAlarm,
-            outdoorAlarm,
-            fullHoursSecurity,
-            gunRack,
-            strongBox,
-            well,
-            homeAutomation,
-            centralVacuum,
-            padelCourt,
-            tennisCourt,
-            terrace,
-            storage,
-            swimmingPool,
-            garage,
-            falseCeiling,
-            qualityBathrooms,
-            freeHeight,
-            smokeOutlet,
-            accesControl,
-            web,
-            emailPDF,
-            distribution
-        } = req.body;
+        const { id } = req.body;
 
         const fieldsToUpdate = {}
 
-        // const main = req.files.main ? req.files.main[0].location : "";
-        // const blueprint = req.files.blueprint ? req.files.blueprint[0].location : '';
-        // const others = req.files.others ? req.files.others.map(file => file.location) : '';
-
-        fieldsToUpdate.title = title
-        fieldsToUpdate.adReference = adReference
-        fieldsToUpdate.showOnWeb = showOnWeb
-        fieldsToUpdate.featuredOnMain = featuredOnMain
-        fieldsToUpdate.adType = adType
-        fieldsToUpdate.gvOperationClose = gvOperationClose
-        fieldsToUpdate.owner = owner
-        fieldsToUpdate.consultant = consultant
-        fieldsToUpdate.adBuildingType = adBuildingType
-        fieldsToUpdate.zone = zone
-        fieldsToUpdate.department = department
-        fieldsToUpdate.webSubtitle = webSubtitle
-        fieldsToUpdate.buildSurface = buildSurface
-        fieldsToUpdate.plotSurface = plotSurface
-        fieldsToUpdate.floor = floor
-        fieldsToUpdate.disponibility = disponibility
-        fieldsToUpdate.monthlyRent = monthlyRent
-        fieldsToUpdate.expenses = expenses
-        fieldsToUpdate.expensesIncluded = expensesIncluded
-        fieldsToUpdate.buildingYear = buildingYear
+        fieldsToUpdate.title = req.body.title
+        fieldsToUpdate.adReference = req.body.adReference
+        fieldsToUpdate.showOnWeb = req.body.showOnWeb
+        fieldsToUpdate.featuredOnMain = req.body.featuredOnMain
+        fieldsToUpdate.adType = req.body.adType
+        fieldsToUpdate.gvOperationClose = req.body.gvOperationClose
+        fieldsToUpdate.owner = req.body.owner
+        fieldsToUpdate.consultant = req.body.consultant
+        fieldsToUpdate.adBuildingType = req.body.adBuildingType
+        fieldsToUpdate.zone = req.body.zone
+        fieldsToUpdate.department = req.body.department
+        fieldsToUpdate.webSubtitle = req.body.webSubtitle
+        fieldsToUpdate.buildSurface = req.body.buildSurface
+        fieldsToUpdate.plotSurface = req.body.plotSurface
+        fieldsToUpdate.floor = req.body.floor
+        fieldsToUpdate.disponibility = req.body.disponibility
+        fieldsToUpdate.monthlyRent = req.body.monthlyRent
+        fieldsToUpdate.expenses = req.body.expenses
+        fieldsToUpdate.expensesIncluded = req.body.expensesIncluded
+        fieldsToUpdate.buildingYear = req.body.buildingYear
 
         fieldsToUpdate.adDirection = {
-            address: { street, directionNumber, directionFloor },
-            postalCode,
-            city,
-            country
+            address: {
+                street: req.body.street,
+                directionNumber: req.body.directionNumber,
+                directionFloor: req.body.directionFloor
+            },
+            postalCode: req.body.postalCode,
+            city: req.body.city,
+            country: req.body.country
         };
 
         fieldsToUpdate.surfacesBox = {
-            surfaceFloor,
-            surfaceUse,
-            metersAvailables,
-            meterPrice,
-            surfaceDisponibility,
+            surfaceFloor: req.body.surfaceFloor,
+            surfaceUse: req.body.surfaceUse,
+            metersAvailables: req.body.metersAvailables,
+            meterPrice: req.body.meterPrice,
+            surfaceDisponibility: req.body.surfaceDisponibility,
         }
 
         fieldsToUpdate.price = {
-            sale: { saleValue, saleShowOnWeb },
-            rent: { rentValue, rentShowOnWeb }
+            sale: {
+                saleValue: req.body.saleValue,
+                saleShowonWeb: req.body.saleShowOnWeb
+            },
+            rent: {
+                rentValue: req.body.rentValue,
+                rentShowOnWeb: req.body.rentShowOnWeb
+            }
         }
 
-        fieldsToUpdate.communityExpenses = { expensesValue, expensesShowOnWeb }
-        fieldsToUpdate.ibi = { ibiValue, ibiShowOnWeb }
+        fieldsToUpdate.communityExpenses = {
+            expensesValue: req.body.expensesValue,
+            expensesShowOnWeb: req.body.expensesShowOnWeb
+        }
+
+        fieldsToUpdate.ibi = {
+            ibiValue: req.body.ibiValue,
+            ibiShowOnWeb: req.body.ibiShowOnWeb
+        }
 
         fieldsToUpdate.quality = {
-            bedrooms,
-            bathrooms,
-            parking,
-            indoorPool,
-            outdoorPool,
-            jobPositions,
-            subway,
-            bus,
+            bedrooms: req.body.bedrooms,
+            bathrooms: req.body.bathrooms,
+            parking: req.body.parking,
+            indoorPool: req.body.indoorPool,
+            outdoorPool: req.body.outdoorPool,
+            jobPositions: req.body.jobPositions,
+            subway: req.body.subway,
+            bus: req.body.bus,
             others: {
-                lift,
-                dumbwaiter,
-                liftTruck,
-                airConditioning,
-                centralHeating,
-                subfloorHeating,
-                indoorAlarm,
-                outdoorAlarm,
-                fullHoursSecurity,
-                gunRack,
-                strongBox,
-                well,
-                homeAutomation,
-                centralVacuum,
-                padelCourt,
-                tennisCourt,
-                terrace,
-                storage,
-                swimmingPool,
-                garage,
-                falseCeiling,
-                qualityBathrooms,
-                freeHeight,
-                smokeOutlet,
-                accesControl,
+                lift: req.body.lift,
+                dumbwaiter: req.body.dumbwaiter,
+                liftTruck: req.body.liftTruck,
+                airConditioning: req.body.airConditioning,
+                centralHeating: req.body.centralHeating,
+                subfloorHeating: req.body.subfloorHeating,
+                indoorAlarm: req.body.indoorAlarm,
+                outdoorAlarm: req.body.outdoorAlarm,
+                fullHoursSecurity: req.body.fullHoursSecurity,
+                gunRack: req.body.gunRack,
+                strongBox: req.body.strongBox,
+                well: req.body.well,
+                homeAutomation: req.body.homeAutomation,
+                centralVacuum: req.body.centralVacuum,
+                padelCourt: req.body.padelCourt,
+                tennisCourt: req.body.tennisCourt,
+                terrace: req.body.terrace,
+                storage: req.body.storage,
+                swimmingPool: req.body.swimmingPool,
+                garage: req.body.garage,
+                falseCeiling: req.body.falseCeiling,
+                qualityBathrooms: req.body.qualityBathrooms,
+                freeHeight: req.body.freeHeight,
+                smokeOutlet: req.body.smokeOutlet,
+                accesControl: req.body.accesControl,
             },
         }
 
         fieldsToUpdate.description = {
-            web,
-            emailPDF,
-            distribution,
-        }
-
-        fieldsToUpdate.images = {
-            main: "",
-            blueprint: "",
-            others: "",
+            web: req.body.web,
+            emailPDF: req.body.emailPDF,
+            distribution: req.body.distribution,
         }
 
         const updatedAd = await Ad.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
@@ -501,6 +489,12 @@ module.exports = {
     adGetOne,
     adCreate,
     adUpdate,
+    adMainImageUpload,
+    adMainImagesDelete,
+    adBlueprintImageUpload,
+    adBlueprintImagesDelete,
+    adOthersImagesUpload,
+    adOthersImagesDelete,
     adDelete,
     adGetMatchedRequests
 }
