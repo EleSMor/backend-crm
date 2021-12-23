@@ -399,6 +399,7 @@ const adUpdate = async (req, res, next) => {
             surfaceDisponibility: req.body.surfaceDisponibility,
         }
 
+        console.log(req.body.rentValue);
         fieldsToUpdate.price = {
             sale: {
                 saleValue: req.body.saleValue,

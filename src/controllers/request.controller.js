@@ -7,7 +7,7 @@ const requestsGetAll = async (req, res, next) => {
     try {
         const requests = await Request
             .find()
-            .populate({ path: 'requestContact', select: 'fullName company' })
+            .populate({ path: 'requestContact', select: 'fullName company email' })
             .populate({ path: 'requestConsultant', select: 'fullName' })
         return res.status(200).json(requests);
     } catch (err) {

@@ -1,5 +1,4 @@
 const Contact = require('./../models/contact.model');
-const { getDate } = require('./utils');
 
 const contactGetAll = async (req, res, next) => {
     try {
