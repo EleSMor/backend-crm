@@ -35,7 +35,7 @@ const adSchema = new Schema(
             surfaceFloor: { type: String },
             surfaceUse: { type: String },
             metersAvailables: { type: String },
-            meterPrice: { type: String },
+            metersPrice: { type: String },
             surfaceDisponibility: { type: String },
         }],
         price: {

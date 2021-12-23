@@ -63,9 +63,9 @@ const contactCreate = async (req, res, next) => {
     try {
         const contactDirection = {
             address: {
-                street: req.body.street,
-                directionNumber: req.body.directionNumber,
-                directionFloor: req.body.directionFloor,
+                street: req.body.street ? req.body.street : "",
+                directionNumber: req.body.directionNumber ? req.body.directionNumber : "",
+                directionFloor: req.body.directionFloor ? req.body.directionFloor : "",
             },
             postalCode: req.body.postalCode,
             city: req.body.city,

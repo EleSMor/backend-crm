@@ -109,14 +109,6 @@ const adCreate = async (req, res, next) => {
             country: req.body.country
         };
 
-        const surfacesBox = {
-            surfaceFloor: req.body.surfaceFloor,
-            surfaceUse: req.body.surfaceUse,
-            metersAvailables: req.body.metersAvailables,
-            meterPrice: req.body.meterPrice,
-            surfaceDisponibility: req.body.surfaceDisponibility,
-        }
-
         const price = {
             sale: {
                 saleValue: req.body.saleValue,
@@ -205,7 +197,7 @@ const adCreate = async (req, res, next) => {
             plotSurface: req.body.plotSurface,
             floor: req.body.floor,
             disponibility: req.body.disponibility,
-            surfacesBox,
+            surfacesBox: req.body.surfacesBox,
             price,
             monthlyRent: req.body.monthlyRent,
             expenses: req.body.expenses,
@@ -334,7 +326,6 @@ const adOthersImagesDelete = async (req, res, next) => {
     try {
         const { id } = req.params
 
-        console.log(req.body.toDelete)
         deleteImage(req.body.toDelete)
 
         const ad = await Ad.findById(id);
@@ -391,19 +382,12 @@ const adUpdate = async (req, res, next) => {
             country: req.body.country
         };
 
-        fieldsToUpdate.surfacesBox = {
-            surfaceFloor: req.body.surfaceFloor,
-            surfaceUse: req.body.surfaceUse,
-            metersAvailables: req.body.metersAvailables,
-            meterPrice: req.body.meterPrice,
-            surfaceDisponibility: req.body.surfaceDisponibility,
-        }
+        fieldsToUpdate.surfacesBox = req.body.surfacesBox
 
-        console.log(req.body.rentValue);
         fieldsToUpdate.price = {
             sale: {
                 saleValue: req.body.saleValue,
-                saleShowonWeb: req.body.saleShowOnWeb
+                saleShowOnWeb: req.body.saleShowOnWeb
             },
             rent: {
                 rentValue: req.body.rentValue,
@@ -455,7 +439,7 @@ const adUpdate = async (req, res, next) => {
                 qualityBathrooms: req.body.qualityBathrooms,
                 freeHeight: req.body.freeHeight,
                 smokeOutlet: req.body.smokeOutlet,
-                accesControl: req.body.accesControl,
+                accessControl: req.body.accessControl,
             },
         }
 
@@ -464,6 +448,7 @@ const adUpdate = async (req, res, next) => {
             emailPDF: req.body.emailPDF,
             distribution: req.body.distribution,
         }
+
 
         const updatedAd = await Ad.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
 
