@@ -40,7 +40,7 @@ const requestLastReference = async (req, res, next) => {
 const requestGetByContact = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const request = await Request.find({ requestContact: id });
+        const request = await Request.find({ requestContact: id }).populate({ path: 'requestConsultant', select: 'fullName' });
 
         return res.status(200).json(request);
     } catch (err) {
@@ -56,7 +56,8 @@ const requestGetAdsMatched = async (req, res, next) => {
         // Query constructor
         let query = Ad.find();
 
-        query.where({ adStatus: "Activo" })
+        // Activar esta parte al final de la validación del CRUD
+        // query.where({ adStatus: "Activo" })
 
         if (request.requestAdType.length !== 0) query.where({ adType: { $all: request.requestAdType } })
         if (request.requestBuildingType.length !== 0) query.where({ adBuildingType: { $in: request.requestBuildingType } })
@@ -223,7 +224,7 @@ const requestCreate = async (req, res, next) => {
 
 const requestUpdate = async (req, res, next) => {
 
-    try {  
+    try {
         let fieldsToUpdate = {};
 
         fieldsToUpdate.requestContact = req.body.requestContact

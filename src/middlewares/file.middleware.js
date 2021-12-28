@@ -6,7 +6,8 @@ const { S3_ENDPOINT, BUCKET_NAME } = process.env
 
 const spacesEndpoint = new aws.Endpoint(S3_ENDPOINT);
 const s3 = new aws.S3({
-    endpoint: spacesEndpoint,
+    endpoint: spacesEndpoint.host,
+    region: 'eu-central-1',
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 })
@@ -42,7 +43,7 @@ const upload = multer({
 
 const deleteImage = (req, res) => {
     let key = req.substring(48)
- 
+
     const params = {
         Bucket: BUCKET_NAME,
         Key: decodeURI(key)
