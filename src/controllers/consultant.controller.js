@@ -55,7 +55,7 @@ const consultantUpdate = async (req, res, next) => {
     try {
         const fieldsToUpdate = {};
 
-        const consultant = await Consultant.findById(id)
+        const consultant = await Consultant.findById(req.body.id)
         const isValidPassword = await bcrypt.compare(req.body.consultantPassword, consultant.consultantPassword);
 
         if (!isValidPassword) {

@@ -29,7 +29,6 @@ const upload = multer({
         bucket: BUCKET_NAME,
         acl: 'public-read',
         metadata: (req, file, cb) => {
-            // console.log("archivo:", file);
             cb(null, {
                 fieldname: file.fieldname
             })
@@ -49,13 +48,10 @@ const deleteImage = (req, res) => {
         Key: decodeURI(key)
     };
 
-    console.log("borrado de: ", req);
     s3.deleteObject(params, function (err, data) {
         if (err) {
-            console.log(err);
             return res.send({ error: err });
         }
-        console.log(data);
     });
 }
 
