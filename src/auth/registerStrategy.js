@@ -20,6 +20,7 @@ const registerStrategy = new LocalStrategy(
         try {
             const { fullName, consultantMobileNumber, consultantPhoneNumber, position, profession, office1, office2, comments } = req.body
 
+            console.log(req.body)
             const existingEmail = await Consultant.findOne({ consultantEmail });
             if (existingEmail) {
                 const error = new Error("Este correo ya se encuentra en nuestra base de datos");
@@ -46,8 +47,8 @@ const registerStrategy = new LocalStrategy(
                 return done(error);
             }
             
-            const avatar = req.files.avatar ? req.files.avatar[0].location : "";
-            const companyUnitLogo = req.files.companyUnitLogo ? req.files.companyUnitLogo[0].location : '';
+            const avatar = req.files?.avatar ? req.files.avatar[0].location : "";
+            const companyUnitLogo = req.files?.companyUnitLogo ? req.files.companyUnitLogo[0].location : '';
 
             const saltRounds = 10;
             const passwordHash = await bcrypt.hash(consultantPassword, saltRounds);
@@ -68,6 +69,7 @@ const registerStrategy = new LocalStrategy(
                 consultantComments: comments,
             })
 
+            console.log(newConsultant)
             const savedConsultant = await newConsultant.save();
             savedConsultant.password = null;
 

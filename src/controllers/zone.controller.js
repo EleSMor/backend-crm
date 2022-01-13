@@ -29,16 +29,10 @@ const zoneGetOne = async (req, res, next) => {
 
 const zoneCreate = async (req, res, next) => {
     try {
-        const {
-            zone,
-            name,
-            id
-        } = req.body;
-
         const newZone = new Zone({
-            zone,
-            name,
-            id
+            zone: req.body.zone,
+            name: req.body.name,
+            id: req.body.id
         })
 
         const zoneCreated = await newZone.save();

@@ -22,6 +22,7 @@ const contactSchema = new Schema(
         },
         contactComments: { type: String },
         notReceiveCommunications: { type: Boolean },
+        consultant: { type: mongoose.Types.ObjectId, ref: 'consultants' }
     },
     {
         timestamps: true

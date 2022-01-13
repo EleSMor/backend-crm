@@ -8,6 +8,7 @@ const adGetAll = async (req, res, next) => {
             .find()
             .populate({ path: 'owner', select: 'fullName' })
             .populate({ path: 'consultant', select: 'fullName' })
+            .populate({ path: 'zone', select: 'zone name' })
         return res.status(200).json(ads);
     } catch (err) {
         return next(err);

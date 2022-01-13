@@ -2,7 +2,7 @@ const Contact = require('./../models/contact.model');
 
 const contactGetAll = async (req, res, next) => {
     try {
-        const contacts = await Contact.find();
+        const contacts = await Contact.find().populate({ path: 'consultant', select: 'fullName' });
 
         return res.status(200).json(contacts)
     } catch (err) {
@@ -82,6 +82,7 @@ const contactCreate = async (req, res, next) => {
             contactDirection,
             contactComments: req.body.contactComments,
             notReceiveCommunications: req.body.notReceiveCommunications,
+            contactConsultant: req.body.contactConsultant,
         })
 
         const contactCreated = await newContact.save();

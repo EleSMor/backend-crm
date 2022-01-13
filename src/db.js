@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const DB_URL = process.env.MONGO_URI || 'mongodb+srv://db_user_admin:oud73k5MxqnJhF0v@cluster0.c4emj.mongodb.net/gvre-crm?retryWrites=true&w=majority';
+const DB_URL = process.env.MONGODB_URI || 'mongodb+srv://gvreadmin:P9vxkd801T4f35F2@db-mongodb-prod-crm-e062a978.mongo.ondigitalocean.com/gvre?authSource=admin&replicaSet=db-mongodb-prod-crm&tls=true&tlsCAFile=/Users/Ele/certificates/ca-certificate.crt';
 
 const connect = async () => {
     try {

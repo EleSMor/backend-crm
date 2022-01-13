@@ -24,8 +24,8 @@ const consultantGetOne = async (req, res, next) => {
 const consultantCreate = async (req, res, next) => {
 
     try {
-        const avatar = req.files.avatar[0] ? req.files.avatar[0].location : "";
-        const companyUnitLogo = req.files.companyUnitLogo[0] ? req.files.companyUnitLogo[0].location : '';
+        const avatar = req.files?.avatar[0] ? req.files.avatar[0].location : "";
+        const companyUnitLogo = req.files?.companyUnitLogo[0] ? req.files.companyUnitLogo[0].location : '';
 
         const newConsultant = new Consultant({
             consultantEmail: req.body.consultantEmail,
