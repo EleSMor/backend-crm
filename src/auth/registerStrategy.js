@@ -20,7 +20,6 @@ const registerStrategy = new LocalStrategy(
         try {
             const { fullName, consultantMobileNumber, consultantPhoneNumber, position, profession, office1, office2, comments } = req.body
 
-            console.log(req.body)
             const existingEmail = await Consultant.findOne({ consultantEmail });
             if (existingEmail) {
                 const error = new Error("Este correo ya se encuentra en nuestra base de datos");
@@ -69,7 +68,6 @@ const registerStrategy = new LocalStrategy(
                 consultantComments: comments,
             })
 
-            console.log(newConsultant)
             const savedConsultant = await newConsultant.save();
             savedConsultant.password = null;
 

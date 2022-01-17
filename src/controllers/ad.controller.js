@@ -23,7 +23,7 @@ const adGetMatchedRequests = async (req, res, next) => {
         // Query constructor
         let query = Request.find();
 
-        if (ad.adType.length !== 0) query.where({ requestAdType: { $all: ad.adType } })
+        if (ad.adType.length !== 0) query.where({ requestAdType: { $in: ad.adType } })
         if (ad.adBuildingType.length !== 0) query.where({ requestBuildingType: { $in: ad.adBuildingType } })
         if (ad.zone.length !== 0) query.where({ requestZone: { $in: ad.zone } })
 

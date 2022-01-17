@@ -103,7 +103,7 @@ const consultantDelete = async (req, res, next) => {
 
         const deleted = await Consultant.findByIdAndDelete(id);
         if (deleted) response = "Consultor borrado de la base de datos";
-        else response = "No se ha podido encontrar este consultor. ¿Estás seguro de que existe?";
+        else response = "No se ha podido encontrar este consultor.";
 
         return res.status(200).json(response);
     } catch (error) {
@@ -116,5 +116,5 @@ module.exports = {
     consultantGetOne,
     consultantUpdate,
     consultantCreate,
-    consultantDelete
+    consultantDelete,
 }

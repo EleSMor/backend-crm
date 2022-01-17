@@ -14,5 +14,4 @@ router.put('/edit', upload.fields([{ name: 'avatar' }, { name: 'companyUnitLogo'
 
 router.delete('/delete/:id', consultantDelete);
 
-
 module.exports = router;

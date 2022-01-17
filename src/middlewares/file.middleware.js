@@ -50,7 +50,7 @@ const deleteImage = (req, res) => {
 
     s3.deleteObject(params, function (err, data) {
         if (err) {
-            return res.send({ error: err });
+            return err;
         }
     });
 }

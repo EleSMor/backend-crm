@@ -59,8 +59,8 @@ const requestGetAdsMatched = async (req, res, next) => {
         // Activar esta parte al final de la validación del CRUD
         // query.where({ adStatus: "Activo" })
 
-        if (request.requestAdType.length !== 0) query.where({ adType: { $all: request.requestAdType } })
-        if (request.requestBuildingType.length !== 0) query.where({ adBuildingType: { $in: request.requestBuildingType } })
+        if (request.requestAdType.length !== 0) query.where({ adType: { $in: request.requestAdType } })
+        if (request.requestBuildingType.length !== 0) query.where({ adBuildingType: request.requestBuildingType })
         if (request.requestZone.length !== 0) query.where({ zone: { $in: request.requestZone } })
 
         if (!request.requestSalePrice.salePriceMax) request.requestSalePrice.salePriceMax = 99999999

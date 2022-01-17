@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const DB_URL = process.env.MONGODB_URI || 'mongodb+srv://gvreadmin:P9vxkd801T4f35F2@db-mongodb-prod-crm-e062a978.mongo.ondigitalocean.com/gvre?authSource=admin&replicaSet=db-mongodb-prod-crm&tls=true&tlsCAFile=/Users/Ele/certificates/ca-certificate.crt';
+const DB_URL = process.env.MONGODB_URI;
 
 const connect = async () => {
     try {
