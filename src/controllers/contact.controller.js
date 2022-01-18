@@ -82,7 +82,7 @@ const contactCreate = async (req, res, next) => {
             contactDirection,
             contactComments: req.body.contactComments,
             notReceiveCommunications: req.body.notReceiveCommunications,
-            contactConsultant: req.body.contactConsultant,
+            consultant: req.body.consultant,
         })
 
         const contactCreated = await newContact.save();
