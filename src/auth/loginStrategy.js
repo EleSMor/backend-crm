@@ -16,7 +16,7 @@ const loginStrategy = new LocalStrategy(
         try {
 
             // User can login with consultantEmail or consultantMobileNumber
-            let existingConsultant = await Consultant.findOne({ $or: [{ consultantEmail: identity }, { consultantMobileNumber: identity }] });
+            let existingConsultant = await Consultant.findOne({ consultantEmail: identity });
 
             if (!existingConsultant) {
                 const error = new Error("Este usuario no existe");
