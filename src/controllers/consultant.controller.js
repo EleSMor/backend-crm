@@ -1,6 +1,7 @@
 const Consultant = require('./../models/consultant.model');
 const bcrypt = require('bcrypt');
 const { deleteImage } = require('../middlewares/file.middleware');
+const { isValidPassword, isValidEmail } = require('../auth/utils');
 
 const consultantGetAll = async (req, res, next) => {
     try {
@@ -56,13 +57,34 @@ const consultantUpdate = async (req, res, next) => {
         const fieldsToUpdate = {};
 
         const consultant = await Consultant.findById(req.body.id)
-        const isValidPassword = await bcrypt.compare(req.body.consultantPassword, consultant.consultantPassword);
 
-        if (!isValidPassword) {
+        if (req.body.consultantEmail !== consultant.consultantEmail) {
+            const existingEmail = await Consultant.findOne({ consultantEmail: req.body.consultantEmail });
+            if (existingEmail) {
+                const error = new Error("Este correo ya se encuentra en nuestra base de datos");
+                error.status = 400;
+                return next(error);
+            }
+            if (isValidEmail(req.body.consultantEmail) === false) {
+                const error = new Error('Formato de correo inválido');
+                error.status = 400;
+                return next(error);
+            } else fieldsToUpdate.consultantEmail = req.body.consultantEmail
+        } else { fieldsToUpdate.consultantEmail = req.body.consultantEmail }
+
+
+        const isEqualToLast = req.body.consultantPassword === consultant.consultantPassword;
+        if (!isEqualToLast) {
+
+            if (isValidPassword(req.body.consultantPassword) === false) {
+                const error = new Error('La contraseña debe contener al menos entre 8 y 16 carácteres, 1 mayúscula, 1 minúscula y 1 dígito')
+                error.status = 400;
+                return next(error);
+            }
             fieldsToUpdate.consultantPassword = await bcrypt.hash(req.body.consultantPassword, 10);
+
         } else { fieldsToUpdate.consultantPassword = req.body.consultantPassword }
 
-        fieldsToUpdate.consultantEmail = req.body.consultantEmail
         fieldsToUpdate.fullName = req.body.fullName
         fieldsToUpdate.consultantMobileNumber = req.body.consultantMobileNumber
         fieldsToUpdate.consultantPhoneNumber = req.body.consultantPhoneNumber
