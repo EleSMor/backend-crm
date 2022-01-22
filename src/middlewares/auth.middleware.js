@@ -2,7 +2,7 @@ const isAuth = (req, res, next) => {
     if (req.isAuthenticated()) {
         return next();
     } else {
-        return res.json('/auth/login')
+        return res.json('Necesita un usuario')
     }
 }
 
@@ -11,10 +11,10 @@ const isAdmin = (req, res, next) => {
         if (req.user.role === "Admin") {
             return next();
         } else {
-            return res.redirect('/');
+            return res.json('/');
         };
     } else {
-        return res.redirect('/auth/login');
+        return res.json('/');
     };
 };
 
