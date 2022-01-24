@@ -27,7 +27,6 @@ const adGetMatchedRequests = async (req, res, next) => {
         if (ad.adBuildingType.length !== 0) query.where({ requestBuildingType: { $in: ad.adBuildingType } })
         if (ad.zone.length !== 0) query.where({ requestZone: { $in: ad.zone } })
 
-        if (!ad.sale.saleValue) ad.sale.saleValue = 0
         query.where({
             requestSalePrice: {
                 $gte: { salePriceMax: ad.sale.saleValue },
@@ -35,66 +34,53 @@ const adGetMatchedRequests = async (req, res, next) => {
             },
         })
 
-        if (!ad.rent.rentValue) {
-            ad.rent.rentValue = 0
-            query.where({
-                requestRentPrice: {
-                    $gte: { rentPriceMax: ad.rent.rentValue },
-                    $lte: { rentPriceMin: ad.rent.rentValue }
-                },
-            })
-        }
+        query.where({
+            requestRentPrice: {
+                $gte: { rentPriceMax: ad.rent.rentValue },
+                $lte: { rentPriceMin: ad.rent.rentValue }
+            },
+        })
 
-        if (!ad.buildSurface) {
-            ad.buildSurface = 0
-            query.where({
-                requestBuildSurface: {
-                    $gte: { buildSurfaceMax: ad.buildSurface },
-                    $lte: { buildSurfaceMin: ad.buildSurface }
-                }
-            })
-        }
+        query.where({
+            requestBuildSurface: {
+                $gte: { buildSurfaceMax: ad.buildSurface },
+                $lte: { buildSurfaceMin: ad.buildSurface }
+            }
+        })
 
-        if (!ad.plotSurface) {
-            ad.plotSurface = 0
-            query.where({
-                requestPlotSurface: {
-                    $gte: { plotSurfaceMax: ad.plotSurface },
-                    $lte: { plotSurfaceMin: ad.plotSurface }
-                },
-            })
-        }
+        query.where({
+            requestPlotSurface: {
+                $gte: { plotSurfaceMax: ad.plotSurface },
+                $lte: { plotSurfaceMin: ad.plotSurface }
+            },
+        })
 
-        if (!ad.quality.bedrooms) {
-            ad.quality.bedrooms = 0
-            query.where({
-                requestBedrooms: {
-                    $gte: { bedroomsMax: ad.quality.bedrooms },
-                    $lte: { bedroomsMin: ad.quality.bedrooms }
-                },
-            })
-        }
 
-        if (!ad.quality.bathrooms) {
-            ad.quality.bathrooms = 0
-            query.where({
-                requestBathrooms: {
-                    $gte: { bathroomsMax: ad.quality.bathrooms },
-                    $lte: { bathroomsMin: ad.quality.bathrooms }
-                },
-            })
-        }
+        query.where({
+            requestBedrooms: {
+                $gte: { bedroomsMax: ad.quality.bedrooms },
+                $lte: { bedroomsMin: ad.quality.bedrooms }
+            },
+        })
+
+        query.where({
+            requestBathrooms: {
+                $gte: { bathroomsMax: ad.quality.bathrooms },
+                $lte: { bathroomsMin: ad.quality.bathrooms }
+            },
+        })
+
 
         query.populate({ path: 'requestContact', select: 'fullName company email consultantComments' })
 
         // Activar esta parte al final de la validación del CRUD
 
-        // if (ad.adStatus === "Activo") {
-        // const requests = await query.exec()
-        // return res.status(200).json(requests);
-        // } else {
-        //     return next();
-        // }
+        if (ad.adStatus === "Activo") {
+        const requests = await query.exec()
+        return res.status(200).json(requests);
+        } else {
+            return next();
+        }
         const requests = await query.exec()
         return res.status(200).json(requests);
 
@@ -201,6 +187,7 @@ const adCreate = async (req, res, next) => {
         const newAd = new Ad({
             title: req.body.title,
             adReference: req.body.adReference,
+            adStatus: req.body.adStatus,
             showOnWeb: req.body.showOnWeb,
             featuredOnMain: req.body.featuredOnMain,
             adDirection: adDirection,
@@ -371,8 +358,9 @@ const adUpdate = async (req, res, next) => {
         const fieldsToUpdate = {}
 
         fieldsToUpdate.title = req.body.title
-        fieldsToUpdate.adReference = req.body.adReference
         fieldsToUpdate.showOnWeb = req.body.showOnWeb
+        fieldsToUpdate.adStatus = req.body.adStatus
+        fieldsToUpdate.adReference = req.body.adReference
         fieldsToUpdate.featuredOnMain = req.body.featuredOnMain
         fieldsToUpdate.adType = req.body.adType
         fieldsToUpdate.gvOperationClose = req.body.gvOperationClose

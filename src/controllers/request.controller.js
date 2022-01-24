@@ -61,13 +61,12 @@ const requestGetAdsMatched = async (req, res, next) => {
         if (request.requestBuildingType.length !== 0) query.where({ adBuildingType: { $in: request.requestBuildingType } })
         if (request.requestZone.length !== 0) query.where({ zone: { $in: request.requestZone } })
 
-        // if (!request.requestSalePrice.salePriceMax) request.requestSalePrice.salePriceMax = 99999999
-        // if (!request.requestSalePrice.salePriceMin) request.requestSalePrice.salePriceMin = 0
-
+        if (!request.requestSalePrice.salePriceMax) request.requestSalePrice.salePriceMax = 99999999
+        if (!request.requestSalePrice.salePriceMin) request.requestSalePrice.salePriceMin = 0
         query.where({
             sale: {
-                $lte: { saleValue: request.requestSalePrice.salePriceMax },
-                $gte: { saleValue: request.requestSalePrice.salePriceMin }
+                $gte: { saleValue: request.requestSalePrice.salePriceMin },
+                $lte: { saleValue: request.requestSalePrice.salePriceMax + 1 }
             }
         })
 
@@ -75,7 +74,7 @@ const requestGetAdsMatched = async (req, res, next) => {
         if (!request.requestRentPrice.rentPriceMin) request.requestRentPrice.rentPriceMin = 0
         query.where({
             rent: {
-                $lte: { rentValue: request.requestRentPrice.rentPriceMax },
+                $lte: { rentValue: request.requestRentPrice.rentPriceMax + 1 },
                 $gte: { rentValue: request.requestRentPrice.rentPriceMin }
             }
         })
@@ -84,8 +83,8 @@ const requestGetAdsMatched = async (req, res, next) => {
         if (!request.requestBuildSurface.buildSurfaceMin) request.requestBuildSurface.buildSurfaceMin = 0
         query.where({
             buildSurface: {
-                $lte: request.requestBuildSurface.buildSurfaceMax,
-                $gte: request.requestBuildSurface.buildSurfaceMin
+                $gte: request.requestBuildSurface.buildSurfaceMin,
+                $lte: request.requestBuildSurface.buildSurfaceMax
             }
         })
 
@@ -93,8 +92,8 @@ const requestGetAdsMatched = async (req, res, next) => {
         if (!request.requestPlotSurface.plotSurfaceMin) request.requestPlotSurface.plotSurfaceMin = 0
         query.where({
             plotSurface: {
-                $lte: request.requestPlotSurface.plotSurfaceMax,
-                $gte: request.requestPlotSurface.plotSurfaceMin
+                $gte: request.requestPlotSurface.plotSurfaceMin,
+                $lte: request.requestPlotSurface.plotSurfaceMax
             }
         })
 
