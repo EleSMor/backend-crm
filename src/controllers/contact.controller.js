@@ -2,7 +2,7 @@ const Contact = require('./../models/contact.model');
 
 const contactGetAll = async (req, res, next) => {
     try {
-        const contacts = await Contact.find().populate({ path: 'consultant', select: 'fullName' });
+        const contacts = await Contact.find().sort({ createdAt: -1 }).populate({ path: 'consultant', select: 'fullName' });
 
         return res.status(200).json(contacts)
     } catch (err) {

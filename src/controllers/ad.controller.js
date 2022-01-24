@@ -27,53 +27,63 @@ const adGetMatchedRequests = async (req, res, next) => {
         if (ad.adBuildingType.length !== 0) query.where({ requestBuildingType: { $in: ad.adBuildingType } })
         if (ad.zone.length !== 0) query.where({ requestZone: { $in: ad.zone } })
 
-        if (!ad.price.sale.saleValue) ad.price.sale.saleValue = 0
+        if (!ad.sale.saleValue) ad.sale.saleValue = 0
         query.where({
             requestSalePrice: {
-                $gte: { salePriceMax: ad.price.sale.saleValue },
-                $lte: { salePriceMin: ad.price.sale.saleValue }
+                $gte: { salePriceMax: ad.sale.saleValue },
+                $lte: { salePriceMin: ad.sale.saleValue }
             },
         })
 
-        if (!ad.price.rent.rentValue) ad.price.rent.rentValue = 0
-        query.where({
-            requestRentPrice: {
-                $gte: { rentPriceMax: ad.price.rent.rentValue },
-                $lte: { rentPriceMin: ad.price.rent.rentValue }
-            },
-        })
+        if (!ad.rent.rentValue) {
+            ad.rent.rentValue = 0
+            query.where({
+                requestRentPrice: {
+                    $gte: { rentPriceMax: ad.rent.rentValue },
+                    $lte: { rentPriceMin: ad.rent.rentValue }
+                },
+            })
+        }
 
-        if (!ad.buildSurface) ad.buildSurface = 0
-        query.where({
-            requestBuildSurface: {
-                $gte: { buildSurfaceMax: ad.buildSurface },
-                $lte: { buildSurfaceMin: ad.buildSurface }
-            }
-        })
+        if (!ad.buildSurface) {
+            ad.buildSurface = 0
+            query.where({
+                requestBuildSurface: {
+                    $gte: { buildSurfaceMax: ad.buildSurface },
+                    $lte: { buildSurfaceMin: ad.buildSurface }
+                }
+            })
+        }
 
-        if (!ad.plotSurface) ad.plotSurface = 0
-        query.where({
-            requestPlotSurface: {
-                $gte: { plotSurfaceMax: ad.plotSurface },
-                $lte: { plotSurfaceMin: ad.plotSurface }
-            },
-        })
+        if (!ad.plotSurface) {
+            ad.plotSurface = 0
+            query.where({
+                requestPlotSurface: {
+                    $gte: { plotSurfaceMax: ad.plotSurface },
+                    $lte: { plotSurfaceMin: ad.plotSurface }
+                },
+            })
+        }
 
-        if (!ad.quality.bedrooms) ad.quality.bedrooms = 0
-        query.where({
-            requestBedrooms: {
-                $gte: { bedroomsMax: ad.quality.bedrooms },
-                $lte: { bedroomsMin: ad.quality.bedrooms }
-            },
-        })
+        if (!ad.quality.bedrooms) {
+            ad.quality.bedrooms = 0
+            query.where({
+                requestBedrooms: {
+                    $gte: { bedroomsMax: ad.quality.bedrooms },
+                    $lte: { bedroomsMin: ad.quality.bedrooms }
+                },
+            })
+        }
 
-        if (!ad.quality.bathrooms) ad.quality.bathrooms = 0
-        query.where({
-            requestBathrooms: {
-                $gte: { bathroomsMax: ad.quality.bathrooms },
-                $lte: { bathroomsMin: ad.quality.bathrooms }
-            },
-        })
+        if (!ad.quality.bathrooms) {
+            ad.quality.bathrooms = 0
+            query.where({
+                requestBathrooms: {
+                    $gte: { bathroomsMax: ad.quality.bathrooms },
+                    $lte: { bathroomsMin: ad.quality.bathrooms }
+                },
+            })
+        }
 
         query.populate({ path: 'requestContact', select: 'fullName company email consultantComments' })
 
@@ -118,16 +128,16 @@ const adCreate = async (req, res, next) => {
             country: req.body.country
         };
 
-        const price = {
-            sale: {
-                saleValue: req.body.saleValue,
-                saleShowOnWeb: req.body.saleShowOnWeb
-            },
-            rent: {
-                rentValue: req.body.rentValue,
-                rentShowOnWeb: req.body.rentShowOnWeb
-            }
+        const sale = {
+            saleValue: req.body.saleValue,
+            saleShowOnWeb: req.body.saleShowOnWeb
         }
+
+        const rent = {
+            rentValue: req.body.rentValue,
+            rentShowOnWeb: req.body.rentShowOnWeb
+        }
+
 
         const communityExpenses = {
             expensesValue: req.body.expensesValue,
@@ -207,7 +217,8 @@ const adCreate = async (req, res, next) => {
             floor: req.body.floor,
             disponibility: req.body.disponibility,
             surfacesBox: req.body.surfacesBox,
-            price,
+            sale,
+            rent,
             monthlyRent: req.body.monthlyRent,
             expenses: req.body.expenses,
             expensesIncluded: req.body.expensesIncluded,
@@ -393,15 +404,13 @@ const adUpdate = async (req, res, next) => {
 
         fieldsToUpdate.surfacesBox = req.body.surfacesBox
 
-        fieldsToUpdate.price = {
-            sale: {
-                saleValue: req.body.saleValue,
-                saleShowOnWeb: req.body.saleShowOnWeb
-            },
-            rent: {
-                rentValue: req.body.rentValue,
-                rentShowOnWeb: req.body.rentShowOnWeb
-            }
+        fieldsToUpdate.sale = {
+            saleValue: req.body.saleValue,
+            saleShowOnWeb: req.body.saleShowOnWeb
+        }
+        fieldsToUpdate.rent = {
+            rentValue: req.body.rentValue,
+            rentShowOnWeb: req.body.rentShowOnWeb
         }
 
         fieldsToUpdate.communityExpenses = {

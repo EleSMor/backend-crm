@@ -1,7 +1,5 @@
 const Request = require('./../models/request.model');
 const Ad = require('./../models/ad.model');
-const mongoose = require('mongoose');
-
 
 const requestsGetAll = async (req, res, next) => {
     try {
@@ -57,19 +55,20 @@ const requestGetAdsMatched = async (req, res, next) => {
         let query = Ad.find();
 
         // Activar esta parte al final de la validación del CRUD
-        // query.where({ adStatus: "Activo" })
+        query.where({ adStatus: "Activo" })
 
         if (request.requestAdType.length !== 0) query.where({ adType: { $in: request.requestAdType } })
         if (request.requestBuildingType.length !== 0) query.where({ adBuildingType: { $in: request.requestBuildingType } })
         if (request.requestZone.length !== 0) query.where({ zone: { $in: request.requestZone } })
 
-        if (!request.requestSalePrice.salePriceMax) request.requestSalePrice.salePriceMax = 99999999
-        if (!request.requestSalePrice.salePriceMin) request.requestSalePrice.salePriceMin = 0
+        // if (!request.requestSalePrice.salePriceMax) request.requestSalePrice.salePriceMax = 99999999
+        // if (!request.requestSalePrice.salePriceMin) request.requestSalePrice.salePriceMin = 0
+
         query.where({
             sale: {
                 $lte: { saleValue: request.requestSalePrice.salePriceMax },
-                $gte: { saleValue: request.requestSalePrice.salePriceMin },
-            },
+                $gte: { saleValue: request.requestSalePrice.salePriceMin }
+            }
         })
 
         if (!request.requestRentPrice.rentPriceMax) request.requestRentPrice.rentPriceMax = 99999
@@ -77,36 +76,44 @@ const requestGetAdsMatched = async (req, res, next) => {
         query.where({
             rent: {
                 $lte: { rentValue: request.requestRentPrice.rentPriceMax },
-                $gte: { rentValue: request.requestRentPrice.rentPriceMin },
-            },
+                $gte: { rentValue: request.requestRentPrice.rentPriceMin }
+            }
         })
 
         if (!request.requestBuildSurface.buildSurfaceMax) request.requestBuildSurface.buildSurfaceMax = 9999
         if (!request.requestBuildSurface.buildSurfaceMin) request.requestBuildSurface.buildSurfaceMin = 0
         query.where({
-            $lte: { buildSurface: request.requestBuildSurface.buildSurfaceMax },
-            $gte: { buildSurface: request.requestBuildSurface.buildSurfaceMin },
+            buildSurface: {
+                $lte: request.requestBuildSurface.buildSurfaceMax,
+                $gte: request.requestBuildSurface.buildSurfaceMin
+            }
         })
 
         if (!request.requestPlotSurface.plotSurfaceMax) request.requestPlotSurface.plotSurfaceMax = 99999
         if (!request.requestPlotSurface.plotSurfaceMin) request.requestPlotSurface.plotSurfaceMin = 0
         query.where({
-            $lte: { plotSurface: request.requestPlotSurface.plotSurfaceMax },
-            $gte: { plotSurface: request.requestPlotSurface.plotSurfaceMin },
+            plotSurface: {
+                $lte: request.requestPlotSurface.plotSurfaceMax,
+                $gte: request.requestPlotSurface.plotSurfaceMin
+            }
         })
 
         if (!request.requestBedrooms.bedroomsMax) request.requestBedrooms.bedroomsMax = 99
         if (!request.requestBedrooms.bedroomsMin) request.requestBedrooms.bedroomsMin = 0
         query.where({
-            $lte: { bedrooms: request.requestBedrooms.bedroomsMax },
-            $gte: { bedrooms: request.requestBedrooms.bedroomsMin },
+            quality: {
+                $lte: { bedrooms: request.requestBedrooms.bedroomsMax },
+                $gte: { bedrooms: request.requestBedrooms.bedroomsMin }
+            }
         })
 
         if (!request.requestBathrooms.bathroomsMax) request.requestBathrooms.bathroomsMax = 99
         if (!request.requestBathrooms.bathroomsMin) request.requestBathrooms.bathroomsMin = 0
         query.where({
-            $lte: { bathrooms: request.requestBathrooms.bathroomsMax },
-            $gte: { bathrooms: request.requestBathrooms.bathroomsMin },
+            quality: {
+                $lte: { bathrooms: request.requestBathrooms.bathroomsMax },
+                $gte: { bathrooms: request.requestBathrooms.bathroomsMin }
+            }
         })
 
         const ad = await query.exec()
@@ -133,10 +140,10 @@ const requestGetNewMatched = async (req, res, next) => {
         } = req.body;
 
         const ads = await Ad.find({
-            adBuildingType: { $all: requestBuildingType },
+            adBuildingType: { $in: requestBuildingType },
         })
             .and({
-                zone: { $all: requestZone },
+                zone: { $in: requestZone },
             })
             .and({
                 sale: {

@@ -40,7 +40,8 @@ const consultantCreate = async (req, res, next) => {
             profession: req.body.profession,
             office1: req.body.office1,
             office2: req.body.office2,
-            consultantComments: req.body.comments
+            consultantComments: req.body.comments,
+            role: req.body.role
         })
 
         const consultantCreated = await newConsultant.save();
@@ -93,6 +94,7 @@ const consultantUpdate = async (req, res, next) => {
         fieldsToUpdate.office1 = req.body.office1
         fieldsToUpdate.office2 = req.body.office2
         fieldsToUpdate.consultantComments = req.body.comments
+        fieldsToUpdate.role = req.body.role
 
         if (Object.entries(req.files).length !== 0) {
             if (req.files.avatar) {

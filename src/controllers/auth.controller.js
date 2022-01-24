@@ -14,7 +14,6 @@ const registerPost = (req, res, next) => {
         position,
     } = req.body;
 
-    console.log(req.body)
     if (!consultantEmail || !consultantPassword || !fullName || !consultantMobileNumber || !position) {
         const error = new Error('Completa los campos obligatorios');
         return res.json(error);
@@ -44,6 +43,7 @@ const loginGet = (req, res, next) => {
 const loginPost = (req, res, next) => {
 
     const done = (error, user) => {
+        
         if (error) return next(error);
 
         const doneForSerialize = (error) => {
@@ -75,7 +75,7 @@ const checkSession = async (req, res, next) => {
 
         return res.status(200).json(user);
     } else {
-        return res.status(401).json({ message: 'No user found' });
+        return res.status(401).json({ message: 'Usuario no encontrado' });
     };
 }
 module.exports = {

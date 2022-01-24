@@ -20,7 +20,7 @@ const adSchema = new Schema(
             country: { type: String, required: true }
         },
         adType: { type: [String], enum: ['Alquiler', 'Venta'], required: true },
-        gvOperationClose: { type: [String], enum: ['Vendido', 'Alquilado', ''], default: '' },
+        gvOperationClose: { type: String, enum: ['Vendido', 'Alquilado', ''], default: '' },
         owner: { type: mongoose.Types.ObjectId, ref: 'contacts' },
         consultant: { type: mongoose.Types.ObjectId, ref: 'consultants' },
         adBuildingType: { type: [String], enum: ['Casa', 'Piso', 'Parcela', 'Ático', 'Oficina', 'Edificio', 'Local', 'Campo Rústico', 'Activos Singulares', 'Costa'], required: true },
@@ -38,15 +38,13 @@ const adSchema = new Schema(
             metersPrice: { type: String },
             surfaceDisponibility: { type: String },
         }],
-        price: {
-            sale: {
-                saleValue: { type: Number },
-                saleShowOnWeb: { type: Boolean },
-            },
-            rent: {
-                rentValue: { type: Number },
-                rentShowOnWeb: { type: Boolean },
-            },
+        sale: {
+            saleValue: { type: Number },
+            saleShowOnWeb: { type: Boolean },
+        },
+        rent: {
+            rentValue: { type: Number },
+            rentShowOnWeb: { type: Boolean },
         },
         monthlyRent: { type: Number },
         expenses: { type: Number },
