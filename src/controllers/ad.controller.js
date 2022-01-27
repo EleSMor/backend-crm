@@ -27,6 +27,7 @@ const adGetMatchedRequests = async (req, res, next) => {
         if (ad.adBuildingType.length !== 0) query.where({ requestBuildingType: { $in: ad.adBuildingType } })
         if (ad.zone.length !== 0) query.where({ requestZone: { $in: ad.zone } })
 
+        if (!ad.sale.saleValue) ad.sale.saleValue = 0;
         query.where({
             requestSalePrice: {
                 $gte: { salePriceMax: ad.sale.saleValue },
@@ -34,6 +35,7 @@ const adGetMatchedRequests = async (req, res, next) => {
             },
         })
 
+        if (!ad.rent.rentValue) ad.rent.rentValue = 0;
         query.where({
             requestRentPrice: {
                 $gte: { rentPriceMax: ad.rent.rentValue },
@@ -41,6 +43,7 @@ const adGetMatchedRequests = async (req, res, next) => {
             },
         })
 
+        if (!ad.buildSurface) ad.buildSurface = 0;
         query.where({
             requestBuildSurface: {
                 $gte: { buildSurfaceMax: ad.buildSurface },
@@ -48,6 +51,7 @@ const adGetMatchedRequests = async (req, res, next) => {
             }
         })
 
+        if (!ad.plotSurface) ad.plotSurface = 0;
         query.where({
             requestPlotSurface: {
                 $gte: { plotSurfaceMax: ad.plotSurface },
@@ -56,6 +60,7 @@ const adGetMatchedRequests = async (req, res, next) => {
         })
 
 
+        if (!ad.quality.bedrooms) ad.quality.bedrooms = 0;
         query.where({
             requestBedrooms: {
                 $gte: { bedroomsMax: ad.quality.bedrooms },
@@ -63,6 +68,7 @@ const adGetMatchedRequests = async (req, res, next) => {
             },
         })
 
+        if (!ad.quality.bathrooms) ad.quality.bathrooms = 0;
         query.where({
             requestBathrooms: {
                 $gte: { bathroomsMax: ad.quality.bathrooms },
@@ -81,8 +87,6 @@ const adGetMatchedRequests = async (req, res, next) => {
         } else {
             return next();
         }
-        const requests = await query.exec()
-        return res.status(200).json(requests);
 
     } catch (err) {
         return next(err);
