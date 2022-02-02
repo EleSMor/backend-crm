@@ -15,9 +15,9 @@ const adSchema = new Schema(
                 directionNumber: { type: Number, required: true },
                 directionFloor: { type: String }
             },
-            postalCode: { type: String, required: true },
-            city: { type: String, required: true },
-            country: { type: String, required: true }
+            postalCode: { type: String},
+            city: { type: String},
+            country: { type: String}
         },
         adType: { type: [String], enum: ['Alquiler', 'Venta'], required: true },
         gvOperationClose: { type: String, enum: ['Vendido', 'Alquilado', ''], default: '' },
@@ -32,6 +32,7 @@ const adSchema = new Schema(
         floor: { type: String },
         disponibility: { type: String },
         surfacesBox: [{
+            id: { type: Number },
             surfaceFloor: { type: String },
             surfaceUse: { type: String },
             metersAvailables: { type: String },
