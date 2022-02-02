@@ -93,7 +93,6 @@ const adGetMatchedRequests = async (req, res, next) => {
     }
 }
 
-
 const adGetOne = async (req, res, next) => {
     try {
         const { id } = req.params;

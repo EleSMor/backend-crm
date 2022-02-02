@@ -18,6 +18,7 @@ const requestRoutes = require('./routes/request.routes');
 const contactRoutes = require('./routes/contact.routes');
 const consultantRoutes = require('./routes/consultant.routes');
 const zoneRoutes = require('./routes/zone.routes');
+const mailsRoutes = require('./routes/mails.routes');
 
 db.connect();
 
@@ -76,6 +77,7 @@ app.use('/requests', requestRoutes);
 app.use('/contacts', contactRoutes);
 app.use('/consultants', consultantRoutes);
 app.use('/zones', zoneRoutes);
+app.use('/mails', mailsRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server listening on http://localhost:${PORT}`)

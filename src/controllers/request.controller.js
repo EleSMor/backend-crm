@@ -141,30 +141,23 @@ const requestGetNewMatched = async (req, res, next) => {
         const ads = await Ad.find({
             adBuildingType: { $in: requestBuildingType },
         })
-            .and({
+            .where({
                 zone: { $in: requestZone },
             })
-            .and({
+            .where({
                 sale: {
                     $lte: { saleValue: salePriceMax },
                     $gte: { saleValue: salePriceMin },
                 },
             })
-            .and({
-                rent: {
-                    $lte: { rentValue: rentPriceMax },
-                    $gte: { rentValue: rentPriceMin },
-                },
-            })
-            .and({
+            .where({
                 $lte: { buildSurface: buildSurfaceMax },
                 $gte: { buildSurface: buildSurfaceMin },
             })
-            .and({
+            .where({
                 $lte: { plotSurface: plotSurfaceMax },
                 $gte: { plotSurface: plotSurfaceMin },
             })
-
         return res.status(200).json(ads);
     } catch (err) {
         return next(err);
