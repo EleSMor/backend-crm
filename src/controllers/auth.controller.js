@@ -11,10 +11,9 @@ const registerPost = (req, res, next) => {
         consultantPassword,
         fullName,
         consultantMobileNumber,
-        position,
     } = req.body;
 
-    if (!consultantEmail || !consultantPassword || !fullName || !consultantMobileNumber || !position) {
+    if (!consultantEmail || !consultantPassword || !fullName || !consultantMobileNumber) {
         const error = new Error('Completa los campos obligatorios');
         return res.json(error);
     }

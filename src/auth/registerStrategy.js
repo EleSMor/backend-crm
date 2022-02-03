@@ -18,7 +18,13 @@ const registerStrategy = new LocalStrategy(
     async (req, consultantEmail, consultantPassword, done) => {
 
         try {
-            const { fullName, consultantMobileNumber, consultantPhoneNumber, position, profession, office1, office2, comments } = req.body
+            const { comments } = req.body
+
+            if (!isValidEmail(consultantEmail)) {
+                const error = new Error('Formato de correo inválido');
+                error.status = 400;
+                return done(error);
+            }
 
             const existingEmail = await Consultant.findOne({ consultantEmail });
             if (existingEmail) {
@@ -27,27 +33,22 @@ const registerStrategy = new LocalStrategy(
                 return done(error);
             }
 
-            const existingMobile = await Consultant.findOne({ consultantMobileNumber });
+            const existingMobile = await Consultant.findOne({ consultantMobileNumber: req.body.consultantMobileNumber });
             if (existingMobile) {
                 const error = new Error("Este teléfono móvil ya se encuentra en nuestra base de datos");
                 error.status = 400;
                 return done(error);
             }
 
-            if (!isValidEmail(consultantEmail)) {
-                const error = new Error('Formato de correo inválido');
-                error.status = 400;
-                return done(error);
-            }
 
             if (!isValidPassword(consultantPassword)) {
                 const error = new Error('La contraseña debe contener al menos entre 8 y 16 carácteres, 1 mayúscula, 1 minúscula y 1 dígito')
                 error.status = 400;
                 return done(error);
             }
-            
+
             const avatar = req.files?.avatar ? req.files.avatar[0].location : "";
-            const companyUnitLogo = req.files?.companyUnitLogo ? req.files.companyUnitLogo[0].location : '';
+            const companyUnitLogo = req.files?.companyUnitLogo ? req.files.companyUnitLogo[0].location : "";
 
             const saltRounds = 10;
             const passwordHash = await bcrypt.hash(consultantPassword, saltRounds);
@@ -55,16 +56,15 @@ const registerStrategy = new LocalStrategy(
             const newConsultant = new Consultant({
                 consultantEmail,
                 consultantPassword: passwordHash,
-                consultantCreationDate: getDate(),
-                fullName,
+                fullName: req.body.fullName,
                 avatar,
                 companyUnitLogo,
-                consultantMobileNumber,
-                consultantPhoneNumber,
-                position,
-                profession,
-                office1,
-                office2,
+                consultantMobileNumber: req.body.consultantMobileNumber,
+                consultantPhoneNumber: req.body.consultantPhoneNumber,
+                position: req.body.position,
+                profession: req.body.profession,
+                office1: req.body.office1,
+                office2: req.body.office2,
                 consultantComments: comments,
             })
 

@@ -23,7 +23,7 @@ const adSchema = new Schema(
         gvOperationClose: { type: String, enum: ['Vendido', 'Alquilado', ''], default: '' },
         owner: { type: mongoose.Types.ObjectId, ref: 'contacts' },
         consultant: { type: mongoose.Types.ObjectId, ref: 'consultants' },
-        adBuildingType: { type: [String], enum: ['Casa', 'Piso', 'Parcela', 'Ático', 'Oficina', 'Edificio', 'Local', 'Campo Rústico', 'Activos Singulares', 'Costa'], required: true },
+        adBuildingType: { type: [String], enum: ['Casa', 'Piso', 'Parcela', 'Ático', 'Oficina', 'Edificio', 'Local', 'Campo Rústico', 'Activos singulares', 'Costa'], required: true },
         zone: [{ type: mongoose.Types.ObjectId, ref: 'zones' }],
         department: { type: String, enum: ['Patrimonio', 'Residencial'], required: true },
         webSubtitle: { type: String },

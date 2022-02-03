@@ -43,7 +43,6 @@ const consultantCreate = async (req, res, next) => {
             consultantComments: req.body.comments,
             role: req.body.role
         })
-
         const consultantCreated = await newConsultant.save();
 
         return res.status(200).json(consultantCreated);

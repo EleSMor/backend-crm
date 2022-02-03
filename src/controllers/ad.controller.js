@@ -110,11 +110,11 @@ const adCreate = async (req, res, next) => {
             address: {
                 street: req.body.street,
                 directionNumber: req.body.directionNumber,
-                directionFloor: req.body.directionFloor
+                directionFloor: req.body.directionFloor ? req.body.directionFloor : ""
             },
-            postalCode: req.body.postalCode,
-            city: req.body.city,
-            country: req.body.country
+            postalCode: req.body.postalCode ? req.body.postalCode : "",
+            city: req.body.city ? req.body.city : "",
+            country: req.body.country ? req.body.country : ""
         };
 
         const sale = {
