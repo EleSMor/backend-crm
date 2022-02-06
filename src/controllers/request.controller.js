@@ -125,39 +125,70 @@ const requestGetAdsMatched = async (req, res, next) => {
 
 const requestGetNewMatched = async (req, res, next) => {
     try {
-        const {
-            requestBuildingType,
-            requestZone,
-            salePriceMin,
-            salePriceMax,
-            rentPriceMin,
-            rentPriceMax,
-            buildSurfaceMin,
-            buildSurfaceMax,
-            plotSurfaceMin,
-            plotSurfaceMax
-        } = req.body;
 
-        const ads = await Ad.find({
-            adBuildingType: { $in: requestBuildingType },
+        let query = Ad.find()
+        query.where({ adStatus: "Activo" })
+
+        if (req.body.requestAdType.length !== 0) query.where({ adType: { $in: req.body.requestAdType } })
+        if (req.body.requestBuildingType.length !== 0) query.where({ adBuildingType: { $in: req.body.requestBuildingType } })
+        if (req.body.requestZone.length !== 0) query.where({ zone: { $in: req.body.requestZone } })
+
+        if (!req.body.salePriceMax) req.body.salePriceMax = 99999999
+        if (!req.body.salePriceMin) req.body.salePriceMin = 0
+        query.where({
+            sale: {
+                $lte: { saleValue: req.body.salePriceMax + 1 },
+                $gte: { saleValue: req.body.salePriceMin }
+            }
         })
-            .where({
-                zone: { $in: requestZone },
-            })
-            .where({
-                sale: {
-                    $lte: { saleValue: salePriceMax },
-                    $gte: { saleValue: salePriceMin },
-                },
-            })
-            .where({
-                $lte: { buildSurface: buildSurfaceMax },
-                $gte: { buildSurface: buildSurfaceMin },
-            })
-            .where({
-                $lte: { plotSurface: plotSurfaceMax },
-                $gte: { plotSurface: plotSurfaceMin },
-            })
+
+        if (!req.body.rentPriceMax) req.body.rentPriceMax = 99999
+        if (!req.body.rentPriceMin) req.body.rentPriceMin = 0
+        query.where({
+            rent: {
+                $lte: { rentValue: req.body.rentPriceMax + 1 },
+                $gte: { rentValue: req.body.rentPriceMin }
+            }
+        })
+
+        if (!req.body.buildSurfaceMax) req.body.buildSurfaceMax = 9999
+        if (!req.body.buildSurfaceMin) req.body.buildSurfaceMin = 0
+        query.where({
+            buildSurface: {
+                $gte: req.body.buildSurfaceMin,
+                $lte: req.body.buildSurfaceMax
+            }
+        })
+
+        if (!req.body.plotSurfaceMax) req.body.plotSurfaceMax = 99999
+        if (!req.body.plotSurfaceMin) req.body.plotSurfaceMin = 0
+        query.where({
+            plotSurface: {
+                $gte: req.body.plotSurfaceMin,
+                $lte: req.body.plotSurfaceMax
+            }
+        })
+
+        if (!req.body.bedroomsMax) req.body.bedroomsMax = 99
+        if (!req.body.bedroomsMin) req.body.bedroomsMin = 0
+        query.where({
+            quality: {
+                $lte: { bedrooms: req.body.bedroomsMax },
+                $gte: { bedrooms: req.body.bedroomsMin }
+            }
+        })
+
+        if (!req.body.bathroomsMax) req.body.bathroomsMax = 99
+        if (!req.body.bathroomsMin) req.body.bathroomsMin = 0
+        query.where({
+            quality: {
+                $lte: { bathrooms: req.body.bathroomsMax },
+                $gte: { bathrooms: req.body.bathroomsMin }
+            }
+        })
+
+        const ads = await query.exec()
+
         return res.status(200).json(ads);
     } catch (err) {
         return next(err);
