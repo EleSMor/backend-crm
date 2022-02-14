@@ -3,24 +3,23 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const consultantSchema = new Schema({
-    consultantReference: { type: String },
-    role: { type: String, enum: ["Admin", "Consultor"], default: "Consultor"},
-    consultorCreationDate: { type: Date },
+    role: { type: String, enum: ["Admin", "Consultor"], default: "Consultor" },
+    fullName: { type: String, required: true },
+    consultantEmail: { type: String, required: true },
+    consultantPassword: { type: String, required: true },
     avatar: { type: String },
-    businessUnitLogo: { type: String },
-    fullName: { type: String },
-    consultantEmail: { type: String },
-    consultantMobileNumber: { type: String },
+    companyUnitLogo: { type: String },
+    consultantMobileNumber: { type: String, required: true },
     consultantPhoneNumber: { type: String },
     position: { type: String },
-    occupation: { type: String },
+    profession: { type: String },
     office1: { type: String },
     office2: { type: String },
     consultantComments: { type: String },
     ads: { type: mongoose.Types.ObjectId, ref: 'ads' },
 },
     {
-        timestamp: true
+        timestamps: true
     }
 )
 
