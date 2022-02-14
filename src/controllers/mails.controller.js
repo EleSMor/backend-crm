@@ -1,14 +1,5 @@
 const nodemailer = require('nodemailer'); // email sender function 
 
-<<<<<<< HEAD
-const eleSendsEmail = (req, res) => {
-
-    const transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-            user: 'equipo@attomo.digital',
-            pass: '@@Google-Attomo'
-=======
 const sendAdsToContact = (req, res) => {
     console.log(req.body)
     const transporter = nodemailer.createTransport({
@@ -16,7 +7,6 @@ const sendAdsToContact = (req, res) => {
         auth: {
             user: 'ele.caudete@gmail.com',
             pass: 'c707f7f54e0c89B'
->>>>>>> master
         }
     });
     transporter.verify(function (error, success) {
@@ -31,20 +21,6 @@ const sendAdsToContact = (req, res) => {
         from: 'Eleazar',
         to: 'ele.caudete@gmail.com',
         subject: 'Prueba de nodemailer',
-<<<<<<< HEAD
-        text: 'Mensaje de prueba de nodemailer'
-    };
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            res.status(500).send(error.message);
-        } else {
-            res.status(200).json(req.body);
-        }
-    });
-}
-
-module.exports = { eleSendsEmail }
-=======
         html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
         <head>
@@ -397,4 +373,3 @@ const sendAdToContacts = (req, res) => {
 }
 
 module.exports = { sendAdsToContact, sendAdToContacts }
->>>>>>> master
