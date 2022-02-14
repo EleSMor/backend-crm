@@ -17,7 +17,13 @@ const requestGetOne = async (req, res, next) => {
     try {
         const { id } = req.params;
 
+<<<<<<< HEAD
         const request = await Request.findById(id);
+=======
+        const request = await Request.findById(id)
+            .populate({ path: 'requestContact', select: '_id fullName company email' })
+            .populate({ path: 'requestConsultant', select: '_id fullName' })
+>>>>>>> master
         return res.status(200).json(request);
     } catch (err) {
         return next(err);
