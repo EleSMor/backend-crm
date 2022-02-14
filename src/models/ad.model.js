@@ -4,48 +4,121 @@ const Schema = mongoose.Schema;
 
 const adSchema = new Schema(
     {
-        adReference: { type: String, required: true },
-        adStatus: { type: String, enum: ['En preparación', 'Activo', 'Inactivo'], default: 'En preparación' },
+        adStatus: { type: String, enum: ["En preparación", "Activo", "Inactivo"], default: "En preparación", required: true },
         title: { type: String, required: true },
-        showOnWeb: { type: Boolean, default: true },
-        featuredOnMain: { type: Boolean, },
+        showOnWeb: { type: Boolean, required: true, default: 'yes' },
+        featuredOnMain: { type: Boolean, required: true },
         adDirection: {
-            address: {
-                street: { type: String, required: true },
-                directionNumber: { type: Number, required: true },
-                directionFloor: { type: String }
-            },
-            postalCode: { type: String},
-            city: { type: String},
-            country: { type: String}
+            street: { type: String, required: true },
+            postalCode: { type: Number, required: true },
+            city: { type: String, required: true },
+            country: { type: String, required: true }
         },
-        adType: { type: [String], enum: ['Alquiler', 'Venta'], required: true },
-        gvOperationClose: { type: String, enum: ['Vendido', 'Alquilado', ''], default: '' },
+        adType: { type: Array, enum: ['Alquiler, Venta'], required: true },
+        gvOperationClose: { type: String, enum: ['Vendido', 'Alquilado'], default:'' },
         owner: { type: mongoose.Types.ObjectId, ref: 'contacts' },
         consultant: { type: mongoose.Types.ObjectId, ref: 'consultants' },
-        adBuildingType: { type: [String], enum: ['Casa', 'Piso', 'Parcela', 'Ático', 'Oficina', 'Edificio', 'Local', 'Campo Rústico', 'Activos singulares', 'Costa'], required: true },
-        zone: [{ type: mongoose.Types.ObjectId, ref: 'zones' }],
-        department: { type: String, enum: ['Patrimonio', 'Residencial'], required: true },
-        webSubtitle: { type: String },
+        adReference: { type: Number, required: true },
+        adBuildingType: { type: Array, enum: ["Casa", "Piso", "Parcela", "Ático", "Oficina", "Edificio", "Local", "Campo Rústico", "Activos Singulares", "Costa"], required: true },
+        zone: {
+            residential: {
+                residential: {
+                    laFlorida: { type: Boolean },
+                    aravaca: { type: Boolean },
+                    valdemarín: { type: Boolean },
+                    montealina: { type: Boolean },
+                    pradoLargo: { type: Boolean },
+                    lasEncinas: { type: Boolean },
+                    alamoDeBulanas: { type: Boolean },
+                    mirasierra: { type: Boolean },
+                    elViso: { type: Boolean },
+                    nuevaEspana: { type: Boolean },
+                    jeronimos: { type: Boolean },
+                    almagro: { type: Boolean },
+                    condeDeOrgaz: { type: Boolean },
+                    laFinca: { type: Boolean },
+                    rosales: { type: Boolean },
+                    justicia: { type: Boolean },
+                    cortes: { type: Boolean },
+                    palacio: { type: Boolean },
+                },
+                complexResidential: {
+                    barrioSalamanca: {
+                        recoletos: { type: Boolean },
+                        castellana: { type: Boolean },
+                    },
+                    laMoraleja: {
+                        recoletos: { type: Boolean },
+                        castellana: { type: Boolean },
+                    },
+                    somosaguas: {
+                        somosaguasA: { type: Boolean },
+                        somosaguasNorte: { type: Boolean },
+                    },
+                    hispanoamerica: {
+                        ciudadJardin: { type: Boolean },
+                    },
+                    puertaDeHierro: {
+                        coloniaPuertaDeHierro: { type: Boolean },
+                        zonaPuertaDeHierro: { type: Boolean },
+                    },
+                    coloniaFuentelarreyna: {
+                        subColoniaFuentelarreyna: { type: Boolean },
+                        peniagrande: { type: Boolean },
+                    }
+                },
+            },
+            patrimonial: {
+                mendezAlvaro: { type: Boolean },
+                jeronimos: { type: Boolean },
+                centro: { type: Boolean },
+                salamanca: { type: Boolean },
+                almagro: { type: Boolean },
+                chamberi: { type: Boolean },
+                elViso: { type: Boolean },
+                azca: { type: Boolean },
+                cuzco: { type: Boolean },
+                chamartin: { type: Boolean },
+                ctba: { type: Boolean },
+                lasTablas_sanchinarro: { type: Boolean },
+                camposDeLasNaciones: { type: Boolean },
+                arroyoDeLaVega: { type: Boolean },
+                avenidaAmerica: { type: Boolean },
+                josefaValcarcel: { type: Boolean },
+                arturoSoria: { type: Boolean },
+                julianCamarillo: { type: Boolean },
+                valdemarin: { type: Boolean },
+                elPlantio: { type: Boolean },
+                pozuelo: { type: Boolean },
+                peLaFinca: { type: Boolean },
+                ciudadDeLaImagen: { type: Boolean },
+                madridSecundario: { type: Boolean },
+                otros: { type: Boolean },
+                periferia: { type: Boolean },
+            }
+        },
+        department: { type: String, enum: ["Patrimonio", "Residencial"], required: yes },
+        webSubitle: { type: String, required: yes },
         buildSurface: { type: Number },
         plotSurface: { type: Number },
         floor: { type: String },
         disponibility: { type: String },
-        surfacesBox: [{
-            id: { type: Number },
+        surfacesBox: {
             surfaceFloor: { type: String },
             surfaceUse: { type: String },
             metersAvailables: { type: String },
-            metersPrice: { type: String },
-            surfaceDisponibility: { type: String },
-        }],
-        sale: {
-            saleValue: { type: Number },
-            saleShowOnWeb: { type: Boolean },
+            meterPrice: { type: Number },
+            disponibility: { type: String },
         },
-        rent: {
-            rentValue: { type: Number },
-            rentShowOnWeb: { type: Boolean },
+        price: {
+            sale: {
+                saleValue: { type: Number },
+                saleShowOnWeb: { type: Boolean },
+            },
+            rent: {
+                rentValue: { type: Number },
+                rentShowOnWeb: { type: Boolean },
+            },
         },
         monthlyRent: { type: Number },
         expenses: { type: Number },
@@ -62,10 +135,10 @@ const adSchema = new Schema(
         quality: {
             bedrooms: { type: Number },
             bathrooms: { type: Number },
-            parking: { type: Number },
-            indoorPool: { type: Number },
-            outdoorPool: { type: Number },
-            jobPositions: { type: Number },
+            parking: { type: String },
+            indoorPool: { type: String },
+            outdoorPool: { type: String },
+            jobPositions: { type: String },
             subway: { type: String },
             bus: { type: String },
             others: {
@@ -90,11 +163,10 @@ const adSchema = new Schema(
                 swimmingPool: { type: Boolean },
                 garage: { type: Boolean },
                 falseCeiling: { type: Boolean },
-                raisedFloor: { type: Boolean },
-                qualityBathrooms: { type: Boolean },
+                bathrooms: { type: Boolean },
                 freeHeight: { type: Boolean },
                 smokeOutlet: { type: Boolean },
-                accessControl: { type: Boolean },
+                accesControl: { type: Boolean },
             },
         },
         description: {
@@ -104,10 +176,10 @@ const adSchema = new Schema(
         },
         images: {
             main: { type: String },
-            blueprint: { type: String },
+            blueprint: { type: Array },
             others: { type: Array },
-            media: { type: String },
         },
+        requests: { type: mongoose.Types.ObjectId, ref: 'requests' }
     },
     {
         timestamps: true
