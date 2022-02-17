@@ -79,8 +79,6 @@ const adGetMatchedRequests = async (req, res, next) => {
 
         query.populate({ path: 'requestContact', select: 'fullName company email consultantComments' })
 
-        // Activar esta parte al final de la validación del CRUD
-
         if (ad.adStatus === "Activo") {
         const requests = await query.exec()
         return res.status(200).json(requests);
