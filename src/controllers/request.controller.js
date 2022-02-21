@@ -128,6 +128,7 @@ const requestGetAdsMatched = async (req, res, next) => {
 const requestGetNewMatched = async (req, res, next) => {
     try {
 
+        console.log(req.body)
         let query = Ad.find()
         query.where({ adStatus: "Activo" })
 
@@ -137,19 +138,19 @@ const requestGetNewMatched = async (req, res, next) => {
 
         if (!req.body.salePriceMax) req.body.salePriceMax = 99999999
         if (!req.body.salePriceMin) req.body.salePriceMin = 0
-        query.where({
+        query.and({
             sale: {
-                $lte: { saleValue: req.body.salePriceMax + 1 },
-                $gte: { saleValue: req.body.salePriceMin }
+                $gte: { saleValue: req.body.salePriceMin },
+                $lte: { saleValue: req.body.salePriceMax + 1}
             }
         })
 
         if (!req.body.rentPriceMax) req.body.rentPriceMax = 99999
         if (!req.body.rentPriceMin) req.body.rentPriceMin = 0
-        query.where({
+        query.and({
             rent: {
-                $lte: { rentValue: req.body.rentPriceMax + 1 },
-                $gte: { rentValue: req.body.rentPriceMin }
+                $gte: { rentValue: req.body.rentPriceMin },
+                $lte: { rentValue: req.body.rentPriceMax + 1}
             }
         })
 
