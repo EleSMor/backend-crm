@@ -1,5 +1,5 @@
 const express = require('express');
-const { isAdmin } = require('../middlewares/auth.middleware');
+const { isAuth } = require('../middlewares/auth.middleware');
 const {
     sendAdsToContact,
     sendAdToContacts
@@ -7,7 +7,7 @@ const {
 
 const router = express.Router();
 
-router.post('/sendAdsToContact', sendAdsToContact);
-router.post('/sendAdToContacts', sendAdToContacts);
+router.post('/sendAdsToContact', isAuth, sendAdsToContact);
+router.post('/sendAdToContacts', isAuth, sendAdToContacts);
 
 module.exports = router;

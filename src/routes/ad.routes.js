@@ -1,6 +1,6 @@
 const express = require('express');
 const { upload, deleteImage } = require('../middlewares/file.middleware');
-const { isAdmin } = require('../middlewares/auth.middleware');
+const { isAuth, isAdmin } = require('../middlewares/auth.middleware');
 const {
     adGetAll,
     adGetOne,
@@ -18,18 +18,18 @@ const {
 
 const router = express.Router();
 
-router.get('/', adGetAll);
-router.get('/matching/:id', adGetMatchedRequests);
-router.get('/:id', adGetOne);
+router.get('/', isAuth, adGetAll);
+router.get('/matching/:id', isAuth, adGetMatchedRequests);
+router.get('/:id', isAuth, adGetOne);
 
-router.post('/create', adCreate);
-router.put('/edit', adUpdate);
-router.put('/upload/main/:id', upload.single('main'), adMainImageUpload);
-router.put('/delete/main/:id', adMainImagesDelete);
-router.put('/upload/blueprint/:id', upload.single('blueprint'), adBlueprintImageUpload);
-router.put('/delete/blueprint/:id', adBlueprintImagesDelete);
-router.put('/upload/others/:id', upload.array('others'), adOthersImagesUpload);
-router.put('/delete/others/:id', adOthersImagesDelete);
-router.delete('/delete/:id', adDelete);
+router.post('/create', isAuth, adCreate);
+router.put('/edit', isAuth, adUpdate);
+router.put('/upload/main/:id', isAuth, upload.single('main'), adMainImageUpload);
+router.put('/delete/main/:id', isAuth, adMainImagesDelete);
+router.put('/upload/blueprint/:id', isAuth, upload.single('blueprint'), adBlueprintImageUpload);
+router.put('/delete/blueprint/:id', isAuth, adBlueprintImagesDelete);
+router.put('/upload/others/:id', isAuth, upload.array('others'), adOthersImagesUpload);
+router.put('/delete/others/:id', isAuth, adOthersImagesDelete);
+router.delete('/delete/:id', [isAuth, isAdmin], adDelete);
 
 module.exports = router;
