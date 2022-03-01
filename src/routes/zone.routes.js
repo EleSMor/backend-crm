@@ -9,11 +9,11 @@ const {
 
 const router = express.Router();
 
-router.get('/residentials', isAuth, zonesGetResidentials);
-router.get('/patrimonials', isAuth, zonesGetPatrimonials);
+router.get('/residentials', zonesGetResidentials);
+router.get('/patrimonials', zonesGetPatrimonials);
 
-router.post('/create', isAuth, zoneCreate);
+router.post('/create', zoneCreate);
 
-router.delete('/delete/:id', isAuth, zoneDelete);
+router.delete('/delete/:id', zoneDelete);
 
 module.exports = router;

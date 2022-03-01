@@ -6,12 +6,12 @@ const { registerPost } = require('../controllers/auth.controller');
 
 const router = express.Router();
 
-router.get('/', isAuth, consultantGetAll);
-router.get('/:id', isAuth, consultantGetOne);
+router.get('/', consultantGetAll);
+router.get('/:id', consultantGetOne);
 
-router.post('/create', [isAuth, isAdmin], upload.fields([{ name: 'avatar' }, { name: 'companyUnitLogo' }]), registerPost);
-router.put('/edit', isAuth, upload.fields([{ name: 'avatar' }, { name: 'companyUnitLogo' }]), consultantUpdate);
+router.post('/create', upload.fields([{ name: 'avatar' }, { name: 'companyUnitLogo' }]), registerPost);
+router.put('/edit', upload.fields([{ name: 'avatar' }, { name: 'companyUnitLogo' }]), consultantUpdate);
 
-router.delete('/delete/:id', [isAuth, isAdmin], consultantDelete);
+router.delete('/delete/:id', consultantDelete);
 
 module.exports = router;

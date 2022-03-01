@@ -14,15 +14,15 @@ const {
 
 const router = express.Router();
 
-router.get('/', isAuth, contactGetAll);
-router.get('/owners', isAuth, contactGetOwners);
-router.get('/fullName/:fullName', isAuth, contactFindByFullName);
-router.get('/mobileNumber/:contactMobileNumber', isAuth, contactFindByContactMobileNumber);
-router.get('/email/:email', isAuth, contactFindByEmail);
-router.get('/:id', isAuth, contactGetOne);
+router.get('/', contactGetAll);
+router.get('/owners', contactGetOwners);
+router.get('/fullName/:fullName', contactFindByFullName);
+router.get('/mobileNumber/:contactMobileNumber', contactFindByContactMobileNumber);
+router.get('/email/:email', contactFindByEmail);
+router.get('/:id', contactGetOne);
 
-router.post('/create', isAuth, contactCreate);
-router.put('/edit', isAuth, contactUpdate);
-router.delete('/delete/:id', [isAuth, isAdmin], contactDelete);
+router.post('/create', contactCreate);
+router.put('/edit', contactUpdate);
+router.delete('/delete/:id', contactDelete);
 
 module.exports = router;
