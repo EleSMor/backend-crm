@@ -253,7 +253,19 @@ const adBlueprintImageUpload = async (req, res, next) => {
         const ad = await Ad.findById(id);
         const fieldsToUpdate = ad
 
-        fieldsToUpdate.images.blueprint = req.file ? req.file.location : '';
+        const blueprint = req.files ? req.files.map(file => file.location) : [];
+        
+        // fieldsToUpdate.images.blueprint = req.file ? req.file.location : '';
+
+        if (ad.images.blueprint.length !== 0) {
+            req.files.forEach((file) => {
+                if (!fieldsToUpdate.images.blueprint.includes(file.location)) {
+                    fieldsToUpdate.images.blueprint.push(file.location);
+                }
+            })
+        } else {
+            fieldsToUpdate.images.blueprint = blueprint
+        }
 
         const updatedAd = await Ad.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
 
@@ -320,7 +332,10 @@ const adBlueprintImagesDelete = async (req, res, next) => {
         const ad = await Ad.findById(id);
         const fieldsToUpdate = ad
 
-        fieldsToUpdate.images.blueprint = ""
+        // fieldsToUpdate.images.blueprint = ""
+        fieldsToUpdate.images.blueprint = fieldsToUpdate.images.blueprint.filter((location) => {
+            return req.body.toDelete !== location
+        })
 
         const updatedAd = await Ad.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
 

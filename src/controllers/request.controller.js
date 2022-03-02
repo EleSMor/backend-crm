@@ -128,7 +128,6 @@ const requestGetAdsMatched = async (req, res, next) => {
 const requestGetNewMatched = async (req, res, next) => {
     try {
 
-        console.log(req.body)
         let query = Ad.find()
         query.where({ adStatus: "Activo" })
 

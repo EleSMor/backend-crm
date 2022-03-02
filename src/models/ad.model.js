@@ -104,7 +104,7 @@ const adSchema = new Schema(
         },
         images: {
             main: { type: String },
-            blueprint: { type: String },
+            blueprint: { type: Array },
             others: { type: Array },
             media: { type: String },
         },
