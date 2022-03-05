@@ -80,8 +80,8 @@ const adGetMatchedRequests = async (req, res, next) => {
         query.populate({ path: 'requestContact', select: 'fullName company email consultantComments' })
 
         if (ad.adStatus === "Activo") {
-        const requests = await query.exec()
-        return res.status(200).json(requests);
+            const requests = await query.exec()
+            return res.status(200).json(requests);
         } else {
             return next();
         }
@@ -235,7 +235,7 @@ const adMainImageUpload = async (req, res, next) => {
         const ad = await Ad.findById(id);
         const fieldsToUpdate = ad
 
-        fieldsToUpdate.images.main = req.file ? req.file.location : '';
+        fieldsToUpdate.images.main = req.file ? `https://${req.file.bucket}.fra1.digitaloceanspaces.com/${req.file.key}` : '';
 
         const updatedAd = await Ad.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
 
@@ -252,21 +252,19 @@ const adBlueprintImageUpload = async (req, res, next) => {
 
         const ad = await Ad.findById(id);
         const fieldsToUpdate = ad
-
-        const blueprint = req.files ? req.files.map(file => file.location) : [];
         
-        // fieldsToUpdate.images.blueprint = req.file ? req.file.location : '';
-
+        const blueprint = req.files ? req.files.map(file => `https://${file.bucket}.fra1.digitaloceanspaces.com/${file.key}`) : [];
+                
         if (ad.images.blueprint.length !== 0) {
             req.files.forEach((file) => {
-                if (!fieldsToUpdate.images.blueprint.includes(file.location)) {
-                    fieldsToUpdate.images.blueprint.push(file.location);
+                if (!fieldsToUpdate.images.blueprint.includes(`https://${file.bucket}.fra1.digitaloceanspaces.com/${file.key}`)) {
+                    fieldsToUpdate.images.blueprint.push(`https://${file.bucket}.fra1.digitaloceanspaces.com/${file.key}`);
                 }
             })
         } else {
             fieldsToUpdate.images.blueprint = blueprint
         }
-
+        
         const updatedAd = await Ad.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
 
         return res.status(200).json(updatedAd);
@@ -283,12 +281,12 @@ const adOthersImagesUpload = async (req, res, next) => {
         const ad = await Ad.findById(id);
         const fieldsToUpdate = ad
 
-        const others = req.files ? req.files.map(file => file.location) : [];
+        const others = req.files ? req.files.map(file => `https://${file.bucket}.fra1.digitaloceanspaces.com/${file.key}`) : [];
 
         if (ad.images.others.length !== 0) {
             req.files.forEach((file) => {
-                if (!fieldsToUpdate.images.others.includes(file.location)) {
-                    fieldsToUpdate.images.others.push(file.location);
+                if (!fieldsToUpdate.images.others.includes(`https://${file.bucket}.fra1.digitaloceanspaces.com/${file.key}`)) {
+                    fieldsToUpdate.images.others.push(`https://${file.bucket}.fra1.digitaloceanspaces.com/${file.key}`);
                 }
             })
         } else {
@@ -332,7 +330,6 @@ const adBlueprintImagesDelete = async (req, res, next) => {
         const ad = await Ad.findById(id);
         const fieldsToUpdate = ad
 
-        // fieldsToUpdate.images.blueprint = ""
         fieldsToUpdate.images.blueprint = fieldsToUpdate.images.blueprint.filter((location) => {
             return req.body.toDelete !== location
         })
