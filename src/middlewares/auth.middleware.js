@@ -2,7 +2,7 @@ const isAuth = (req, res, next) => {
     if (req.isAuthenticated()) {
         return next();
     } else {
-        return res.json('Necesita un usuario')
+        return res.json('Acceso restringido')
     }
 }
 
