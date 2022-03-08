@@ -14,16 +14,16 @@ const {
 
 const router = express.Router();
 
-router.get('/', isAuth, requestsGetAll);
-router.get('/lastReference', isAuth, requestLastReference);
-router.get('/matching/:id', isAuth, requestGetAdsMatched);
-router.get('/contact/:id', isAuth, requestGetByContact);
-router.get('/:id', isAuth, requestGetOne);
+router.get('/', requestsGetAll);
+router.get('/lastReference', requestLastReference);
+router.get('/matching/:id', requestGetAdsMatched);
+router.get('/contact/:id', requestGetByContact);
+router.get('/:id', requestGetOne);
 
-router.post('/create', isAuth, requestCreate);
-router.post('/matching/new', isAuth, requestGetNewMatched);
-router.put('/edit', isAuth, requestUpdate);
+router.post('/create', requestCreate);
+router.post('/matching/new', requestGetNewMatched);
+router.put('/edit', requestUpdate);
 
-router.delete('/delete/:id', [isAuth, isAdmin], requestDelete);
+router.delete('/delete/:id', requestDelete);
 
 module.exports = router;

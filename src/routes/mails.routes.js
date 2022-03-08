@@ -7,7 +7,7 @@ const {
 
 const router = express.Router();
 
-router.post('/sendAdsToContact', isAuth, sendAdsToContact);
-router.post('/sendAdToContacts', isAuth, sendAdToContacts);
+router.post('/sendAdsToContact', sendAdsToContact);
+router.post('/sendAdToContacts', sendAdToContacts);
 
 module.exports = router;
