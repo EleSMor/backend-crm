@@ -272,11 +272,11 @@ const sendAdsToContact = (req, res) => {
   const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-       user: `${req.body.consultant.email}`,
-      pass: `${(req.body.consultant.email === "d.salcedo@gvre.es" || req.body.consultant.email === "d.ortega@gvre.es") ? `${process.env.GVRE_PASS_1}` : `${process.env.GVRE_PASS_2}`}`
+       user: `${req.body.consultant.consultantEmail}`,
+      pass: `${(req.body.consultant.consultantEmail === "d.salcedo@gvre.es" || req.body.consultant.consultantEmail === "d.ortega@gvre.es") ? `${process.env.GVRE_PASS_1}` : `${process.env.GVRE_PASS_2}`}`
     }
   });
-  
+
   transporter.verify(function (error, success) {
     if (error) {
       console.log(error);
@@ -738,8 +738,8 @@ const sendAdToContacts = (req, res) => {
   const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-       user: `${req.body.consultant.email}`,
-      pass: `${(req.body.consultant.email === "d.salcedo@gvre.es" || req.body.consultant.email === "d.ortega@gvre.es") ? `${process.env.GVRE_PASS_1}` : `${process.env.GVRE_PASS_2}`}`
+       user: `${req.body.consultant.consultantEmail}`,
+      pass: `${(req.body.consultant.consultantEmail === "d.salcedo@gvre.es" || req.body.consultant.consultantEmail === "d.ortega@gvre.es") ? `${process.env.GVRE_PASS_1}` : `${process.env.GVRE_PASS_2}`}`
     }
   });
   // const transporter = nodemailer.createTransport({
