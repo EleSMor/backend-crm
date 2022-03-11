@@ -30,7 +30,7 @@ const sendAdsToContact = (req, res) => {
     return ads.map(ad => {
       return (
         `<div style="max-width: 600px; margin: auto">
-         <strong>${ad.adDirectionFull !== undefined ? ad.adDirectionFull : ad.adDirection.address.street + ', ' + ad.adDirection.city}:</strong>
+         <strong>${ad.adDirectionSelected !== undefined ? ad.adDirectionSelected : ad.adDirection.address.street + ', ' + ad.adDirection.city}:</strong>
          </div>
          <div style="max-width: 600px; margin: auto">
          <div
@@ -1114,7 +1114,8 @@ const sendAdToContacts = (req, res) => {
                             <span>&nbsp;</span>
                             <span>&nbsp;</span>  
                             <div style="max-width: 600px; margin: auto">
-                              <strong>${req.body.ad.adDirectionFull !== undefined ? req.body.ad.adDirectionFull : req.body.ad.adDirection.address.street + ', ' + req.body.ad.adDirection.city}:</strong>
+                              <strong>${req.body.ad.adDirectionSelected !== undefined ? req.body.ad.adDirectionSelected : req.body.ad.adDirection.address.street 
+                                + ' ' + req.body.ad.adDirection.address.directionNumber + ', ' + req.body.ad.adDirection.city}:</strong>
                             </div>
                             <div style="max-width: 600px; margin: auto">
                               <div
