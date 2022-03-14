@@ -29,9 +29,12 @@ const sendAdsToContact = (req, res) => {
   const createAdsRows = (ads) => {
     return ads.map(ad => {
       return (
-        `<div style="max-width: 600px; margin: auto">
-         <strong>${ad.adDirectionSelected !== undefined ? ad.adDirectionSelected : ad.adDirection.address.street + ', ' + ad.adDirection.city}:</strong>
-         </div>
+        `${ad.adDirectionSelected !== undefined 
+          ? `<div style="max-width: 600px; margin: auto">
+              <strong>${ad.adDirectionSelected}:</strong>
+            </div>`
+          : ``
+        }
          <div style="max-width: 600px; margin: auto">
          <div
           id="m_-4520741529468623966gmail-m_8445976314637867845listing-a0E3Y00001LXsawUAD"
@@ -1112,11 +1115,13 @@ const sendAdToContacts = (req, res) => {
                             </div>
                             <div style="max-width: 600px; margin: auto"><br /></div>
                             <span>&nbsp;</span>
-                            <span>&nbsp;</span>  
-                            <div style="max-width: 600px; margin: auto">
-                              <strong>${req.body.ad.adDirectionSelected !== undefined ? req.body.ad.adDirectionSelected : req.body.ad.adDirection.address.street 
-                                + ' ' + req.body.ad.adDirection.address.directionNumber + ', ' + req.body.ad.adDirection.city}:</strong>
-                            </div>
+                            <span>&nbsp;</span>
+                            ${req.body.ad.adDirectionSelected !== undefined 
+                              ? `<div style="max-width: 600px; margin: auto">
+                                  <strong> ${req.body.ad.adDirectionSelected}:</strong>
+                                </div>` 
+                              : ``
+                            }
                             <div style="max-width: 600px; margin: auto">
                               <div
                                 id="m_-4520741529468623966gmail-m_8445976314637867845listing-a0E3Y00001LXsawUAD"
