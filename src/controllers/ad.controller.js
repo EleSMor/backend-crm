@@ -77,7 +77,7 @@ const adGetMatchedRequests = async (req, res, next) => {
         })
 
 
-        query.populate({ path: 'requestContact', select: 'fullName company email consultantComments' })
+        query.populate({ path: 'requestContact', select: 'fullName company email contactComments' })
 
         if (ad.adStatus === "Activo") {
             const requests = await query.exec()

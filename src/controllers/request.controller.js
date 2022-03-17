@@ -5,7 +5,7 @@ const requestsGetAll = async (req, res, next) => {
     try {
         const requests = await Request
             .find()
-            .populate({ path: 'requestContact', select: 'fullName company email' })
+            .populate({ path: 'requestContact', select: 'fullName company email contactComments' })
             .populate({ path: 'requestConsultant', select: 'fullName' })
         return res.status(200).json(requests);
     } catch (err) {
@@ -18,7 +18,7 @@ const requestGetOne = async (req, res, next) => {
         const { id } = req.params;
 
         const request = await Request.findById(id)
-            .populate({ path: 'requestContact', select: '_id fullName company email' })
+            .populate({ path: 'requestContact', select: '_id fullName company email contactComments' })
             .populate({ path: 'requestConsultant', select: '_id fullName' })
         return res.status(200).json(request);
     } catch (err) {
