@@ -12,7 +12,7 @@ const adSchema = new Schema(
         adDirection: {
             address: {
                 street: { type: String, required: true },
-                directionNumber: { type: Number, required: true },
+                directionNumber: { type: String, required: true },
                 directionFloor: { type: String }
             },
             postalCode: { type: String},

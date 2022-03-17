@@ -182,7 +182,7 @@ const adCreate = async (req, res, next) => {
 
         const images = {
             main: "",
-            blueprint: "",
+            blueprint: [],
             others: [],
         }
 

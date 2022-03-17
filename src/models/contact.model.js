@@ -4,16 +4,16 @@ const Schema = mongoose.Schema;
 
 const contactSchema = new Schema(
     {
-        fullName: { type: String },
+        fullName: { type: String, required: true },
         tag: [{ type: String, enum: ["Cliente", "Propietario"], required: true }],
-        email: { type: String },
+        email: { type: String, required: true },
         contactMobileNumber: { type: String },
         contactPhoneNumber: { type: String },
         company: { type: String },
         contactDirection: {
             address: {
                 street: { type: String },
-                directionNumber: { type: Number },
+                directionNumber: { type: String },
                 directionFloor: { type: String }
             },
             postalCode: { type: String },
