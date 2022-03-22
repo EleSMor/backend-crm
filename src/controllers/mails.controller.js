@@ -679,35 +679,16 @@ const sendAdsToContact = (req, res) => {
                                   <br />
                                   <b>${req.body.consultant.fullName}</b>
                                   <br />
-                                  ${req.body.consultant.profession ? (
-                                    `<div style="display: flex; align-items: center; justify-content: center; width: 100%">
-                                      <div style=" float: left; width: 100%; text-align: end">${req.body.consultant.position}</div>
-                                      <div style="float: none; text-align: end; padding: 0 4px 0 4px">|</div>
-                                      <div style="float: right; width: 100%; text-align: start">${req.body.consultant.profession}</div>
-                                    </div>`
-                                  ) : (
-                                    `${req.body.consultant.position}`
-                                  )}
-                                  ${req.body.consultant.consultantPhoneNumber ? (
-                                    `<div style="display: flex; align-items: center; justify-content: center; width: 100%">
-                                      <div style=" float: left; width: 100%; text-align: end">${req.body.consultant.consultantMobileNumber}</div>
-                                      <div style="float: none; text-align: end; padding: 0 4px 0 4px">|</div>
-                                      <div style="float: right; width: 100%; text-align: start">${req.body.consultant.consultantPhoneNumber}</div>
-                                    </div>`
-                                  ) : (
-                                    `${req.body.consultant.consultantMobileNumber}`
-                                  )}
-                                  ${req.body.consultant.office2 ? (
-                                    `<div style="display: flex; align-items: center; justify-content: center; width: 100%">
-                                      <div style=" float: left; width: 100%; text-align: end">${req.body.consultant.office1}</div>
-                                      <div style="float: none; text-align: end; padding: 0 4px 0 4px">|</div>
-                                      <div style="float: right; width: 100%; text-align: start">${req.body.consultant.office2}</div>
-                                    </div>`
-                                  ) : (
-                                    `${req.body.consultant.office1}`
-                                  )}
+                                  ${req.body.consultant.profession ? `${req.body.consultant.position} | ${req.body.consultant.profession}` : `${req.body.consultant.position}`}
+                                  <br />
+                                  ${req.body.consultant.consultantPhoneNumber
+                                    ? `${req.body.consultant.consultantMobileNumber} | ${req.body.consultant.consultantPhoneNumber}`
+                                    : `${req.body.consultant.consultantMobileNumber}`}
+                                  <br />
+                                  ${req.body.consultant.office2 ? `${req.body.consultant.office1} | ${req.body.consultant.office2}` : `${req.body.consultant.office1}`}
+                                  <br />
                                   <a href="mailto:${req.body.consultant.consultantEmail}" target="_blank">
-                                    ${req.body.consultant.consultantEmail}
+                                     ${req.body.consultant.consultantEmail}
                                   </a>
                                   <span>&nbsp;</span>
                                   <br />
@@ -1444,35 +1425,16 @@ const sendAdToContacts = (req, res) => {
                                       <br />
                                       <b>${req.body.consultant.fullName}</b>
                                       <br />
-                                      ${req.body.consultant.profession ? (
-                                        `<div style="display: flex; align-items: center; justify-content: center; width: 100%">
-                                          <div style=" float: left; width: 100%; text-align: end">${req.body.consultant.position}</div>
-                                          <div style="float: none; text-align: end; padding: 0 4px 0 4px">|</div>
-                                          <div style="float: right; width: 100%; text-align: start">${req.body.consultant.profession}</div>
-                                        </div>`
-                                      ) : (
-                                        `${req.body.consultant.position}`
-                                      )}
-                                      ${req.body.consultant.consultantPhoneNumber ? (
-                                        `<div style="display: flex; align-items: center; justify-content: center; width: 100%">
-                                          <div style=" float: left; width: 100%; text-align: end">${req.body.consultant.consultantMobileNumber}</div>
-                                          <div style="float: none; text-align: end; padding: 0 4px 0 4px">|</div>
-                                          <div style="float: right; width: 100%; text-align: start">${req.body.consultant.consultantPhoneNumber}</div>
-                                        </div>`
-                                      ) : (
-                                        `${req.body.consultant.consultantMobileNumber}`
-                                      )}
-                                      ${req.body.consultant.office2 ? (
-                                        `<div style="display: flex; align-items: center; justify-content: center; width: 100%">
-                                          <div style=" float: left; width: 100%; text-align: end">${req.body.consultant.office1}</div>
-                                          <div style="float: none; text-align: end; padding: 0 4px 0 4px">|</div>
-                                          <div style="float: right; width: 100%; text-align: start">${req.body.consultant.office2}</div>
-                                        </div>`
-                                      ) : (
-                                        `${req.body.consultant.office1}`
-                                      )}
+                                      ${req.body.consultant.profession ? `${req.body.consultant.position} | ${req.body.consultant.profession}` : `${req.body.consultant.position}`}
+                                      <br />
+                                      ${req.body.consultant.consultantPhoneNumber
+                                        ? `${req.body.consultant.consultantMobileNumber} | ${req.body.consultant.consultantPhoneNumber}`
+                                        : `${req.body.consultant.consultantMobileNumber}`}
+                                      <br />
+                                      ${req.body.consultant.office2 ? `${req.body.consultant.office1} | ${req.body.consultant.office2}` : `${req.body.consultant.office1}`}
+                                      <br />
                                       <a href="mailto:${req.body.consultant.consultantEmail}" target="_blank">
-                                        ${req.body.consultant.consultantEmail}
+                                         ${req.body.consultant.consultantEmail}
                                       </a>
                                       <span>&nbsp;</span>
                                       <br />

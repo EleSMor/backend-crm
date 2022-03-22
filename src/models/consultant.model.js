@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const consultantSchema = new Schema({
     role: { type: String, enum: ["Admin", "Consultor"], default: "Consultor" },
-    showOnWeb: { type: String, enum: ["Yes", "No"], default: true},
+    showOnWeb: { type: String, enum: ["Yes", "No"], default: "Yes"},
     fullName: { type: String, required: true },
     consultantEmail: { type: String, required: true },
     consultantPassword: { type: String, required: true },
