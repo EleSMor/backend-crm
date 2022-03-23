@@ -18,7 +18,7 @@ const requestGetOne = async (req, res, next) => {
         const { id } = req.params;
 
         const request = await Request.findById(id)
-            .populate({ path: 'requestContact', select: '_id fullName company email contactComments' })
+            .populate({ path: 'requestContact', select: '_id fullName company email contactComments notReceiveCommunications' })
             .populate({ path: 'requestConsultant', select: '_id fullName' })
         return res.status(200).json(request);
     } catch (err) {
@@ -140,7 +140,7 @@ const requestGetNewMatched = async (req, res, next) => {
         query.and({
             sale: {
                 $gte: { saleValue: req.body.salePriceMin },
-                $lte: { saleValue: req.body.salePriceMax + 1}
+                $lte: { saleValue: req.body.salePriceMax + 1 }
             }
         })
 
@@ -149,7 +149,7 @@ const requestGetNewMatched = async (req, res, next) => {
         query.and({
             rent: {
                 $gte: { rentValue: req.body.rentPriceMin },
-                $lte: { rentValue: req.body.rentPriceMax + 1}
+                $lte: { rentValue: req.body.rentPriceMax + 1 }
             }
         })
 
