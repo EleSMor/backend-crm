@@ -184,6 +184,7 @@ const adCreate = async (req, res, next) => {
             main: "",
             blueprint: [],
             others: [],
+            media: ""
         }
 
         const newAd = new Ad({
@@ -236,6 +237,24 @@ const adMainImageUpload = async (req, res, next) => {
         const fieldsToUpdate = ad
 
         fieldsToUpdate.images.main = req.file ? `https://${req.file.bucket}.fra1.digitaloceanspaces.com/${req.file.key}` : '';
+
+        const updatedAd = await Ad.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
+
+        return res.status(200).json(updatedAd);
+
+    } catch (err) {
+        return next(err);
+    }
+}
+
+const adMediaImageUpload = async (req, res, next) => {
+    try {
+        const { id } = req.params
+
+        const ad = await Ad.findById(id);
+        const fieldsToUpdate = ad
+
+        fieldsToUpdate.images.media = req.file ? `https://${req.file.bucket}.fra1.digitaloceanspaces.com/${req.file.key}` : '';
 
         const updatedAd = await Ad.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
 
@@ -311,6 +330,25 @@ const adMainImagesDelete = async (req, res, next) => {
         const fieldsToUpdate = ad
 
         fieldsToUpdate.images.main = ""
+
+        const updatedAd = await Ad.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
+
+        return res.status(200).json(updatedAd);
+
+    } catch (err) {
+        return next(err);
+    }
+}
+
+const adMediaImagesDelete = async (req, res, next) => {
+    try {
+        const { id } = req.params
+
+        deleteImage(req.body.toDelete)
+        const ad = await Ad.findById(id);
+        const fieldsToUpdate = ad
+
+        fieldsToUpdate.images.media = ""
 
         const updatedAd = await Ad.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
 
@@ -502,6 +540,8 @@ module.exports = {
     adUpdate,
     adMainImageUpload,
     adMainImagesDelete,
+    adMediaImageUpload,
+    adMediaImagesDelete,
     adBlueprintImageUpload,
     adBlueprintImagesDelete,
     adOthersImagesUpload,

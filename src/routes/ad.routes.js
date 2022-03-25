@@ -9,6 +9,8 @@ const {
     adUpdate,
     adMainImageUpload,
     adMainImagesDelete,
+    adMediaImageUpload,
+    adMediaImagesDelete,
     adBlueprintImageUpload,
     adBlueprintImagesDelete,
     adOthersImagesUpload,
@@ -40,6 +42,8 @@ router.post('/create', adCreate);
 router.put('/edit', adUpdate);
 router.put('/upload/main/:id', upload.single('main'), adMainImageUpload);
 router.put('/delete/main/:id', adMainImagesDelete);
+router.put('/upload/media/:id', upload.single('media'), adMediaImageUpload);
+router.put('/delete/media/:id', adMediaImagesDelete);
 router.put('/upload/blueprint/:id', upload.array('blueprint'), adBlueprintImageUpload);
 router.put('/delete/blueprint/:id', adBlueprintImagesDelete);
 router.put('/upload/others/:id', upload.array('others'), adOthersImagesUpload);

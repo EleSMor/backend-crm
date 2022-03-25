@@ -12,7 +12,7 @@ const s3 = new aws.S3({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 })
 
-const VALID_FILE_TYPES = ['image/png', 'image/jpg', 'image/jpeg'];
+const VALID_FILE_TYPES = ['image/png', 'image/jpg', 'image/jpeg', 'video/mp4'];
 
 const fileFilter = (req, file, cb) => {
     if (!VALID_FILE_TYPES.includes(file.mimetype)) {

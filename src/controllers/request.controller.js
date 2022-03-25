@@ -199,6 +199,7 @@ const requestGetNewMatched = async (req, res, next) => {
 
 const requestCreate = async (req, res, next) => {
 
+    const reference = await Request.find().sort({ requestReference: - 1 });
     try {
         const requestSalePrice = {
             salePriceMax: req.body.salePriceMax,
@@ -239,7 +240,7 @@ const requestCreate = async (req, res, next) => {
             requestPlotSurface,
             requestBedrooms,
             requestBathrooms,
-            requestReference: req.body.requestReference,
+            requestReference: reference,
             requestZone: req.body.requestZone,
             requestSalePrice,
             requestRentPrice,
