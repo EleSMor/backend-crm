@@ -66,18 +66,18 @@ const requestGetAdsMatched = async (req, res, next) => {
         if (!request.requestSalePrice.salePriceMax) request.requestSalePrice.salePriceMax = 99999999
         if (!request.requestSalePrice.salePriceMin) request.requestSalePrice.salePriceMin = 0
         query.where({
-            sale: {
-                $gte: { saleValue: request.requestSalePrice.salePriceMin },
-                $lte: { saleValue: request.requestSalePrice.salePriceMax + 1 }
+            'sale.saleValue': {
+                $gte: request.requestSalePrice.salePriceMin,
+                $lte: request.requestSalePrice.salePriceMax
             }
         })
 
         if (!request.requestRentPrice.rentPriceMax) request.requestRentPrice.rentPriceMax = 99999
         if (!request.requestRentPrice.rentPriceMin) request.requestRentPrice.rentPriceMin = 0
         query.where({
-            rent: {
-                $lte: { rentValue: request.requestRentPrice.rentPriceMax + 1 },
-                $gte: { rentValue: request.requestRentPrice.rentPriceMin }
+            'rent.rentValue': {
+                $lte: request.requestRentPrice.rentPriceMax,
+                $gte: request.requestRentPrice.rentPriceMin
             }
         })
 
@@ -102,7 +102,7 @@ const requestGetAdsMatched = async (req, res, next) => {
         if (!request.requestBedrooms.bedroomsMax) request.requestBedrooms.bedroomsMax = 99
         if (!request.requestBedrooms.bedroomsMin) request.requestBedrooms.bedroomsMin = 0
         query.where({
-            bedrooms: {
+            'quality.bedrooms': {
                 $gte: request.requestBedrooms.bedroomsMin,
                 $lte: request.requestBedrooms.bedroomsMax
             }
@@ -111,9 +111,9 @@ const requestGetAdsMatched = async (req, res, next) => {
         if (!request.requestBathrooms.bathroomsMax) request.requestBathrooms.bathroomsMax = 99
         if (!request.requestBathrooms.bathroomsMin) request.requestBathrooms.bathroomsMin = 0
         query.where({
-            bathrooms: {
-                $gte: request.requestBathrooms.bedroomsMin,
-                $lte: request.requestBathrooms.bedroomsMax
+            'quality.bathrooms': {
+                $gte: request.requestBathrooms.bathroomsMin,
+                $lte: request.requestBathrooms.bathroomsMax
             }
         })
 
@@ -128,6 +128,7 @@ const requestGetAdsMatched = async (req, res, next) => {
 const requestGetNewMatched = async (req, res, next) => {
     try {
 
+        console.log(req.body)
         let query = Ad.find()
         query.where({ adStatus: "Activo" })
 
@@ -138,18 +139,18 @@ const requestGetNewMatched = async (req, res, next) => {
         if (!req.body.salePriceMax) req.body.salePriceMax = 99999999
         if (!req.body.salePriceMin) req.body.salePriceMin = 0
         query.and({
-            sale: {
-                $gte: { saleValue: req.body.salePriceMin },
-                $lte: { saleValue: req.body.salePriceMax + 1 }
+            'sale.saleValue': {
+                $gte: req.body.salePriceMin,
+                $lte: req.body.salePriceMax
             }
         })
 
         if (!req.body.rentPriceMax) req.body.rentPriceMax = 99999
         if (!req.body.rentPriceMin) req.body.rentPriceMin = 0
         query.and({
-            rent: {
-                $gte: { rentValue: req.body.rentPriceMin },
-                $lte: { rentValue: req.body.rentPriceMax + 1 }
+            'rent.rentValue': {
+                $gte: req.body.rentPriceMin,
+                $lte: req.body.rentPriceMax
             }
         })
 
@@ -174,7 +175,7 @@ const requestGetNewMatched = async (req, res, next) => {
         if (!req.body.bedroomsMax) req.body.bedroomsMax = 99
         if (!req.body.bedroomsMin) req.body.bedroomsMin = 0
         query.where({
-            bedrooms: {
+            'quality.bedrooms': {
                 $gte: req.body.bedroomsMin,
                 $lte: req.body.bedroomsMax
             }
@@ -183,7 +184,7 @@ const requestGetNewMatched = async (req, res, next) => {
         if (!req.body.bathroomsMax) req.body.bathroomsMax = 99
         if (!req.body.bathroomsMin) req.body.bathroomsMin = 0
         query.where({
-            bathrooms: {
+            'quality.bathrooms': {
                 $gte: req.body.bathroomsMin,
                 $lte: req.body.bathroomsMax
             }

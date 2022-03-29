@@ -29,56 +29,42 @@ const adGetMatchedRequests = async (req, res, next) => {
 
         if (!ad.sale.saleValue) ad.sale.saleValue = 0;
         query.where({
-            requestSalePrice: {
-                $gte: { salePriceMax: ad.sale.saleValue },
-                $lte: { salePriceMin: ad.sale.saleValue }
-            },
+            'requestSalePrice.salePriceMax': { $gte: ad.sale.saleValue },
+            'requestSalePrice.salePriceMin': { $lte: ad.sale.saleValue }
         })
 
         if (!ad.rent.rentValue) ad.rent.rentValue = 0;
         query.where({
-            requestRentPrice: {
-                $gte: { rentPriceMax: ad.rent.rentValue },
-                $lte: { rentPriceMin: ad.rent.rentValue }
-            },
+            'requestRentPrice.rentPriceMax': { $gte: ad.rent.rentValue },
+            'requestRentPrice.rentPriceMin': { $lte: ad.rent.rentValue }
         })
 
         if (!ad.buildSurface) ad.buildSurface = 0;
         query.where({
-            requestBuildSurface: {
-                $gte: { buildSurfaceMax: ad.buildSurface },
-                $lte: { buildSurfaceMin: ad.buildSurface }
-            }
+            'requestBuildSurface.buildSurfaceMax': { $gte: ad.buildSurface },
+            'requestBuildSurface.buildSurfaceMin': { $lte: ad.buildSurface }
         })
 
         if (!ad.plotSurface) ad.plotSurface = 0;
         query.where({
-            requestPlotSurface: {
-                $gte: { plotSurfaceMax: ad.plotSurface },
-                $lte: { plotSurfaceMin: ad.plotSurface }
-            },
+            'requestPlotSurface.plotSurfaceMax': { $gte: ad.plotSurface },
+            'requestPlotSurface.plotSurfaceMin': { $lte: ad.plotSurface }
         })
 
 
         if (!ad.quality.bedrooms) ad.quality.bedrooms = 0;
         query.where({
-            requestBedrooms: {
-                $gte: { bedroomsMax: ad.quality.bedrooms },
-                $lte: { bedroomsMin: ad.quality.bedrooms }
-            },
+            'requestBedrooms.bedroomsMax': { $gte: ad.quality.bedrooms },
+            'requestBedrooms.bedroomsMin': { $lte: ad.quality.bedrooms }
         })
 
         if (!ad.quality.bathrooms) ad.quality.bathrooms = 0;
         query.where({
-            requestBathrooms: {
-                $gte: { bathroomsMax: ad.quality.bathrooms },
-                $lte: { bathroomsMin: ad.quality.bathrooms }
-            },
+            'requestBathrooms.bathroomsMax': { $gte: ad.quality.bathrooms },
+            'requestBathrooms.bathroomsMin': { $lte: ad.quality.bathrooms }
         })
 
-
         query.populate({ path: 'requestContact', select: 'fullName company email contactComments notReceiveCommunications' })
-
         if (ad.adStatus === "Activo") {
             const requests = await query.exec()
             return res.status(200).json(requests);
@@ -271,9 +257,9 @@ const adBlueprintImageUpload = async (req, res, next) => {
 
         const ad = await Ad.findById(id);
         const fieldsToUpdate = ad
-        
+
         const blueprint = req.files ? req.files.map(file => `https://${file.bucket}.fra1.digitaloceanspaces.com/${file.key}`) : [];
-                
+
         if (ad.images.blueprint.length !== 0) {
             req.files.forEach((file) => {
                 if (!fieldsToUpdate.images.blueprint.includes(`https://${file.bucket}.fra1.digitaloceanspaces.com/${file.key}`)) {
@@ -283,7 +269,7 @@ const adBlueprintImageUpload = async (req, res, next) => {
         } else {
             fieldsToUpdate.images.blueprint = blueprint
         }
-        
+
         const updatedAd = await Ad.findByIdAndUpdate(id, fieldsToUpdate, { new: true })
 
         return res.status(200).json(updatedAd);
