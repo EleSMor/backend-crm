@@ -52,7 +52,6 @@ const requestGetAdsMatched = async (req, res, next) => {
     try {
         const { id } = req.params;
         let request = await Request.findById({ _id: id })
-        console.log(request)
 
         // Query constructor
         let query = Ad.find();
@@ -66,7 +65,6 @@ const requestGetAdsMatched = async (req, res, next) => {
 
         if (!request.requestSalePrice.salePriceMax) request.requestSalePrice.salePriceMax = 99999999
         if (!request.requestSalePrice.salePriceMin) request.requestSalePrice.salePriceMin = 0
-        console.log(request.requestSalePrice)
         query.where({
             sale: {
                 $gte: { saleValue: request.requestSalePrice.salePriceMin },
@@ -76,7 +74,6 @@ const requestGetAdsMatched = async (req, res, next) => {
 
         if (!request.requestRentPrice.rentPriceMax) request.requestRentPrice.rentPriceMax = 99999
         if (!request.requestRentPrice.rentPriceMin) request.requestRentPrice.rentPriceMin = 0
-        console.log(request.requestRentPrice)
         query.where({
             rent: {
                 $lte: { rentValue: request.requestRentPrice.rentPriceMax + 1 },
@@ -121,7 +118,6 @@ const requestGetAdsMatched = async (req, res, next) => {
         })
 
         const ad = await query.exec()
-        console.log(ad)
 
         return res.status(200).json(ad);
     } catch (err) {
