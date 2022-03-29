@@ -199,7 +199,8 @@ const requestGetNewMatched = async (req, res, next) => {
 
 const requestCreate = async (req, res, next) => {
 
-    const reference = await Request.find().sort({ requestReference: - 1 });
+    let reference = await Request.find().sort({ requestReference: - 1 });
+    reference = reference[0].requestReference + 1;
     try {
         const requestSalePrice = {
             salePriceMax: req.body.salePriceMax,
