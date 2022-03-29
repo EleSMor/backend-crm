@@ -51,7 +51,8 @@ const requestGetByContact = async (req, res, next) => {
 const requestGetAdsMatched = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const request = await Request.findById({ _id: id })
+        let request = await Request.findById({ _id: id })
+        console.log(request)
 
         // Query constructor
         let query = Ad.find();
@@ -65,6 +66,7 @@ const requestGetAdsMatched = async (req, res, next) => {
 
         if (!request.requestSalePrice.salePriceMax) request.requestSalePrice.salePriceMax = 99999999
         if (!request.requestSalePrice.salePriceMin) request.requestSalePrice.salePriceMin = 0
+        console.log(request.requestSalePrice)
         query.where({
             sale: {
                 $gte: { saleValue: request.requestSalePrice.salePriceMin },
@@ -74,6 +76,7 @@ const requestGetAdsMatched = async (req, res, next) => {
 
         if (!request.requestRentPrice.rentPriceMax) request.requestRentPrice.rentPriceMax = 99999
         if (!request.requestRentPrice.rentPriceMin) request.requestRentPrice.rentPriceMin = 0
+        console.log(request.requestRentPrice)
         query.where({
             rent: {
                 $lte: { rentValue: request.requestRentPrice.rentPriceMax + 1 },
@@ -102,22 +105,23 @@ const requestGetAdsMatched = async (req, res, next) => {
         if (!request.requestBedrooms.bedroomsMax) request.requestBedrooms.bedroomsMax = 99
         if (!request.requestBedrooms.bedroomsMin) request.requestBedrooms.bedroomsMin = 0
         query.where({
-            quality: {
-                $lte: { bedrooms: request.requestBedrooms.bedroomsMax },
-                $gte: { bedrooms: request.requestBedrooms.bedroomsMin }
+            bedrooms: {
+                $gte: request.requestBedrooms.bedroomsMin,
+                $lte: request.requestBedrooms.bedroomsMax
             }
         })
 
         if (!request.requestBathrooms.bathroomsMax) request.requestBathrooms.bathroomsMax = 99
         if (!request.requestBathrooms.bathroomsMin) request.requestBathrooms.bathroomsMin = 0
         query.where({
-            quality: {
-                $lte: { bathrooms: request.requestBathrooms.bathroomsMax },
-                $gte: { bathrooms: request.requestBathrooms.bathroomsMin }
+            bathrooms: {
+                $gte: request.requestBathrooms.bedroomsMin,
+                $lte: request.requestBathrooms.bedroomsMax
             }
         })
 
         const ad = await query.exec()
+        console.log(ad)
 
         return res.status(200).json(ad);
     } catch (err) {
@@ -174,18 +178,18 @@ const requestGetNewMatched = async (req, res, next) => {
         if (!req.body.bedroomsMax) req.body.bedroomsMax = 99
         if (!req.body.bedroomsMin) req.body.bedroomsMin = 0
         query.where({
-            quality: {
-                $lte: { bedrooms: req.body.bedroomsMax },
-                $gte: { bedrooms: req.body.bedroomsMin }
+            bedrooms: {
+                $gte: req.body.bedroomsMin,
+                $lte: req.body.bedroomsMax
             }
         })
 
         if (!req.body.bathroomsMax) req.body.bathroomsMax = 99
         if (!req.body.bathroomsMin) req.body.bathroomsMin = 0
         query.where({
-            quality: {
-                $lte: { bathrooms: req.body.bathroomsMax },
-                $gte: { bathrooms: req.body.bathroomsMin }
+            bathrooms: {
+                $gte: req.body.bathroomsMin,
+                $lte: req.body.bathroomsMax
             }
         })
 
