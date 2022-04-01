@@ -128,16 +128,17 @@ const contactUpdate = async (req, res, next) => {
 
 const contactReceiveEmail = async (req, res, next) => {
     try {
-        const fieldsToUpdate = {}
 
-        fieldsToUpdate.receivedEmails = {
+        const newReceivedEmails = {
             $push: {
-                sendDate: Date.now(),
-                consultant: req.body.consultant._id,
-                ad: req.body.ad._id
+                receivedEmails: {
+                    sendDate: Date.now(),
+                    consultant: req.body.consultant._id,
+                    ad: req.body.ad._id
+                }
             }
         };
-        const contactUpdated = await Contact.findByIdAndUpdate(req.body.contact._id, fieldsToUpdate, { new: true })
+        const contactUpdated = await Contact.findByIdAndUpdate(req.body.contact._id, newReceivedEmails, { new: true })
 
         return res.status(200);
 
