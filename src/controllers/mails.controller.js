@@ -297,10 +297,8 @@ const sendAdsToContact = (req, res) => {
   const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-      // user: `${req.body.consultant.consultantEmail}`,
-      // pass: `${(req.body.consultant.consultantEmail === "d.salcedo@gvre.es" || req.body.consultant.consultantEmail === "d.ortega@gvre.es") ? `${process.env.GVRE_PASS_1}` : `${process.env.GVRE_PASS_2}`}`
-      user: "ele.caudete@gmail.com",
-      pass: "c707f7f54e0c89B."
+      user: `${req.body.consultant.consultantEmail}`,
+      pass: `${(req.body.consultant.consultantEmail === "d.salcedo@gvre.es" || req.body.consultant.consultantEmail === "d.ortega@gvre.es") ? `${process.env.GVRE_PASS_1}` : `${process.env.GVRE_PASS_2}`}`
     }
   });
 
