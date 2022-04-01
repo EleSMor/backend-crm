@@ -91,17 +91,13 @@ const sendAdsToContact = (req, res) => {
                       </tr>
                       <tr>
                         <td valign="top" style="border-collapse: collapse; vertical-align: top">
-                          <a
-                            href=""
-                            target="_blank"
-                            data-saferedirecturl="https://www.google.com/url?q="
-                            ><img
-                              src=${ad.images?.main ? ad.images?.main : "https://images.assetsdelivery.com/compings_v2/pavelstasevich/pavelstasevich1811/pavelstasevich181101031.jpg"}
+                          <img
+                              src=${ad.images.main ? ad.images.main : "https://images.assetsdelivery.com/compings_v2/pavelstasevich/pavelstasevich1811/pavelstasevich181101031.jpg"}
                               width="600px"
                               alt=""
                               style="display: block; font-size: 0px; margin: auto"
                               class="CToWUd"
-                          /></a>
+                          />
                         </td>
                       </tr>
                       <tr>
@@ -301,8 +297,10 @@ const sendAdsToContact = (req, res) => {
   const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-      user: `${req.body.consultant.consultantEmail}`,
-      pass: `${(req.body.consultant.consultantEmail === "d.salcedo@gvre.es" || req.body.consultant.consultantEmail === "d.ortega@gvre.es") ? `${process.env.GVRE_PASS_1}` : `${process.env.GVRE_PASS_2}`}`
+      // user: `${req.body.consultant.consultantEmail}`,
+      // pass: `${(req.body.consultant.consultantEmail === "d.salcedo@gvre.es" || req.body.consultant.consultantEmail === "d.ortega@gvre.es") ? `${process.env.GVRE_PASS_1}` : `${process.env.GVRE_PASS_2}`}`
+      user: "ele.caudete@gmail.com",
+      pass: "c707f7f54e0c89B."
     }
   });
 

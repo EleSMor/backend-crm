@@ -126,6 +126,26 @@ const contactUpdate = async (req, res, next) => {
     }
 }
 
+const contactReceiveEmail = async (req, res, next) => {
+    try {
+        const fieldsToUpdate = {}
+
+        fieldsToUpdate.receivedEmails = {
+            $push: {
+                sendDate: Date.now(),
+                consultant: req.body.consultant._id,
+                ad: req.body.ad._id
+            }
+        };
+        const contactUpdated = await Contact.findByIdAndUpdate(req.body.contact._id, fieldsToUpdate, { new: true })
+
+        return res.status(200);
+
+    } catch (err) {
+        return next(err);
+    }
+}
+
 const contactDelete = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -150,5 +170,6 @@ module.exports = {
     contactGetOwners,
     contactCreate,
     contactUpdate,
+    contactReceiveEmail,
     contactDelete,
 }

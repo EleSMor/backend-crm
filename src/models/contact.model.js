@@ -22,7 +22,12 @@ const contactSchema = new Schema(
         },
         contactComments: { type: String },
         notReceiveCommunications: { type: Boolean },
-        consultant: { type: mongoose.Types.ObjectId, ref: 'consultants' }
+        consultant: { type: mongoose.Types.ObjectId, ref: 'consultants' },
+        receivedEmails: [{
+            ad: { type: mongoose.Types.ObjectId, ref: 'ads' },
+            sendDate: { type: Date },
+            consultant: { type: mongoose.Types.ObjectId, ref: 'consultants' },
+        }]
     },
     {
         timestamps: true
