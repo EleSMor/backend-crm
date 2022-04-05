@@ -13,11 +13,11 @@ const contactGetAll = async (req, res, next) => {
 const contactGetOne = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const contact = await Contact.findById(id);
-        return res.status(200).json(contact);
-    } catch (err) {
-        return next(err);
-    }
+        const contact = await Contact.findById(id).populate({ path: 'receivedEmails', populate: { path: 'ad', select: 'createdAt title adDirection images.main' }});
+    return res.status(200).json(contact);
+} catch (err) {
+    return next(err);
+}
 }
 
 const contactFindByEmail = async (req, res, next) => {
