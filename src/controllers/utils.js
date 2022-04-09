@@ -14,6 +14,48 @@ const getDate = () => {
     return today;
 }
 
+function getPasswordByEmail(email) {
+    switch (email) {
+        case 'd.salcedo@gvre.es':
+            return process.env.GVRE_PASS_DAVID_SALCEDO
+        case 'd.ortega@gvre.es':
+            return process.env.GVRE_PASS_DAVID_ORTEGA
+        case 'c.mahiques@gvre.es':
+            return process.env.GVRE_PASS_CARI_MAHIQUES
+        case 'n.salcedo@gvre.es':
+            return process.env.GVRE_PASS_NURIA_SALCEDO
+        case 'p.alonso@gvre.es':
+            return process.env.GVRE_PASS_PELAYO_FERNANDEZ
+        case 'i.blasco@gvre.es':
+            return process.env.GVRE_PASS_IRENE_BLASCO
+        case 't.rdelaprada@gvre.es':
+            return process.env.GVRE_PASS_TERESA_RUIZ
+        case 'm.gfaina@gvre.es':
+            return process.env.GVRE_PASS_MARTA_GOMEZ_FAIÑA
+        case 'b.msagasta@gvre.es':
+            return process.env.GVRE_PASS_BEATRIZ_MATEO_SAGASTA
+        case 'm.aragon@gvre.es':
+            return process.env.GVRE_PASS_MONTSE_ARAGON
+        case 'a.gesche@gvre.es':
+            return process.env.GVRE_PASS_ALEJANDRA_GESCHE
+        case 'a.gdelaserna@gvre.es':
+            return process.env.GVRE_PASS_ANA_GOMEZ_DE_LA_SERNA
+        case 'm.mdelaplata@gvre.es':
+            return process.env.GVRE_PASS_MARIA_MARQUEZ_DE_LA_PLATA
+        case 'a.esain@gvre.es':
+            return process.env.GVRE_PASS_ALEJANDRO_ESAIN
+        case 'a.bareno@gvre.es':
+            return process.env.GVRE_PASS_ANA_MARIA_BAREÑO
+        case 'l.szuloaga@gvre.es':
+            return process.env.GVRE_PASS_LUCIA_SUAREZ_ZULOAGA
+        case 'l.monreal@gvre.es':
+            return process.env.GVRE_PASS_LETICIA_MONREAL
+        case 'fotografia@gvre.es':
+            return process.env.GVRE_PASS_VICTORIA_MIÑANA
+    }
+}
+
 module.exports = {
-    getDate
+    getDate,
+    getPasswordByEmail
 }
