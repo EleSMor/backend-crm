@@ -314,7 +314,7 @@ const sendAdsToContact = (req, res) => {
   const mailOptions = {
     from: `GV Real Estate`,
     to: `${req.body.contact.email}`,
-    subject: `Estimado/a ${req.body.contact.fullName}, desde GV Real Estate te recomendamos el siguiente inmueble`,
+    subject: `${req.body.subject}`,
     html:
       `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html
@@ -794,7 +794,7 @@ const sendAdToContacts = (req, res) => {
     const mailOptions = {
       from: `${request.requestContact.fullName}`,
       to: `${request.requestContact.email}`,
-      subject: `Estimado/a ${request.requestContact.fullName}, desde GV Real Estate te recomendamos el siguiente inmueble`,
+      subject: `${req.body.subject}`,
       html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
       <html
         xmlns="http://www.w3.org/1999/xhtml"
