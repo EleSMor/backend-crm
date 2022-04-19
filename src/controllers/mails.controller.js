@@ -79,10 +79,9 @@ const sendAdsToContact = (req, res) => {
                         <td valign="top" style="border-collapse: collapse; vertical-align: top">
                           <h2 style="font-family: Helvetica; font-weight: bold; text-align: center">
                             <a
-                              href=""
+                              href="${ad.department === "Residencial" ? 'https://gvre.es/residentialItem/'+ ad._id : 'https://gvre.es/patrimonialItem/'+ ad._id}"
                               style="text-decoration: none; font-size: 19px; color: rgb(43, 54, 61)"
                               target="_blank"
-                              data-saferedirecturl="https://www.google.com/url?q="
                               >
                                 ${ad.titleEdited !== undefined ? ad.titleEdited : ad.title}
                               </a
@@ -92,13 +91,17 @@ const sendAdsToContact = (req, res) => {
                       </tr>
                       <tr>
                         <td valign="top" style="border-collapse: collapse; vertical-align: top">
-                          <img
-                              src=${ad.images.main ? ad.images.main : "https://images.assetsdelivery.com/compings_v2/pavelstasevich/pavelstasevich1811/pavelstasevich181101031.jpg"}
+                          <a
+                            href="${ad.department === "Residencial" ? 'https://gvre.es/residentialItem/'+ ad._id : 'https://gvre.es/patrimonialItem/'+ ad._id}"
+                            >
+                            <img
+                              src=${ad.images?.main ? ad.images?.main : "https://images.assetsdelivery.com/compings_v2/pavelstasevich/pavelstasevich1811/pavelstasevich181101031.jpg"}
                               width="600px"
                               alt=""
                               style="display: block; font-size: 0px; margin: auto"
                               class="CToWUd"
-                          />
+                            />
+                          </a>
                         </td>
                       </tr>
                       <tr>
@@ -655,8 +658,9 @@ const sendAdsToContact = (req, res) => {
                                     color: rgb(34, 34, 34);
                                   "
                                 >
+                                  
                                   <img
-                                    src="https://ci6.googleusercontent.com/proxy/jza8bBCMArZZffvAlUNVv6phmYZUYN7z1jP1LSNG0yYGEa1owcedG2PctZexN_HtF9nD9yWQ0e96GgOCcvmYfbqKk9oo6VbXOXYUVdiP2iM-DHk926qV=s0-d-e1-ft#https://gvre.es/wp-content/uploads/2019/03/logo_color_GV-120x120.png"
+                                    src='https://ci6.googleusercontent.com/proxy/AfGGywFT6_3aswvTp_kvD7StE2fqbnoU9jILHPGzB-VTH9f9GVCLngB4B9zF0ZWU5I6N8HDYArUh_CeA2MztYx7CYyAorUyq_Y0E5LML90LV-TdxVNCDdX06ZA=s0-d-e1-ft#src="https://gvre-images.fra1.digitaloceanspaces.com/logo.c6eafb1f.svg"'
                                     alt="Agent portrait"
                                     border="0"
                                     width="60"
@@ -1143,10 +1147,9 @@ const sendAdToContacts = (req, res) => {
                                               <td valign="top" style="border-collapse: collapse; vertical-align: top">
                                                 <h2 style="font-family: Helvetica; font-weight: bold; text-align: center">
                                                   <a
-                                                    href=""
+                                                    href="${req.body.ad.department === "Residencial" ? 'https://gvre.es/residentialItem/'+ req.body.ad._id : 'https://gvre.es/patrimonialItem/'+ req.body.ad._id}"
                                                     style="text-decoration: none; font-size: 19px; color: rgb(43, 54, 61)"
                                                     target="_blank"
-                                                    data-saferedirecturl="https://www.google.com/url?q="
                                                     >
                                                       ${req.body.ad.titleEdited !== undefined ? req.body.ad.titleEdited : req.body.ad.title}
                                                     </a
@@ -1157,9 +1160,8 @@ const sendAdToContacts = (req, res) => {
                                             <tr>
                                               <td valign="top" style="border-collapse: collapse; vertical-align: top">
                                                 <a
-                                                  href=""
+                                                  href="${req.body.ad.department === "Residencial" ? 'https://gvre.es/residentialItem/'+ req.body.ad._id : 'https://gvre.es/patrimonialItem/'+ req.body.ad._id}"
                                                   target="_blank"
-                                                  data-saferedirecturl="https://www.google.com/url?q="
                                                   ><img
                                                     src=${req.body.ad.images?.main ? req.body.ad.images?.main : "https://images.assetsdelivery.com/compings_v2/pavelstasevich/pavelstasevich1811/pavelstasevich181101031.jpg"}
                                                     width="600px"
@@ -1176,8 +1178,8 @@ const sendAdToContacts = (req, res) => {
                                                   style="padding: 10px 15px 10 15px; color: rgb(43, 54, 61); font-size: 22px"
                                                 >
                                                   ${req.body.ad.adType.includes("Venta")
-          ? maskTemplate(req.body.ad.sale.saleValue, "sale")
-          : maskTemplate(req.body.ad.rent.rentValue, "rent")}
+                                                    ? maskTemplate(req.body.ad.sale.saleValue, "sale")
+                                                    : maskTemplate(req.body.ad.rent.rentValue, "rent")}
                                                 </h2>
                                               </td>
                                             </tr>
@@ -1235,7 +1237,7 @@ const sendAdToContacts = (req, res) => {
                                                   <span>&nbsp;</span>  
                                                     <tr style="text-align: center">
                                                     ${(req.body.ad.plotSurface !== 0 && req.body.ad.plotSurface !== 99999) ?
-          `<th>
+                                                     `<th>
                                                         <img
                                                           width="25px"
                                                           height="25px"
@@ -1245,10 +1247,10 @@ const sendAdToContacts = (req, res) => {
                                                           class="CToWUd"
                                                         />
                                                       </th>`
-          : ``
-        }
+                                                      : ``
+                                                      }
                                                     ${(req.body.ad.buildSurface !== 0 && req.body.ad.buildSurface !== 9999) ?
-          `<th>
+                                                    `<th>
                                                         <img
                                                           width="25px"
                                                           height="25px"
@@ -1258,9 +1260,9 @@ const sendAdToContacts = (req, res) => {
                                                           class="CToWUd"
                                                         />
                                                       </th>` : ``
-        }
+                                                      }
                                                     ${req.body.ad.quality.outdoorPool !== 0 ?
-          `<th>
+                                                      `<th>
                                                         <img
                                                           width="25px"
                                                           height="25px"
@@ -1270,9 +1272,9 @@ const sendAdToContacts = (req, res) => {
                                                           class="CToWUd"
                                                         />
                                                       </th>` : ``
-        }
+                                                      }
                                                     ${(req.body.ad.quality.bathrooms !== 0 && req.body.ad.quality.bathrooms !== 99) ?
-          `<th>
+                                                      `<th>
                                                         <img
                                                           width="25px"
                                                           height="25px"
@@ -1282,9 +1284,9 @@ const sendAdToContacts = (req, res) => {
                                                           class="CToWUd"
                                                         />
                                                       </th>` : ``
-        }
+                                                      }
                                                     ${(req.body.ad.quality.bedrooms !== 0 && req.body.ad.quality.bedrooms !== 99) ?
-          `<th>
+                                                      `<th>
                                                         <img
                                                           width="25px"
                                                           height="25px"
@@ -1294,34 +1296,34 @@ const sendAdToContacts = (req, res) => {
                                                           class="CToWUd"
                                                         />
                                                       </th>` : ``
-        }
+                                                      }
                                                     </tr>
                                                     <tr style="text-align: center; color: rgb(43, 54, 61)">
                                                       ${(req.body.ad.plotSurface !== 0 && req.body.ad.plotSurface !== 99999) ?
-          `<td style="border-collapse: collapse; vertical-align: top">
+                                                        `<td style="border-collapse: collapse; vertical-align: top">
                                                             ${maskTemplate(req.body.ad.plotSurface, "plotSurface")}
                                                           </td>` : ``
-        }
+                                                        }
                                                       ${(req.body.ad.buildSurface !== 0 && req.body.ad.buildSurface !== 9999) ?
-          `<td style="border-collapse: collapse; vertical-align: top">
+                                                        `<td style="border-collapse: collapse; vertical-align: top">
                                                             ${maskTemplate(req.body.ad.buildSurface, "buildSurface")}
                                                           </td>` : ``
-        }
+                                                        }
                                                       ${req.body.ad.quality.outdoorPool !== 0 ?
-          `<td style="border-collapse: collapse; vertical-align: top">
+                                                        `<td style="border-collapse: collapse; vertical-align: top">
                                                             <p>${req.body.ad.quality.outdoorPool}</p>
                                                           </td>` : ``
-        }
+                                                        }
                                                       ${(req.body.ad.quality.bathrooms !== 0 && req.body.ad.quality.bathrooms !== 99) ?
-          `<td style="border-collapse: collapse; vertical-align: top">
+                                                        `<td style="border-collapse: collapse; vertical-align: top">
                                                             <p>${req.body.ad.quality.bathrooms}</p>
                                                          </td>` : ``
-        }
+                                                        }
                                                       ${(req.body.ad.quality.bedrooms !== 0 && req.body.ad.quality.bedrooms !== 99) ?
-          `<td style="border-collapse: collapse; vertical-align: top">
+                                                            `<td style="border-collapse: collapse; vertical-align: top">
                                                             <p>${req.body.ad.quality.bedrooms}</p>
                                                           </td>` : ``
-        }
+                                                        }
                                                     </tr>
                                                   </tbody>
                                                 </table>
@@ -1402,7 +1404,7 @@ const sendAdToContacts = (req, res) => {
                                     "
                                   >
                                     <img
-                                      src="https://ci6.googleusercontent.com/proxy/jza8bBCMArZZffvAlUNVv6phmYZUYN7z1jP1LSNG0yYGEa1owcedG2PctZexN_HtF9nD9yWQ0e96GgOCcvmYfbqKk9oo6VbXOXYUVdiP2iM-DHk926qV=s0-d-e1-ft#https://gvre.es/wp-content/uploads/2019/03/logo_color_GV-120x120.png"
+                                      src="https://ci6.googleusercontent.com/proxy/AfGGywFT6_3aswvTp_kvD7StE2fqbnoU9jILHPGzB-VTH9f9GVCLngB4B9zF0ZWU5I6N8HDYArUh_CeA2MztYx7CYyAorUyq_Y0E5LML90LV-TdxVNCDdX06ZA=s0-d-e1-ft#https://s3.eu-central-1.amazonaws.com/hydrobot-static/GV/GV_logo_negro_grande.png"
                                       alt="Agent portrait"
                                       border="0"
                                       width="60"
@@ -1425,8 +1427,8 @@ const sendAdToContacts = (req, res) => {
                                       ${req.body.consultant.profession ? `${req.body.consultant.position} | ${req.body.consultant.profession}` : `${req.body.consultant.position}`}
                                       <br />
                                       ${req.body.consultant.consultantPhoneNumber
-          ? `${req.body.consultant.consultantMobileNumber} | ${req.body.consultant.consultantPhoneNumber}`
-          : `${req.body.consultant.consultantMobileNumber}`}
+                                        ? `${req.body.consultant.consultantMobileNumber} | ${req.body.consultant.consultantPhoneNumber}`
+                                        : `${req.body.consultant.consultantMobileNumber}`}
                                       <br />
                                       ${req.body.consultant.office2 ? `${req.body.consultant.office1} | ${req.body.consultant.office2}` : `${req.body.consultant.office1}`}
                                       <br />
