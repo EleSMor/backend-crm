@@ -658,9 +658,8 @@ const sendAdsToContact = (req, res) => {
                                     color: rgb(34, 34, 34);
                                   "
                                 >
-                                  
                                   <img
-                                    src='https://ci6.googleusercontent.com/proxy/AfGGywFT6_3aswvTp_kvD7StE2fqbnoU9jILHPGzB-VTH9f9GVCLngB4B9zF0ZWU5I6N8HDYArUh_CeA2MztYx7CYyAorUyq_Y0E5LML90LV-TdxVNCDdX06ZA=s0-d-e1-ft#src="https://gvre-images.fra1.digitaloceanspaces.com/logo.c6eafb1f.svg"'
+                                    src="https://gvre.es/static/media/logogvre.4bd1abc4.png"
                                     alt="Agent portrait"
                                     border="0"
                                     width="60"
@@ -1404,7 +1403,7 @@ const sendAdToContacts = (req, res) => {
                                     "
                                   >
                                     <img
-                                      src="https://ci6.googleusercontent.com/proxy/AfGGywFT6_3aswvTp_kvD7StE2fqbnoU9jILHPGzB-VTH9f9GVCLngB4B9zF0ZWU5I6N8HDYArUh_CeA2MztYx7CYyAorUyq_Y0E5LML90LV-TdxVNCDdX06ZA=s0-d-e1-ft#https://s3.eu-central-1.amazonaws.com/hydrobot-static/GV/GV_logo_negro_grande.png"
+                                      src="https://gvre.es/static/media/logogvre.4bd1abc4.png"
                                       alt="Agent portrait"
                                       border="0"
                                       width="60"
