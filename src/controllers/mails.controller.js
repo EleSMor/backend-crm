@@ -91,10 +91,7 @@ const sendAdsToContact = (req, res) => {
                       </tr>
                       <tr>
                         <td valign="top" style="border-collapse: collapse; vertical-align: top">
-                          <a
-                            href="${ad.department === "Residencial" ? 'https://gvre.es/residentialItem/' + ad._id : 'https://gvre.es/patrimonialItem/' + ad._id}"
-                            target="_blank"
-                            >
+                          
                             <img
                               src=${ad.images.main ? ad.images.main : "https://images.assetsdelivery.com/compings_v2/pavelstasevich/pavelstasevich1811/pavelstasevich181101031.jpg"}
                               width="600px"
@@ -102,7 +99,7 @@ const sendAdsToContact = (req, res) => {
                               style="display: block; font-size: 0px; margin: auto"
                               class="CToWUd"
                             />
-                          </a>
+                         
                         </td>
                       </tr>
                       <tr>
@@ -1157,16 +1154,13 @@ const sendAdToContacts = (req, res) => {
                                             </tr>
                                             <tr>
                                               <td valign="top" style="border-collapse: collapse; vertical-align: top">
-                                                <a
-                                                  href="${req.body.ad.department === "Residencial" ? 'https://gvre.es/residentialItem/' + req.body.ad._id : 'https://gvre.es/patrimonialItem/' + req.body.ad._id}"
-                                                  target="_blank"
-                                                  ><img
+                                               <img
                                                     src=${req.body.ad.images.main ? req.body.ad.images.main : "https://images.assetsdelivery.com/compings_v2/pavelstasevich/pavelstasevich1811/pavelstasevich181101031.jpg"}
                                                     width="600px"
                                                     alt="Imagen de anuncio"
                                                     style="display: block; font-size: 0px; margin: auto"
                                                     class="CToWUd"
-                                                /></a>
+                                                />
                                               </td>
                                             </tr>
                                             <tr>
