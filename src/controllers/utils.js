@@ -24,8 +24,6 @@ function getPasswordByEmail(email) {
             return process.env.GVRE_PASS_CARI_MAHIQUES
         case 'n.salcedo@gvre.es':
             return process.env.GVRE_PASS_NURIA_SALCEDO
-        case 'p.alonso@gvre.es':
-            return process.env.GVRE_PASS_PELAYO_FERNANDEZ
         case 'i.blasco@gvre.es':
             return process.env.GVRE_PASS_IRENE_BLASCO
         case 't.rdelaprada@gvre.es':
@@ -52,6 +50,12 @@ function getPasswordByEmail(email) {
             return process.env.GVRE_PASS_LETICIA_MONREAL
         case 'fotografia@gvre.es':
             return process.env.GVRE_PASS_VICTORIA_MIÑANA
+        case 't.urries@gvre.es':
+            return process.env.GVRE_PASS_TULA_JORDAN_DE_URRIES
+        case 't.bareno@gvre.es':
+            return process.env.GVRE_PASS_TERESA_BAREÑO
+        case 'i.coca@gvre.es':
+            return process.env.GVRE_PASS_INES_COCA
     }
 }
 
