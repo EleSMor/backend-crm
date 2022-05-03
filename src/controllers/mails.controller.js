@@ -1158,7 +1158,7 @@ const sendAdToContacts = (req, res) => {
                                             <tr>
                                               <td valign="top" style="border-collapse: collapse; vertical-align: top">
                                                 <a
-                                                href="${ad.department === "Residencial" ? 'https://gvre.es/residentialItem/' + ad._id : 'https://gvre.es/patrimonialItem/' + ad._id}"
+                                                href="${req.body.ad.department === "Residencial" ? 'https://gvre.es/residentialItem/' + req.body.ad._id : 'https://gvre.es/patrimonialItem/' + req.body.ad._id}"
                                                 target="_blank"
                                                 >
                                                   <img
