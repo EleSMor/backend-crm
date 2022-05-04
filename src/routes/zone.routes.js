@@ -1,5 +1,5 @@
 const express = require('express');
-const { isAuth } = require('../middlewares/auth.middleware');
+const { isAuth, isAdmin } = require('../middlewares/auth.middleware');
 const {
     zonesGetResidentials,
     zonesGetPatrimonials,
@@ -9,11 +9,11 @@ const {
 
 const router = express.Router();
 
-router.get('/residentials', zonesGetResidentials);
-router.get('/patrimonials', zonesGetPatrimonials);
+router.get('/residentials', isAuth, zonesGetResidentials);
+router.get('/patrimonials', isAuth, zonesGetPatrimonials);
 
-router.post('/create', zoneCreate);
+router.post('/create', isAuth, zoneCreate);
 
-router.delete('/delete/:id', zoneDelete);
+router.delete('/delete/:id', [isAuth, isAdmin], zoneDelete);
 
 module.exports = router;
