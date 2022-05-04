@@ -16,6 +16,8 @@ const getDate = () => {
 
 function getPasswordByEmail(email) {
     switch (email) {
+        case 'mateo@attomo.digital':
+            return process.env.GVRE_PASS_MATEO_HERNANDEZ
         case 'd.salcedo@gvre.es':
             return process.env.GVRE_PASS_DAVID_SALCEDO
         case 'd.ortega@gvre.es':
