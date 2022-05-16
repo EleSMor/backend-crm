@@ -9,7 +9,7 @@ const requestsSchema = new Schema(
         requestConsultant: { type: mongoose.Types.ObjectId, ref: 'consultants' },
         requestComment: { type: String },
         requestAdType: { type: [String], enum: ["Alquiler", "Venta"] },
-        requestBuildingType: { type: [String], enum: ["Casa", "Piso", "Parcela", "Ático", "Oficina", "Edificio", "Local", "Campo Rústico", "Activos Singulares", "Costa"] },
+        requestBuildingType: { type: [String], enum: ["Casa", "Piso", "Parcela", "Ático", "Oficina", "Edificio", "Local", "Campo Rústico", "Activos singulares", "Costa"] },
         requestZone: [{ type: mongoose.Types.ObjectId, ref: 'zones' }],
         requestSalePrice: {
             salePriceMax: { type: Number, default: 0 },
