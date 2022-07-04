@@ -16,6 +16,8 @@ const {
     adOthersImagesUpload,
     adOthersImagesDelete,
     adDelete,
+    repairAds,
+    getAdsPaginated
 } = require('../controllers/ad.controller');
 
 const router = express.Router();
@@ -23,6 +25,8 @@ const router = express.Router();
 router.get('/', isAuth, adGetAll);
 router.get('/matching/:id', isAuth, adGetMatchedRequests);
 router.get('/:id', adGetOne);
+router.get('/repair/ads', repairAds);
+router.get('/web/:query', getAdsPaginated);
 
 router.post('/create', isAuth, adCreate);
 router.put('/edit', isAuth, adUpdate);

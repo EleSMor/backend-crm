@@ -2,6 +2,104 @@ const Ad = require('./../models/ad.model');
 const Request = require('./../models/request.model');
 const { deleteImage } = require('../middlewares/file.middleware');
 
+const repairAds = async (req, res, next) => {
+    try {
+        const ads = await Ad.find()
+        let count = 1
+        for (ad of ads) {
+            const fieldsToUpdate = ad
+            fieldsToUpdate.adDirection.address.street = ad.adDirection.address.street.trim()
+            fieldsToUpdate.adDirection.address.directionNumber = ad.adDirection.address.directionNumber.trim()
+            fieldsToUpdate.adDirection.address.directionFloor = ad.adDirection.address.directionFloor.trim()
+            await Ad.findByIdAndUpdate(ad.id, fieldsToUpdate, { new: true })
+            count++
+        }
+        return res.status(200).json('Terminado correctamente')
+    } catch (e) {
+        return next(e)
+    }
+}
+
+const getAdsPaginated = async (req, res, next) => {
+    try {
+        const search = req.params.query
+        const params = {}
+        new URLSearchParams(search).forEach((value, key) => {
+            params[key] = value
+        })
+
+        let page = !!params.page ? parseInt(params.page) : 1
+        let department = !!params.department ? params.department : { $exists: true }
+        let zone = !!params.zone ? params.zone : []
+        let adType = !!params.adType ? params.adType : ['Alquiler', 'Venta']
+        let adBuildingType = !!params.adBuildingType ? params.adBuildingType : ['Casa', 'Piso', 'Parcela', 'Ático', 'Oficina', 'Edificio', 'Local', 'Campo Rústico', 'Activos singulares', 'Costa']
+        let hasSwimmingPool = params.swimmingPool === 'true' ? true : false
+        let hasGarage = params.garage === 'true' ? true : false
+        let hasTerrace = params.terrace === 'true' ? true : false
+        let minSalePrice = !!params.minSalePrice ? parseInt(params.minSalePrice) : await Ad.find({}, { "sale.saleValue": 1, "_id": 0 }).sort({ "sale.saleValue": 1 }).limit(1)
+        let maxSalePrice = !!params.maxSalePrice ? parseInt(params.maxSalePrice) : await Ad.find({}, { "sale.saleValue": 1, "_id": 0 }).sort({ "sale.saleValue": -1 }).limit(1)
+        let minRentPrice = !!params.minRentPrice ? parseInt(params.minRentPrice) : await Ad.find({}, { "rent.rentValue": 1, "_id": 0 }).sort({ "rent.rentValue": 1 }).limit(1)
+        let maxRentPrice = !!params.maxRentPrice ? parseInt(params.maxRentPrice) : await Ad.find({}, { "rent.rentValue": 1, "_id": 0 }).sort({ "rent.rentValue": -1 }).limit(1)
+        let minSurface = !!params.minSurface ? parseInt(params.minSurface) : await Ad.find({}, { "buildSurface": 1, "_id": 0 }).sort({ "buildSurface": 1 }).limit(1)
+        let maxSurface = !!params.maxSurface ? parseInt(params.maxSurface) : await Ad.find({}, { "buildSurface": 1, "_id": 0 }).sort({ "buildSurface": -1 }).limit(1)
+
+        const query = Ad.find()
+
+        query.and({ department: department })
+        if (!!params.zone.length)
+            query.where({ zone: { $in: zone } })
+        if (!!params.adType)
+            query.where({ adType: { $in: adType } })
+        if (!!params.adBuildingType)
+            query.where({ adBuildingType: { $in: adBuildingType } })
+        if (!!params.swimmingPool)
+            query.and({ "quality.others.swimmingPool": hasSwimmingPool })
+        if (!!params.garage)
+            query.and({ "quality.others.garage": hasGarage })
+        if (!!params.terrace)
+            query.and({ "quality.others.terrace": hasTerrace })
+        if (!!params.minSurface && !!params.maxSurface)
+            query.where({ "buildSurface": { $gte: minSurface[0].buildSurface, $lte: maxSurface[0].buildSurface } })
+
+        if (adType.length === 1 && adType[0] === "Venta") {
+            if (!!params.minSalePrice && !!params.maxSalePrice)
+                query.where({ "sale.saleValue": { $gte: minSalePrice, $lte: maxSalePrice } })
+            else
+                query.where({ "sale.saleValue": { $gte: minSalePrice[0].sale.saleValue, $lte: maxSalePrice[0].sale.saleValue } })
+        }
+        if (adType.length === 1 && adType[0] === "Alquiler")
+            if (!!params.minRentPrice && !!params.maxRentPrice)
+                query.where({ "rent.rentValue": { $gte: minRentPrice, $lte: maxRentPrice } })
+            else
+                query.where({ "rent.rentValue": { $gte: minRentPrice[0].rent.rentValue, $lte: maxRentPrice[0].rent.rentValue } })
+
+        query.sort({ updatedAt: -1 })
+
+        const adsPerPage = 30
+
+        let ads = await query.exec()
+        let totalAds = ads.length
+        let totalPages = totalAds / adsPerPage <= 1 ? 1 : totalAds / adsPerPage
+
+
+        if (page === 1) {
+            if (totalAds > adsPerPage) {
+                ads = ads.slice(page - 1, adsPerPage + 1)
+            }
+        } if (ads.length === 0) {
+            ads = []
+            totalPages = 0
+        } else {
+            ads = ads.slice((page - 1) * adsPerPage + 1, adsPerPage * page + 1)
+        }
+
+        return res.status(200).json({ totalAds: totalAds, totalPages: Math.trunc(totalPages), ads: ads })
+
+    } catch (err) {
+        return next(err);
+    }
+}
+
 const adGetAll = async (req, res, next) => {
     try {
         const ads = await Ad
@@ -533,5 +631,7 @@ module.exports = {
     adOthersImagesUpload,
     adOthersImagesDelete,
     adDelete,
-    adGetMatchedRequests
+    adGetMatchedRequests,
+    repairAds,
+    getAdsPaginated,
 }
